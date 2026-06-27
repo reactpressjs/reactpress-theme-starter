@@ -1,9 +1,23 @@
+function isEmbedAdminEnabled(processEnv = process.env) {
+  const flag = processEnv.REACTPRESS_EMBED_ADMIN
+  if (flag === '0' || flag === 'false') return false
+  if (flag === '1' || flag === 'true') return true
+  return processEnv.VERCEL !== '1' && processEnv.REACTPRESS_MOCK_API !== '1'
+}
+
+function isBundledAdminEnabled(processEnv = process.env) {
+  const flag = processEnv.REACTPRESS_BUNDLE_ADMIN
+  if (flag === '0' || flag === 'false') return false
+  if (flag === '1' || flag === 'true') return true
+  return processEnv.VERCEL === '1' && processEnv.REACTPRESS_MOCK_API !== '1'
+}
+
 /**
  * Single source of truth for ReactPress theme URL resolution (build, dev, Vercel).
  */
 export const DEFAULT_LOCAL_API = 'http://localhost:3002/api'
 export const DEFAULT_LOCAL_SITE = 'http://localhost:3001'
-export const DEFAULT_LOCAL_ADMIN = 'http://localhost:3000'
+export const DEFAULT_LOCAL_ADMIN = 'http://localhost:3000/admin'
 export const DEFAULT_THEME_DEV_PORT = 3001
 export const DEFAULT_VERCEL_DEMO_SITE = 'https://reactpress-theme-starter.vercel.app'
 
@@ -28,6 +42,35 @@ function toApiBase(origin) {
 
 function apiOriginFromBase(serverApi) {
   return serverApi.replace(/\/api\/?$/, '')
+}
+
+function parseHttpOrigin(value) {
+  const normalized = value.startsWith('http') ? value : `https://${value}`
+  return new URL(normalized).origin
+}
+
+/** True when public site and API share the same origin (nginx /api gateway). */
+export function isSameSiteAndApiOrigin(serverApi, processEnv) {
+  if (isLocalhostUrl(serverApi)) return true
+
+  const apiOriginRaw = apiOriginFromBase(serverApi)
+  const siteUrl = resolveClientSiteUrl(processEnv)
+
+  try {
+    return parseHttpOrigin(siteUrl) === parseHttpOrigin(apiOriginRaw)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Default browser API URL when NEXT_PUBLIC_REACTPRESS_API_URL is unset.
+ * Same-origin (nginx /api gateway) → `/api`; cross-subdomain → direct API URL.
+ */
+function resolvePublicApiDefault(serverApi, processEnv) {
+  if (isLocalhostUrl(serverApi)) return serverApi
+  if (isSameSiteAndApiOrigin(serverApi, processEnv)) return '/api'
+  return serverApi
 }
 
 /**
@@ -71,11 +114,14 @@ export function resolveThemeApiEnv(processEnv = process.env) {
     // Browser must hit same-origin mock routes; ignore .env localhost:3002.
     publicApi = '/api'
   } else if (!publicApi) {
-    if (processEnv.NODE_ENV === 'production' && !isLocalhostUrl(serverApi)) {
-      publicApi = '/api'
-    } else {
-      publicApi = serverApi
-    }
+    publicApi = resolvePublicApiDefault(serverApi, processEnv)
+  } else if (
+    publicApi === '/api' &&
+    !isLocalhostUrl(serverApi) &&
+    !isSameSiteAndApiOrigin(serverApi, processEnv)
+  ) {
+    // `.env.example` defaults to `/api`; cross-subdomain deploys must hit the API host directly.
+    publicApi = serverApi
   }
 
   const nginxEntry = trimUrl(processEnv.REACTPRESS_NGINX_ENTRY_URL || processEnv.NGINX_ENTRY_URL)
@@ -83,7 +129,10 @@ export function resolveThemeApiEnv(processEnv = process.env) {
     trimUrl(processEnv.NEXT_PUBLIC_REACTPRESS_ADMIN_URL) ||
     (nginxEntry ? `${nginxEntry}/admin` : DEFAULT_LOCAL_ADMIN)
 
-  if (processEnv.VERCEL === '1' && isLocalhostUrl(adminUrl) && !isLocalhostUrl(serverApi)) {
+  if (isEmbedAdminEnabled(processEnv) || isBundledAdminEnabled(processEnv)) {
+    // Same-origin rewrite/bundle — relative path keeps port and host in sync with the theme.
+    adminUrl = '/admin'
+  } else if (processEnv.VERCEL === '1' && isLocalhostUrl(adminUrl) && !isLocalhostUrl(serverApi)) {
     adminUrl = `${apiOriginFromBase(serverApi)}/admin`
   }
 

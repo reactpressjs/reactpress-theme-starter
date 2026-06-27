@@ -7,7 +7,11 @@ import ConditionalSiteFooter from '@/components/layout/ConditionalSiteFooter'
 import PageContainer from '@/components/layout/PageContainer'
 import { loadAppBootstrap } from '@/lib/reactpress/bootstrap'
 import { buildThemeStarterAppearanceCss } from '@/lib/reactpress/appearance'
-import { getApiPreconnectOrigin } from '@/lib/reactpress/env'
+import {
+  buildClientApiRuntimeScript,
+  getApiPreconnectOrigin,
+  getServerResolvedPublicApiUrl,
+} from '@/lib/reactpress/env'
 import { ReactPressAppProviders } from '@/lib/reactpress/providers'
 import { buildRootMetadata } from '@/lib/reactpress/siteMetadata'
 import { DEFAULT_DESCRIPTION } from '@/lib/reactpress/seoMetadata'
@@ -31,6 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const bootstrap = await loadAppBootstrap('/')
   const appearanceCss = buildThemeStarterAppearanceCss(bootstrap.themeMods)
   const basePath = process.env.BASE_PATH || ''
+  const clientApiBase = getServerResolvedPublicApiUrl()
   const apiPreconnect = getApiPreconnectOrigin()
   const rootMetadata = await buildRootMetadata()
   const siteDescription =
@@ -42,6 +47,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang={bootstrap.initialLocale} suppressHydrationWarning>
       <head>
         <meta name="description" content={siteDescription} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: buildClientApiRuntimeScript(clientApiBase),
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `document.documentElement.setAttribute('data-rp-loading','');`,

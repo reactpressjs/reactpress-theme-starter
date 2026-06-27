@@ -47,7 +47,9 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:mock": "cross-env REACTPRESS_MOCK_API=1 node scripts/dev.mjs",
+    "dev:admin": "node node_modules/@fecommunity/reactpress-web/bin/reactpress-web.js start --port 3000",
     "clean": "rm -rf .next .next-dev",
+    "prebuild": "node scripts/copy-admin-dist.mjs",
     "build": "cross-env INIT_CWD=$PWD next build",
     "build:mock": "node scripts/build-mock.mjs",
     "build:ci": "pnpm clean && cross-env INIT_CWD=$PWD next build",
@@ -63,6 +65,7 @@
   },
   "dependencies": {
     "@fecommunity/reactpress-toolkit": "^3.1.0",
+    "@fecommunity/reactpress-web": "^3.7.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",

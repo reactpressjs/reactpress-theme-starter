@@ -17,11 +17,16 @@ import {
   resolveDevApiOrigins,
   resolveRemoteThemeApiBase,
 } from './remote-dev.mjs'
+import { createRequire } from 'node:module'
 import {
   DEFAULT_LOCAL_API,
   DEFAULT_THEME_DEV_PORT,
   resolveThemeApiEnv as resolveProjectApiEnv,
 } from './resolve-api-env.mjs'
+import { spawnEmbeddedAdmin } from './spawn-admin.mjs'
+
+const require = createRequire(import.meta.url)
+const { isEmbedAdminEnabled, resolveAdminStaticOrigin } = require('./embed-admin.cjs')
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(__dirname, '..')
@@ -176,8 +181,9 @@ function buildChildEnv(apiEnv, port) {
   }
 }
 
-function printBanner(apiEnv, port) {
+function printBanner(apiEnv, port, childEnv) {
   const mockEnabled = process.env.REACTPRESS_MOCK_API === '1'
+  const embedAdmin = isEmbedAdminEnabled(childEnv)
   console.log('')
   console.log('  ReactPress Theme Dev')
   console.log(`  Local:  http://localhost:${port}`)
@@ -188,18 +194,42 @@ function printBanner(apiEnv, port) {
   } else {
     console.log(`  API:    ${apiEnv.serverApiUrl} (local)`)
   }
+  if (embedAdmin) {
+    console.log(
+      `  Admin:  http://localhost:${port}/admin/  (static → ${resolveAdminStaticOrigin(childEnv)})`
+    )
+  }
   console.log('')
+}
+
+function shutdownChildren(children, signal = 'SIGTERM') {
+  for (const child of children) {
+    if (child && !child.killed) {
+      child.kill(signal)
+    }
+  }
 }
 
 function main() {
   const cli = parseArgs(process.argv.slice(2))
   const apiEnv = resolveThemeApiEnv(cli)
   const childEnv = buildChildEnv(apiEnv, cli.port)
+  const children = []
 
-  printBanner(apiEnv, cli.port)
+  if (isEmbedAdminEnabled(childEnv)) {
+    childEnv.REACTPRESS_EMBED_ADMIN = '1'
+    try {
+      children.push(spawnEmbeddedAdmin(childEnv))
+    } catch (error) {
+      console.error(`[dev] Failed to start embedded admin: ${error.message}`)
+      process.exit(1)
+    }
+  }
+
+  printBanner(apiEnv, cli.port, childEnv)
 
   const nextBin = path.join(projectRoot, 'node_modules', 'next', 'dist', 'bin', 'next')
-  const child = spawn(
+  const nextChild = spawn(
     process.execPath,
     [nextBin, 'dev', '-p', String(cli.port), ...cli.passthrough],
     {
@@ -208,8 +238,17 @@ function main() {
       stdio: 'inherit',
     }
   )
+  children.push(nextChild)
 
-  child.on('exit', (code, signal) => {
+  const onSignal = (signal) => {
+    shutdownChildren(children, signal)
+    process.exit(0)
+  }
+  process.on('SIGINT', onSignal)
+  process.on('SIGTERM', onSignal)
+
+  nextChild.on('exit', (code, signal) => {
+    shutdownChildren(children.filter((c) => c !== nextChild))
     if (signal) {
       process.kill(process.pid, signal)
       return

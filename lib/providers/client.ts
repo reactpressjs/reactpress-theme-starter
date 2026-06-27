@@ -1,6 +1,7 @@
-import { createThemeHttpStack } from '@fecommunity/reactpress-toolkit/theme'
+import { resolveClientApiBaseUrl } from '@/lib/reactpress/env'
 import { normalizeList, normalizePaginated } from '@/lib/reactpress/normalizeApiResponse'
 import { materializeProvider } from '@/lib/providers/materializeProvider'
+import { createThemeHttpStack } from '@fecommunity/reactpress-toolkit/theme'
 
 /** API messages already shown in UI (login form, etc.) — skip dev console noise. */
 function isExpectedClientError(message: string, status?: number): boolean {
@@ -11,11 +12,18 @@ function isExpectedClientError(message: string, status?: number): boolean {
 }
 
 const stack = createThemeHttpStack({
+  baseURL: resolveClientApiBaseUrl(),
   onError: (msg: string, status?: number) => {
     if (process.env.NODE_ENV !== 'development') return
     if (isExpectedClientError(msg, status)) return
     console.error('[reactpress-theme-starter]', msg)
   },
+})
+
+// Module init may run before layout runtime script; refresh baseURL on every request.
+stack.httpProvider.interceptors.request.use((config) => {
+  config.baseURL = resolveClientApiBaseUrl()
+  return config
 })
 
 export const { CommentProvider, UserProvider, SettingProvider } = stack

@@ -27,10 +27,10 @@ async function handleRequest(request: Request, context: RouteContext): Promise<R
 
   const { path = [] } = await context.params
   const keyword = new URL(request.url).searchParams.get('keyword')?.trim() ?? ''
-  const body = await readJsonBody(request)
 
   let response: Response
   if (isMockApiEnabled()) {
+    const body = await readJsonBody(request)
     const mockResponse = matchMockRoute(request.method, path, { keyword, body })
     response = mockResponse ?? Response.json({ success: true, data: null })
   } else {
