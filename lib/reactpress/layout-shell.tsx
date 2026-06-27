@@ -1,6 +1,6 @@
 'use client'
 
-import { useReportPageView } from '@fecommunity/reactpress-toolkit/ui'
+import { useReportPageView } from '@/lib/reactpress/useReportPageView'
 import { type ReactNode } from 'react'
 
 import BackToTop from '@/components/layout/BackToTop'

@@ -1,5 +1,14 @@
 import { resolveUpstreamApiBase } from './config'
 
+/** Strip hop-by-hop / encoding headers — fetch may decompress the body. */
+function sanitizeProxyResponseHeaders(headers: Headers): Headers {
+  const next = new Headers(headers)
+  for (const name of ['content-encoding', 'content-length', 'transfer-encoding', 'connection']) {
+    next.delete(name)
+  }
+  return next
+}
+
 export async function proxyToUpstreamApi(request: Request, segments: string[]): Promise<Response> {
   const base = resolveUpstreamApiBase()
   const pathname = segments.map((segment) => decodeURIComponent(segment)).join('/')
@@ -21,8 +30,12 @@ export async function proxyToUpstreamApi(request: Request, segments: string[]): 
     redirect: 'manual',
   })
 
-  return new Response(upstream.body, {
+  // Buffer body — piping upstream.body through a new Response is unreliable on Vercel.
+  const upstreamBody = request.method === 'HEAD' ? null : Buffer.from(await upstream.arrayBuffer())
+
+  return new Response(upstreamBody, {
     status: upstream.status,
-    headers: upstream.headers,
+    statusText: upstream.statusText,
+    headers: sanitizeProxyResponseHeaders(upstream.headers),
   })
 }

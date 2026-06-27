@@ -6,6 +6,12 @@ const {
   resolveClientSiteUrl,
   isLocalhostUrl,
 } = require('./scripts/resolve-api-env.mjs')
+const {
+  isEmbedAdminEnabled,
+  isBundledAdminEnabled,
+  createLocalAdminRewrites,
+  createBundledAdminFallbackRewrites,
+} = require('./scripts/embed-admin.cjs')
 
 // App Router (Next 15): do not use createReactPressNextConfig's react webpack alias —
 // it conflicts with Next's compiled React and causes SSR "useContext" null errors.
@@ -73,7 +79,16 @@ module.exports = {
     return webpackConfig
   },
   async rewrites() {
-    return [{ source: '/uploads/:path*', destination: `${uploadRewriteOrigin}/uploads/:path*` }]
+    const beforeFiles = [
+      { source: '/uploads/:path*', destination: `${uploadRewriteOrigin}/uploads/:path*` },
+    ]
+    if (isEmbedAdminEnabled()) {
+      beforeFiles.push(...createLocalAdminRewrites())
+    }
+
+    const fallback = isBundledAdminEnabled() ? createBundledAdminFallbackRewrites() : []
+
+    return { beforeFiles, fallback }
   },
   async redirects() {
     return [
