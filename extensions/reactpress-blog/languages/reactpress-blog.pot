@@ -1,0 +1,38 @@
+# Copyright (C) 2026 ReactPress
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: ReactPress Blog 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/fecommunity/reactpress-theme-starter/issues\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-01T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Domain: reactpress-blog\n"
+
+#: patterns/home-feed.php
+msgid "No posts found."
+msgstr ""
+
+#: patterns/sidebar-widgets.php
+msgid "Categories"
+msgstr ""
+
+#: patterns/sidebar-widgets.php
+msgid "Tags"
+msgstr ""
+
+#: patterns/sidebar-widgets.php
+msgid "About"
+msgstr ""
+
+#: patterns/sidebar-widgets.php
+msgid "Welcome to this blog. Edit this widget in the Site Editor to introduce your site."
+msgstr ""
+
+#: functions.php
+msgid "ReactPress Blog"
+msgstr ""

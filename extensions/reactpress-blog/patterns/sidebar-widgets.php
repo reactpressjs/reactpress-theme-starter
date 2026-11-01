@@ -1,0 +1,25 @@
+<?php
+/**
+ * Title: Sidebar widgets
+ * Slug: reactpress-blog/sidebar-widgets
+ * Categories: reactpress-blog, widgets
+ * Inserter: yes
+ * Description: Recommended readings and colorful tags sidebar.
+ *
+ * @package ReactPress_Blog
+ */
+
+?>
+<!-- wp:group {"tagName":"aside","className":"rp-sidebar","layout":{"type":"default"}} -->
+<aside class="wp-block-group rp-sidebar">
+	<!-- wp:group {"className":"rp-dynamic rp-dynamic--recommend","layout":{"type":"default"},"metadata":{"name":"Recommended Readings"}} -->
+	<div class="wp-block-group rp-dynamic rp-dynamic--recommend"></div>
+	<!-- /wp:group -->
+	<!-- wp:group {"className":"rp-dynamic rp-dynamic--tags","layout":{"type":"default"},"metadata":{"name":"Tags Cloud"}} -->
+	<div class="wp-block-group rp-dynamic rp-dynamic--tags"></div>
+	<!-- /wp:group -->
+	<!-- wp:group {"className":"rp-dynamic rp-dynamic--about-sidebar","layout":{"type":"default"},"metadata":{"name":"About Sidebar"}} -->
+	<div class="wp-block-group rp-dynamic rp-dynamic--about-sidebar"></div>
+	<!-- /wp:group -->
+</aside>
+<!-- /wp:group -->
