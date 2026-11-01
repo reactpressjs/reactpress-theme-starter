@@ -288,7 +288,7 @@ Theme issues → [this repo](https://github.com/fecommunity/reactpress-theme-sta
 | Q&A & showcase  | [GitHub Discussions](https://github.com/fecommunity/reactpress-theme-starter/discussions) |
 | Bug reports     | [Issues](https://github.com/fecommunity/reactpress-theme-starter/issues)                  |
 | ReactPress core | [github.com/fecommunity/reactpress](https://github.com/fecommunity/reactpress)            |
-| Documentation   | [reactpress.cc](https://reactpress.cc/)                                       |
+| Documentation   | [reactpress.cc](https://reactpress.cc/)                                                   |
 
 ---
 
@@ -307,7 +307,7 @@ Theme issues → [this repo](https://github.com/fecommunity/reactpress-theme-sta
 
 |                   |                                                                                                  |
 | :---------------- | :----------------------------------------------------------------------------------------------- |
-| ReactPress docs   | [reactpress.cc](https://reactpress.cc/)                                              |
+| ReactPress docs   | [reactpress.cc](https://reactpress.cc/)                                                          |
 | ReactPress source | [github.com/fecommunity/reactpress](https://github.com/fecommunity/reactpress)                   |
 | Toolkit           | [@fecommunity/reactpress-toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) |
 | Theme schema      | [theme.manifest.schema.json](./theme.manifest.schema.json)                                       |

@@ -220,7 +220,7 @@ theme.json     主题清单（路由、外观 Schema）
 
 |                 |                                                                                                  |
 | :-------------- | :----------------------------------------------------------------------------------------------- |
-| ReactPress 文档 | [reactpress.cc](https://reactpress.cc/)                                              |
+| ReactPress 文档 | [reactpress.cc](https://reactpress.cc/)                                                          |
 | ReactPress 源码 | [github.com/fecommunity/reactpress](https://github.com/fecommunity/reactpress)                   |
 | Toolkit         | [@fecommunity/reactpress-toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) |
 | 主题 Schema     | [theme.manifest.schema.json](./theme.manifest.schema.json)                                       |
