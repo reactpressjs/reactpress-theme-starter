@@ -1,3 +1,5 @@
+# ReactPress Theme Starter
+
 <div align="center">
 
 <a href="https://reactpress.cc/">
@@ -5,8 +7,6 @@
 </a>
 
 <br />
-
-**ReactPress Theme Starter**
 
 A lightweight, simple, and easy-to-use Next.js theme, powered by [ReactPress](https://github.com/fecommunity/reactpress).
 
