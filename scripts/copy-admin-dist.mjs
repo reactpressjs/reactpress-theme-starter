@@ -33,7 +33,9 @@ async function copyEntry(src, dest) {
 
 async function main() {
   if (!isBundledAdminEnabled()) {
-    console.log('[copy-admin] skipped (REACTPRESS_BUNDLE_ADMIN=0 or not a Vercel production build)')
+    console.log(
+      '[copy-admin] skipped (set REACTPRESS_BUNDLE_ADMIN=1, or build with VERCEL=1; use REACTPRESS_BUNDLE_ADMIN=0 to disable)'
+    )
     return
   }
 

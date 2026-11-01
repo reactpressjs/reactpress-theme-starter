@@ -124,7 +124,13 @@ async function main() {
       CLIENT_SITE_URL: clientSiteUrl,
       // Client bundle must use same-origin /api at runtime (not build-time localhost).
       NEXT_PUBLIC_REACTPRESS_API_URL: '/api',
+      // Same-origin admin SPA (public/admin); build skips package.json prebuild.
+      NEXT_PUBLIC_REACTPRESS_ADMIN_URL: '/admin',
     }
+
+    // `pnpm exec next build` does not run the `prebuild` lifecycle hook.
+    console.log('[build:mock] Copying bundled admin → public/admin')
+    await run('node', ['scripts/copy-admin-dist.mjs'], buildEnv)
 
     console.log('[build:mock] Running production build')
     await run('pnpm', ['exec', 'next', 'build'], buildEnv)

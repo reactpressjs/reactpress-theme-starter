@@ -39,13 +39,14 @@ function resolveEmbeddedAdminPublicUrl(processEnv = process.env, clientSiteUrl) 
 
 /**
  * Vercel / serverless: copy @fecommunity/reactpress-web/dist into public/admin at build time.
+ * Includes mock demos (REACTPRESS_MOCK_API=1) so /admin works on the starter deploy.
  * REACTPRESS_EMBED_ADMIN=0 only disables the Node custom-server embed, not bundled static admin.
  */
 function isBundledAdminEnabled(processEnv = process.env) {
   const flag = processEnv.REACTPRESS_BUNDLE_ADMIN
   if (flag === '0' || flag === 'false') return false
   if (flag === '1' || flag === 'true') return true
-  return processEnv.VERCEL === '1' && processEnv.REACTPRESS_MOCK_API !== '1'
+  return processEnv.VERCEL === '1'
 }
 
 /** SPA fallback — use in Next.js rewrites().fallback after public/admin static files. */

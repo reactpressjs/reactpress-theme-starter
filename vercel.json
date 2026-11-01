@@ -5,8 +5,10 @@
   "buildCommand": "pnpm run build:mock",
   "env": {
     "REACTPRESS_MOCK_API": "1",
+    "REACTPRESS_BUNDLE_ADMIN": "1",
     "REACTPRESS_API_URL": "https://reactpress-theme-starter.vercel.app/api",
     "NEXT_PUBLIC_REACTPRESS_API_URL": "/api",
+    "NEXT_PUBLIC_REACTPRESS_ADMIN_URL": "/admin",
     "CLIENT_SITE_URL": "https://reactpress-theme-starter.vercel.app"
   }
 }

@@ -9,7 +9,8 @@ function isBundledAdminEnabled(processEnv = process.env) {
   const flag = processEnv.REACTPRESS_BUNDLE_ADMIN
   if (flag === '0' || flag === 'false') return false
   if (flag === '1' || flag === 'true') return true
-  return processEnv.VERCEL === '1' && processEnv.REACTPRESS_MOCK_API !== '1'
+  // Match scripts/embed-admin.cjs — bundle on every Vercel build, including mock demos.
+  return processEnv.VERCEL === '1'
 }
 
 /**
