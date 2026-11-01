@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://reactpress.surge.sh/">
+<a href="https://reactpress.cc/">
   <img src="./public/logo.png" alt="ReactPress" width="480" />
 </a>
 
@@ -16,7 +16,7 @@
 
 <br />
 
-[在线演示](https://reactpress-theme-starter.vercel.app) · [官方文档](https://reactpress.surge.sh/) · [English](./README.md)
+[在线演示](https://reactpress-theme-starter.vercel.app) · [官方文档](https://reactpress.cc/) · [English](./README.md)
 
 <br />
 
@@ -84,7 +84,7 @@ ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  访客�
 
 ### 推荐 — ReactPress CLI
 
-最快的方式是用 [ReactPress CLI](https://reactpress.surge.sh/) 一键启动完整环境（访客站、管理后台、API），标准场景下无需手动配置 `.env`。
+最快的方式是用 [ReactPress CLI](https://reactpress.cc/) 一键启动完整环境（访客站、管理后台、API），标准场景下无需手动配置 `.env`。
 
 ```bash
 npm i -g @fecommunity/reactpress@3
@@ -220,7 +220,7 @@ theme.json     主题清单（路由、外观 Schema）
 
 |                 |                                                                                                  |
 | :-------------- | :----------------------------------------------------------------------------------------------- |
-| ReactPress 文档 | [reactpress.surge.sh](https://reactpress.surge.sh/)                                              |
+| ReactPress 文档 | [reactpress.cc](https://reactpress.cc/)                                              |
 | ReactPress 源码 | [github.com/fecommunity/reactpress](https://github.com/fecommunity/reactpress)                   |
 | Toolkit         | [@fecommunity/reactpress-toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) |
 | 主题 Schema     | [theme.manifest.schema.json](./theme.manifest.schema.json)                                       |

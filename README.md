@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://reactpress.surge.sh/">
+<a href="https://reactpress.cc/">
   <img src="./public/logo.png" alt="ReactPress" width="480" />
 </a>
 
@@ -16,7 +16,7 @@ A lightweight, simple, and easy-to-use Next.js theme, powered by [ReactPress](ht
 
 <br />
 
-[Live Demo](https://reactpress-theme-starter.vercel.app) · [Documentation](https://reactpress.surge.sh/) · [简体中文](./README_zh.md)
+[Live Demo](https://reactpress-theme-starter.vercel.app) · [Documentation](https://reactpress.cc/) · [简体中文](./README_zh.md)
 
 <br />
 
@@ -134,7 +134,7 @@ Built on Next.js 15 App Router with server rendering, static generation, and min
 
 ### Recommended — ReactPress CLI
 
-The fastest way to run a full stack (visitor site, admin console, and API) is the [ReactPress CLI](https://reactpress.surge.sh/). No manual `.env` wiring for a standard setup.
+The fastest way to run a full stack (visitor site, admin console, and API) is the [ReactPress CLI](https://reactpress.cc/). No manual `.env` wiring for a standard setup.
 
 ```bash
 npm i -g @fecommunity/reactpress@3
@@ -254,14 +254,14 @@ Route templates are declared in [`theme.json`](./theme.json). Appearance (colors
 <details>
 <summary><strong>Do I need ReactPress to preview the theme?</strong></summary>
 
-No. Run `pnpm dev:mock` for a full UI preview with sample data. Install [ReactPress CLI](https://reactpress.surge.sh/) when you want a real CMS, admin panel, and API.
+No. Run `pnpm dev:mock` for a full UI preview with sample data. Install [ReactPress CLI](https://reactpress.cc/) when you want a real CMS, admin panel, and API.
 
 </details>
 
 <details>
 <summary><strong>How is this different from WordPress or Ghost themes?</strong></summary>
 
-This is a **headless frontend** — content lives in ReactPress (REST API + admin). You deploy the Next.js theme separately and point it at your API. See [ReactPress docs](https://reactpress.surge.sh/) for the full stack.
+This is a **headless frontend** — content lives in ReactPress (REST API + admin). You deploy the Next.js theme separately and point it at your API. See [ReactPress docs](https://reactpress.cc/) for the full stack.
 
 </details>
 
@@ -288,7 +288,7 @@ Theme issues → [this repo](https://github.com/fecommunity/reactpress-theme-sta
 | Q&A & showcase  | [GitHub Discussions](https://github.com/fecommunity/reactpress-theme-starter/discussions) |
 | Bug reports     | [Issues](https://github.com/fecommunity/reactpress-theme-starter/issues)                  |
 | ReactPress core | [github.com/fecommunity/reactpress](https://github.com/fecommunity/reactpress)            |
-| Documentation   | [reactpress.surge.sh](https://reactpress.surge.sh/)                                       |
+| Documentation   | [reactpress.cc](https://reactpress.cc/)                                       |
 
 ---
 
@@ -307,7 +307,7 @@ Theme issues → [this repo](https://github.com/fecommunity/reactpress-theme-sta
 
 |                   |                                                                                                  |
 | :---------------- | :----------------------------------------------------------------------------------------------- |
-| ReactPress docs   | [reactpress.surge.sh](https://reactpress.surge.sh/)                                              |
+| ReactPress docs   | [reactpress.cc](https://reactpress.cc/)                                              |
 | ReactPress source | [github.com/fecommunity/reactpress](https://github.com/fecommunity/reactpress)                   |
 | Toolkit           | [@fecommunity/reactpress-toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) |
 | Theme schema      | [theme.manifest.schema.json](./theme.manifest.schema.json)                                       |
