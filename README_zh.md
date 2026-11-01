@@ -1,3 +1,5 @@
+# ReactPress Theme Starter
+
 <div align="center">
 
 <a href="https://reactpress.cc/">
@@ -5,8 +7,6 @@
 </a>
 
 <br />
-
-**ReactPress Theme Starter**
 
 一个轻量、简单、易用的 Next.js 主题，powered by <a href="https://github.com/fecommunity/reactpress">ReactPress</a>。
 
