@@ -13,12 +13,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fecommunity/reactpress-theme-starter.git"
+    "url": "git+https://github.com/reactpressjs/reactpress-theme-starter.git"
   },
   "bugs": {
-    "url": "https://github.com/fecommunity/reactpress-theme-starter/issues"
+    "url": "https://github.com/reactpressjs/reactpress-theme-starter/issues"
   },
-  "homepage": "https://github.com/fecommunity/reactpress-theme-starter#readme",
+  "homepage": "https://github.com/reactpressjs/reactpress-theme-starter#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

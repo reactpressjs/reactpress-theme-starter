@@ -8,7 +8,14 @@
 
 <br />
 
-一个轻量、简单、易用的 Next.js 主题，powered by <a href="https://github.com/fecommunity/reactpress">ReactPress</a>。
+**专注访客站。CMS 交给 ReactPress。**
+
+<br />
+
+[ReactPress](https://github.com/reactpressjs/reactpress) 官方 Next.js 主题 —
+负责路由、布局、SEO 与 UI。内容来自 Headless API，本仓库不内置 CMS。
+
+<br />
 
 <a href="https://reactpress-theme-starter.vercel.app">
   <img src="./public/home-dark.png" alt="ReactPress Theme Starter 界面预览" width="100%" />
@@ -16,7 +23,10 @@
 
 <br />
 
-[在线演示](https://reactpress-theme-starter.vercel.app) · [官方文档](https://reactpress.cc/) · [English](./README.md)
+[文档](https://reactpress.cc/) ·
+[在线演示](https://reactpress-theme-starter.vercel.app) ·
+[ReactPress](https://github.com/reactpressjs/reactpress) ·
+[English](./README.md)
 
 <br />
 
@@ -25,14 +35,25 @@
 <img src="https://img.shields.io/badge/Tailwind_4-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4" />
 <img src="https://img.shields.io/badge/TypeScript-0074c1?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
 <img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square" alt="MIT License" />
+<a href="https://github.com/reactpressjs/reactpress-theme-starter/stargazers">
+  <img src="https://img.shields.io/github/stars/reactpressjs/reactpress-theme-starter?style=flat-square&logo=github" alt="GitHub stars" />
+</a>
 
 </div>
 
 ---
 
-## 这是什么？
+## 为什么选这个主题
 
-本仓库是 ReactPress 的**访客站前端**，负责路由、布局、SEO 与 UI 展示。不包含 CMS 或管理后台 — 所有内容通过 [`@fecommunity/reactpress-toolkit`](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) 从 ReactPress API 获取。
+面向 ReactPress 栈的生产级访客前端 — 不是又一个空壳 Next.js 博客模板。
+
+|                    | 你能得到什么                                                                                          |
+| :----------------- | :---------------------------------------------------------------------------------------------------- |
+| **天然 Headless**  | 通过 [`@fecommunity/reactpress-toolkit`](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) REST 取数 — 内容留在 ReactPress |
+| **无需后台可预览** | `pnpm dev:mock` — 内置示例数据，与 [在线演示](https://reactpress-theme-starter.vercel.app) 相同模式     |
+| **开箱能力**       | 文章、归档、搜索、CMS 页面、知识库、评论、深浅色、RSS 与站点地图                                      |
+| **后台驱动外观**   | 配色、Logo、导航在 ReactPress 控制台配置，配合 [`theme.json`](./theme.json)                           |
+| **性能**           | Lighthouse **95 / 100 / 100 / 100** 开箱即用（见下）                                                  |
 
 ```text
 ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  访客站
@@ -40,11 +61,92 @@ ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  访客�
 
 **技术栈：** Next.js 15 · React 19 · Tailwind CSS 4 · Node.js 20+ · pnpm 9
 
-**内置能力：** 文章、归档、搜索、CMS 页面、知识库、评论、深浅色模式、RSS/站点地图，以及可选的 Mock API（离线开发）。
+---
 
-### 性能表现
+## 60 秒上手
 
-基于 Next.js 15 App Router，采用服务端渲染、静态生成与精简客户端 JavaScript — 开箱即用即可获得出色的 Core Web Vitals 表现，无需额外调优。
+无需安装 ReactPress — 用内置 Mock 数据预览主题。
+
+### 方式 A — `create-next-app`（推荐）
+
+```bash
+npx create-next-app@latest reactpress-theme-starter \
+  --example "https://github.com/reactpressjs/reactpress-theme-starter" \
+  --use-pnpm
+cd reactpress-theme-starter
+pnpm dev:mock
+```
+
+### 方式 B — 手动克隆
+
+```bash
+git clone https://github.com/reactpressjs/reactpress-theme-starter.git
+cd reactpress-theme-starter
+pnpm install
+pnpm dev:mock
+```
+
+打开 **http://localhost:3001**。
+
+### 部署到 Vercel（零环境变量）
+
+[`vercel.json`](./vercel.json) 使用 Mock 构建 — 一键部署，无需后台。
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Freactpressjs%2Freactpress-theme-starter&project-name=reactpress-theme&repository-name=reactpress-theme&demo-title=ReactPress%20Theme%20Starter&demo-description=Next.js%2015%20headless%20blog%20theme%20with%20mock%20mode%20%E2%80%94%20no%20backend%20required&demo-url=https%3A%2F%2Freactpress-theme-starter.vercel.app&demo-image=https%3A%2F%2Fraw.githubusercontent.com%2Freactpressjs%2Freactpress-theme-starter%2Fmaster%2Fpublic%2Fhome-dark.png)
+
+---
+
+## 快速开始（完整栈）
+
+**环境要求：** Node.js 20+、pnpm 9+
+
+最快启动访客站 + 管理后台 + API 的方式是 [ReactPress CLI](https://reactpress.cc/)：
+
+```bash
+npm install -g @fecommunity/reactpress
+mkdir my-site && cd my-site
+reactpress init
+```
+
+| 入口 | 地址                         |
+| :--- | :--------------------------- |
+| 站点 | http://localhost:3001        |
+| 后台 | http://localhost:3001/admin/ |
+| API  | http://127.0.0.1:3002/api    |
+
+默认账号：`admin` / `admin` — 上线前请修改。
+卡住了？运行 `reactpress doctor`。
+
+<div align="center">
+
+<img src="./public/cli.png" alt="ReactPress CLI 交互式菜单" width="100%" />
+
+</div>
+
+### 对接真实 API 开发本主题
+
+1. 克隆本仓库并执行 `pnpm install`。
+2. 启动 API（`reactpress dev --api-only`，或指向已运行的完整栈）。
+3. 如有需要，将 [`.env.example`](./.env.example) 复制为 `.env`（默认 API：`http://localhost:3002/api`）。
+4. 在主题目录运行：
+
+```bash
+pnpm dev
+```
+
+打开 **http://localhost:3001** — 从 ReactPress API 加载真实内容。
+
+开发时连接远程 API：
+
+```bash
+pnpm dev -- --remote-origin api.yoursite.com
+```
+
+---
+
+## 性能表现
+
+基于 Next.js 15 App Router，服务端渲染 + 静态生成 + 轻量客户端 — 开箱即用的 Core Web Vitals，无需额外调优。
 
 <div align="center">
 
@@ -59,7 +161,7 @@ ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  访客�
 | 最佳实践 | **100** |
 | SEO      | **100** |
 
-**Core Web Vitals**（[在线演示](https://reactpress-theme-starter.vercel.app) 首页审计结果）：
+**Core Web Vitals**（[在线演示](https://reactpress-theme-starter.vercel.app) 首页）：
 
 | 指标                           | 结果       |
 | :----------------------------- | :--------- |
@@ -69,90 +171,27 @@ ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  访客�
 | Cumulative Layout Shift (CLS)  | **0**      |
 | Speed Index                    | **1.1 s**  |
 
-**为什么快：**
-
-- **SSR + SSG** — 页面服务端渲染，静态路由在部署时预构建
-- **零布局偏移** — 首屏即稳定排版，阅读体验流畅
-- **轻量客户端** — 内容优先的 UI，无重型运行时负担
-- **SEO 就绪** — 内置 metadata、Open Graph、RSS 与站点地图
-
----
-
-## 快速开始
-
-**环境要求：** Node.js 20+、pnpm 9+
-
-### 推荐 — ReactPress CLI
-
-最快的方式是用 [ReactPress CLI](https://reactpress.cc/) 一键启动完整环境（访客站、管理后台、API），标准场景下无需手动配置 `.env`。
-
-```bash
-npm i -g @fecommunity/reactpress@3
-reactpress init
-reactpress dev
-```
-
-<div align="center">
-
-<img src="./public/cli.png" alt="ReactPress CLI 交互式菜单" width="100%" />
-
-</div>
-
-启动后按终端输出的地址访问（通常为访客站、管理后台与 API）。若启动异常，可运行 `reactpress doctor` 检查环境。
-
-**配合本主题使用**
-
-1. 克隆本仓库并安装依赖（`pnpm install`）。
-2. 运行 `reactpress dev --api-only` 仅启动 API（或启动完整栈后让主题指向 API）。
-3. 如有需要，将 [`.env.example`](./.env.example) 复制为 `.env` — 本地默认 API 为 `http://localhost:3002/api`。
-4. 在主题目录运行：
-
-```bash
-pnpm dev
-```
-
-浏览器打开 **http://localhost:3001**，主题将从 ReactPress API 加载真实内容。
-
-开发时连接远程 API：
-
-```bash
-pnpm dev -- --remote-origin api.yoursite.com
-```
-
-### 本地主题预览（Mock — 无需后台）
-
-若只需调整 UI、布局或样式，**无需**安装 ReactPress 或启动 API，可使用内置 Mock 服务：
-
-```bash
-git clone https://github.com/fecommunity/reactpress-theme-starter.git
-cd reactpress-theme-starter
-pnpm install
-pnpm dev:mock
-```
-
-浏览器打开 **http://localhost:3001**，示例数据来自 [`lib/mock-api/data.ts`](./lib/mock-api/data.ts)。与 [Vercel 在线演示](https://reactpress-theme-starter.vercel.app) 使用相同模式。
-
 ---
 
 ## 常用命令
 
-| 命令                 | 说明                                        |
-| :------------------- | :------------------------------------------ |
-| `pnpm dev`           | 主题开发服务器 + 真实 API（CLI 或远程）     |
-| `pnpm dev:mock`      | 主题开发服务器 + 内置 Mock API（无需后台）  |
-| `pnpm build:mock`    | Mock 数据生产构建（Vercel 演示 / 离线构建） |
-| `pnpm build`         | 生产构建（构建时需能访问 API）              |
-| `pnpm start`         | 启动生产服务，端口 **3001**                 |
-| `pnpm run check`     | ESLint + Prettier                           |
-| `pnpm run typecheck` | TypeScript 类型检查                         |
+| 命令                 | 说明                                      |
+| :------------------- | :---------------------------------------- |
+| `pnpm dev`           | 主题 + 真实 ReactPress API                |
+| `pnpm dev:mock`      | 主题 + 内置 Mock API（无需后台）          |
+| `pnpm build:mock`    | Mock 数据生产构建（Vercel 演示 / 离线）   |
+| `pnpm build`         | 生产构建（构建时需能访问 API）            |
+| `pnpm start`         | 生产服务，端口 **3001**                   |
+| `pnpm run check`     | ESLint + Prettier                         |
+| `pnpm run typecheck` | TypeScript 类型检查                       |
 
-全栈本地开发（访客站 + 管理后台 + API）请优先使用 ReactPress CLI 的 **`reactpress dev`** — 见 [快速开始](#快速开始)。
+完整栈（站点 + 后台 + API）请优先使用 CLI 的 `reactpress init` / `reactpress dev`。
 
 ---
 
 ## 环境变量
 
-使用 **`pnpm dev`** 对接真实 API 时，将 [`.env.example`](./.env.example) 复制为 `.env`。Mock 模式（`pnpm dev:mock`）与 ReactPress CLI 会自动处理大部分配置。
+使用 `pnpm dev` 对接真实 API 时，将 [`.env.example`](./.env.example) 复制为 `.env`。Mock 模式与 CLI 会处理大部分配置。
 
 | 变量                             | 说明                                   |
 | :------------------------------- | :------------------------------------- |
@@ -169,25 +208,17 @@ pnpm dev:mock
 
 ### 演示环境（Vercel）
 
-直接 Import 本仓库即可 — [`vercel.json`](./vercel.json) 已配置 `build:mock` 与 Mock 环境变量。
-
-<div align="center">
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/fecommunity/reactpress-theme-starter)
-
-</div>
-
-> [在线演示](https://reactpress-theme-starter.vercel.app) 运行于 Mock 模式，仅展示主题界面与示例数据。
+直接 Import 本仓库即可 — [`vercel.json`](./vercel.json) 使用 `build:mock`。[在线演示](https://reactpress-theme-starter.vercel.app) 运行于 Mock 模式（仅界面 + 示例数据）。
 
 ### 生产环境
 
-作为 Headless 前端部署，指向你的 ReactPress API：
+将 Headless 前端指向你的 ReactPress API：
 
 1. 配置 `REACTPRESS_API_URL`、`NEXT_PUBLIC_REACTPRESS_API_URL`、`CLIENT_SITE_URL`
-2. 构建命令使用 `pnpm build`（不要用 `build:mock`）
+2. 使用 `pnpm build` 构建（不要用 `build:mock`）
 3. 以 `pnpm start` 或平台 Next.js 运行时启动
 
-`pnpm build` 会在构建阶段预取页面数据，请确保构建时 API 可访问。
+`pnpm build` 会在构建阶段从 API 预取数据，请确保构建时可访问 API。
 
 ---
 
@@ -201,34 +232,57 @@ scripts/       开发、构建与冒烟测试脚本
 theme.json     主题清单（路由、外观 Schema）
 ```
 
-路由模板见 [`theme.json`](./theme.json)。外观配置（配色、Logo、导航）在 ReactPress 管理后台完成。
+路由模板见 [`theme.json`](./theme.json)。外观在 ReactPress 管理后台配置。
+
+---
+
+## 常见问题
+
+<details>
+<summary><strong>预览主题一定要装 ReactPress 吗？</strong></summary>
+
+不必。运行 `pnpm dev:mock` 即可用示例数据预览完整 UI。需要真实 CMS、后台与 API 时再安装 [ReactPress CLI](https://reactpress.cc/)。
+
+</details>
+
+<details>
+<summary><strong>和 WordPress / Ghost 主题有什么不同？</strong></summary>
+
+这是 **Headless 前端** — 内容在 ReactPress（REST API + 后台）。Next.js 主题单独部署并指向 API。详见 [ReactPress 文档](https://reactpress.cc/)。
+
+</details>
+
+<details>
+<summary><strong>可以 Fork 或自定义组件吗？</strong></summary>
+
+可以。MIT 许可。修改 `app/`、`components/`，或在 [`theme.json`](./theme.json) 声明路由。欢迎 PR — 见 [贡献指南](./CONTRIBUTING_zh.md)。
+
+</details>
+
+<details>
+<summary><strong>Bug 去哪里提？</strong></summary>
+
+主题 → [本仓库](https://github.com/reactpressjs/reactpress-theme-starter/issues)。核心（API、后台、CLI）→ [reactpressjs/reactpress](https://github.com/reactpressjs/reactpress/issues)。
+
+</details>
+
+---
+
+## 生态
+
+|                             |                                          |
+| :-------------------------- | :--------------------------------------- |
+| [ReactPress](https://github.com/reactpressjs/reactpress) | CMS、后台、API、CLI、插件与桌面端 |
+| [文档](https://reactpress.cc/) | 指南、API 与架构 |
+| [Toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) | `@fecommunity/reactpress-toolkit` |
+| [主题 Schema](./theme.manifest.schema.json) | 路由与外观清单 |
 
 ---
 
 ## 参与贡献
 
-|                                             |                          |
-| :------------------------------------------ | :----------------------- |
-| [贡献指南（中文）](./CONTRIBUTING_zh.md)    | 开发环境、约定与 PR 规范 |
-| [Contributing (English)](./CONTRIBUTING.md) | English guide            |
-| [行为准则](./CODE_OF_CONDUCT.md)            | 社区行为标准             |
-| [安全策略](./SECURITY.md)                   | 漏洞报告                 |
+欢迎 Issue 与 PR。见 [贡献指南（中文）](./CONTRIBUTING_zh.md) · [English](./CONTRIBUTING.md) · [行为准则](./CODE_OF_CONDUCT.md) · [安全策略](./SECURITY.md)。
 
----
+## 许可证
 
-## 相关链接
-
-|                 |                                                                                                  |
-| :-------------- | :----------------------------------------------------------------------------------------------- |
-| ReactPress 文档 | [reactpress.cc](https://reactpress.cc/)                                                          |
-| ReactPress 源码 | [github.com/fecommunity/reactpress](https://github.com/fecommunity/reactpress)                   |
-| Toolkit         | [@fecommunity/reactpress-toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) |
-| 主题 Schema     | [theme.manifest.schema.json](./theme.manifest.schema.json)                                       |
-
-<br />
-
-<div align="center">
-
-[MIT 许可证](./LICENSE) · © ReactPress / FECommunity
-
-</div>
+[MIT](./LICENSE) © reactpressjs

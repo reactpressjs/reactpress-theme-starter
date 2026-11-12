@@ -105,6 +105,12 @@
       return
     }
 
+    var config = window.reactpressBlog || {}
+    var i18n = config.i18n || {}
+    if (i18n.menuToggle) {
+      toggle.setAttribute('aria-label', i18n.menuToggle)
+    }
+
     toggle.addEventListener('click', function () {
       var open = header.classList.toggle('is-menu-open')
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false')
@@ -527,15 +533,19 @@
   }
 
   function initBackToTop() {
+    var config = window.reactpressBlog || {}
+    var i18n = config.i18n || {}
     var button = document.querySelector('.rp-back-to-top')
     if (!button) {
       button = document.createElement('button')
       button.type = 'button'
       button.className = 'rp-back-to-top'
-      button.setAttribute('aria-label', 'Back to top')
+      button.setAttribute('aria-label', i18n.backToTop || 'Back to top')
       button.innerHTML =
         '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5l7 7h-4v7H9v-7H5l7-7z" fill="currentColor"/></svg>'
       document.body.appendChild(button)
+    } else if (i18n.backToTop) {
+      button.setAttribute('aria-label', i18n.backToTop)
     }
 
     var ticking = false

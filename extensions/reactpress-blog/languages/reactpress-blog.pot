@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ReactPress Blog 1.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/fecommunity/reactpress-theme-starter/issues\n"
+"Report-Msgid-Bugs-To: https://github.com/reactpressjs/reactpress-theme-starter/issues\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"

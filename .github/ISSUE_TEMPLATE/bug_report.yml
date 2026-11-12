@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thanks for reporting. Please include enough detail so we can reproduce the issue.
-        For questions or setup help, use [GitHub Discussions](https://github.com/fecommunity/reactpress-theme-starter/discussions) instead.
+        For questions or setup help, use [GitHub Discussions](https://github.com/reactpressjs/reactpress-theme-starter/discussions) instead.
 
   - type: dropdown
     id: mode

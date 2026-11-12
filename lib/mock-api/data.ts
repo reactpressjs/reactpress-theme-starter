@@ -5,11 +5,11 @@ const daysAgo = (days: number) => {
   return date.toISOString()
 }
 
-const REACTPRESS_GITHUB = 'https://github.com/fecommunity/reactpress'
+const REACTPRESS_GITHUB = 'https://github.com/reactpressjs/reactpress'
 const REACTPRESS_SITE = 'https://reactpress.surge.sh/'
 const REACTPRESS_DEMO = 'https://reactpress-theme-starter.vercel.app'
 const REACTPRESS_NPM = 'https://www.npmjs.com/package/@fecommunity/reactpress'
-const THEME_STARTER_GITHUB = 'https://github.com/fecommunity/reactpress-theme-starter'
+const THEME_STARTER_GITHUB = 'https://github.com/reactpressjs/reactpress-theme-starter'
 
 const mockImages = {
   logo: '/logo-400.png',
@@ -178,7 +178,7 @@ const mockUrlConfigEn = [
         key: 'fecommunity',
         label: 'FECommunity',
         description: 'The open-source organization behind ReactPress on GitHub.',
-        url: 'https://github.com/fecommunity',
+        url: 'https://github.com/reactpressjs',
       },
     ],
   },
@@ -209,7 +209,7 @@ const mockUrlConfigEn = [
         key: 'theme-starter',
         label: 'Theme Starter',
         description: 'Official Next.js App Router theme starter for ReactPress visitor sites.',
-        url: 'https://github.com/fecommunity/reactpress-theme-starter',
+        url: 'https://github.com/reactpressjs/reactpress-theme-starter',
       },
     ],
   },
@@ -274,7 +274,7 @@ const mockUrlConfigZh = [
         key: 'fecommunity',
         label: 'FECommunity',
         description: 'GitHub 上的 ReactPress 开源组织。',
-        url: 'https://github.com/fecommunity',
+        url: 'https://github.com/reactpressjs',
       },
     ],
   },
@@ -305,7 +305,7 @@ const mockUrlConfigZh = [
         key: 'theme-starter',
         label: '主题模板',
         description: '官方 Next.js App Router 访客站主题 Starter。',
-        url: 'https://github.com/fecommunity/reactpress-theme-starter',
+        url: 'https://github.com/reactpressjs/reactpress-theme-starter',
       },
     ],
   },
@@ -344,7 +344,7 @@ export const mockSetting = {
     'ReactPress is a modern publishing platform for blogs, company sites, and content-driven products. Install the CLI once, run init and dev, and get a public site, admin console, and API.',
   seoKeyword: 'reactpress,cms,blog,nextjs,nestjs,headless,cli,mysql,vercel,open source,publishing',
   systemFooterInfo:
-    '<p>ReactPress — a modern publishing platform built with Next.js, NestJS, and Ant Design. <a href="https://github.com/fecommunity/reactpress" rel="noopener noreferrer">Star us on GitHub</a> · <a href="https://reactpress.surge.sh/" rel="noopener noreferrer">Official site</a></p>',
+    '<p>ReactPress — a modern publishing platform built with Next.js, NestJS, and Ant Design. <a href="https://github.com/reactpressjs/reactpress" rel="noopener noreferrer">Star us on GitHub</a> · <a href="https://reactpress.surge.sh/" rel="noopener noreferrer">Official site</a></p>',
   i18n: JSON.stringify({
     en: {
       suggestions: 'Suggestions',
@@ -657,7 +657,7 @@ ${mockFigure(mockImages.icon, 'Headless deployment — API and theme on separate
 </ul>
 <h3>Appearance</h3>
 <p>Light/dark mode and primary colors are driven by <code>theme.json</code> appearance settings (defaults: rose primary <code>#e11d48</code>, white / dark gray backgrounds) and applied at runtime via CSS variables.</p>
-<p>Repository: <a href="${THEME_STARTER_GITHUB}" rel="noopener noreferrer">github.com/fecommunity/reactpress-theme-starter</a> · Docs: <a href="${REACTPRESS_SITE}" rel="noopener noreferrer">reactpress.surge.sh</a></p>
+<p>Repository: <a href="${THEME_STARTER_GITHUB}" rel="noopener noreferrer">github.com/reactpressjs/reactpress-theme-starter</a> · Docs: <a href="${REACTPRESS_SITE}" rel="noopener noreferrer">reactpress.surge.sh</a></p>
 `.trim()
 
 const suggestionsHtml = `

@@ -1,6 +1,6 @@
 # ReactPress Blog
 
-**Version:** 1.3.7 · **Author:** [ReactPress](https://www.reactpress.cc/) · **License:** GPLv2 or later
+**Version:** 1.3.8 · **Author:** [ReactPress](https://www.reactpress.cc/) · **License:** GPLv2 or later
 
 A clean two-column blog block theme matching the ReactPress Theme Starter layout — hero carousel, category filter, article cards, and recommended sidebar.
 
@@ -11,11 +11,11 @@ WordPress.org–oriented Full Site Editing (block) theme port of the [ReactPress
 | | |
 | --- | --- |
 | Theme name | ReactPress Blog |
-| Version | 1.3.7 |
+| Version | 1.3.8 |
 | Author | [ReactPress](https://www.reactpress.cc/) |
 | Requires at least | WordPress 6.4 |
 | Requires PHP | 7.4 |
-| Tested up to | 6.7 |
+| Tested up to | 7.1 |
 | Text domain | `reactpress-blog` |
 
 ### Tags
@@ -80,7 +80,7 @@ Appearance → Customize → ReactPress Blog:
 ## Links
 
 - ReactPress: https://www.reactpress.cc/
-- Theme repository: https://github.com/fecommunity/reactpress-theme-starter
+- Theme repository: https://github.com/reactpressjs/reactpress-theme-starter
 - WordPress.org theme upload: https://wordpress.org/themes/upload/
 
 ## License

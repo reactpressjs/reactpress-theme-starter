@@ -1,6 +1,6 @@
 # Contributing to ReactPress Theme Starter
 
-Thank you for your interest in contributing. This repository is the official headless visitor theme for [ReactPress](https://github.com/fecommunity/reactpress).
+Thank you for your interest in contributing. This repository is the official headless visitor theme for [ReactPress](https://github.com/reactpressjs/reactpress).
 
 **简体中文：** [CONTRIBUTING_zh.md](./CONTRIBUTING_zh.md)
 
@@ -8,7 +8,7 @@ Thank you for your interest in contributing. This repository is the official hea
 
 ## Ways to Contribute
 
-- Report bugs or suggest features via [GitHub Issues](https://github.com/fecommunity/reactpress-theme-starter/issues)
+- Report bugs or suggest features via [GitHub Issues](https://github.com/reactpressjs/reactpress-theme-starter/issues)
 - Improve documentation (README, comments, mock data)
 - Fix bugs or enhance UI/UX in theme components
 - Extend mock API coverage for local development
@@ -27,7 +27,7 @@ Please open an issue before large changes (new routes, breaking API assumptions,
 ### Quick start (mock mode — no backend required)
 
 ```bash
-git clone https://github.com/fecommunity/reactpress-theme-starter.git
+git clone https://github.com/reactpressjs/reactpress-theme-starter.git
 cd reactpress-theme-starter
 pnpm install
 pnpm dev:mock
@@ -94,7 +94,7 @@ This project follows the [Contributor Covenant](./CODE_OF_CONDUCT.md). By partic
 
 ## Questions
 
-- [GitHub Discussions (Q&A)](https://github.com/fecommunity/reactpress-theme-starter/discussions/categories/q-a)
+- [GitHub Discussions (Q&A)](https://github.com/reactpressjs/reactpress-theme-starter/discussions/categories/q-a)
 - [ReactPress documentation](https://reactpress.surge.sh/)
-- [ReactPress repository](https://github.com/fecommunity/reactpress)
-- [Bug reports & features](https://github.com/fecommunity/reactpress-theme-starter/issues)
+- [ReactPress repository](https://github.com/reactpressjs/reactpress)
+- [Bug reports & features](https://github.com/reactpressjs/reactpress-theme-starter/issues)

@@ -1,4 +1,4 @@
-const REACTPRESS_GITHUB = 'https://github.com/fecommunity/reactpress'
+const REACTPRESS_GITHUB = 'https://github.com/reactpressjs/reactpress'
 const REACTPRESS_SITE = 'https://reactpress.surge.sh/'
 
 const suggestionsHtmlEn = `

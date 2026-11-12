@@ -10,9 +10,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'REACTPRESS_BLOG_VERSION', '1.3.7' );
-define( 'REACTPRESS_BLOG_VIEWS_KEY', 'reactpress_blog_views' );
-define( 'REACTPRESS_BLOG_SEARCH_REWRITE_FLAG', 'reactpress_blog_search_rewrite_v1' );
+define( 'REACTPRESS_BLOG_VERSION', '1.3.8' );
+define( 'REACTPRESS_BLOG_STATE_OPTION', 'reactpress_blog_state' );
+
+/**
+ * Read theme state option (single prefixed array).
+ *
+ * @since 1.3.8
+ * @return array<string, mixed>
+ */
+function reactpress_blog_get_state() {
+	$state = get_option( REACTPRESS_BLOG_STATE_OPTION, array() );
+	return is_array( $state ) ? $state : array();
+}
+
+/**
+ * Merge and persist theme state.
+ *
+ * @since 1.3.8
+ * @param array<string, mixed> $updates Keys to merge.
+ * @return void
+ */
+function reactpress_blog_update_state( array $updates ) {
+	update_option( REACTPRESS_BLOG_STATE_OPTION, array_merge( reactpress_blog_get_state(), $updates ), false );
+}
 
 /**
  * Theme setup.
@@ -61,37 +82,20 @@ add_action( 'init', 'reactpress_blog_register_empty_search_rewrite' );
  * @return void
  */
 function reactpress_blog_maybe_flush_search_rewrite() {
-	if ( get_option( REACTPRESS_BLOG_SEARCH_REWRITE_FLAG ) ) {
+	$state = reactpress_blog_get_state();
+	if ( ! empty( $state['search_rewrite_flushed'] ) || get_option( 'reactpress_blog_search_rewrite_v1' ) ) {
+		if ( empty( $state['search_rewrite_flushed'] ) ) {
+			reactpress_blog_update_state( array( 'search_rewrite_flushed' => 1 ) );
+			delete_option( 'reactpress_blog_search_rewrite_v1' );
+		}
 		return;
 	}
 
 	flush_rewrite_rules( false );
-	update_option( REACTPRESS_BLOG_SEARCH_REWRITE_FLAG, 1 );
+	reactpress_blog_update_state( array( 'search_rewrite_flushed' => 1 ) );
+	delete_option( 'reactpress_blog_search_rewrite_v1' );
 }
 add_action( 'init', 'reactpress_blog_maybe_flush_search_rewrite', 99 );
-
-/**
- * Flush rewrites when this theme is activated.
- *
- * @since 1.3.3
- * @return void
- */
-function reactpress_blog_after_switch_theme() {
-	flush_rewrite_rules( false );
-	update_option( REACTPRESS_BLOG_SEARCH_REWRITE_FLAG, 1 );
-}
-add_action( 'after_switch_theme', 'reactpress_blog_after_switch_theme' );
-
-/**
- * Clear rewrite flag when switching away so reactivation re-flushes.
- *
- * @since 1.3.3
- * @return void
- */
-function reactpress_blog_switch_theme() {
-	delete_option( REACTPRESS_BLOG_SEARCH_REWRITE_FLAG );
-}
-add_action( 'switch_theme', 'reactpress_blog_switch_theme' );
 
 /**
  * Fallback: map a missing "search" page request to an empty search query.
@@ -132,12 +136,12 @@ function reactpress_blog_empty_search_request( $query_vars ) {
 add_filter( 'request', 'reactpress_blog_empty_search_request' );
 
 /**
- * Front-end + Site Editor canvas assets.
+ * Theme styles for front end and editor canvas.
  *
  * @since 1.0.0
  * @return void
  */
-function reactpress_blog_enqueue_assets() {
+function reactpress_blog_enqueue_styles() {
 	wp_enqueue_style(
 		'reactpress-blog-style',
 		get_stylesheet_uri(),
@@ -157,6 +161,20 @@ function reactpress_blog_enqueue_assets() {
 		REACTPRESS_BLOG_VERSION
 	);
 
+	$custom_css = reactpress_blog_get_customizer_css();
+	if ( $custom_css ) {
+		wp_add_inline_style( 'reactpress-blog-theme', $custom_css );
+	}
+}
+add_action( 'enqueue_block_assets', 'reactpress_blog_enqueue_styles' );
+
+/**
+ * Front-end behavior script (carousel, theme toggle, infinite scroll).
+ *
+ * @since 1.3.8
+ * @return void
+ */
+function reactpress_blog_enqueue_scripts() {
 	wp_enqueue_script(
 		'reactpress-blog-theme',
 		get_template_directory_uri() . '/assets/js/theme.js',
@@ -184,26 +202,22 @@ function reactpress_blog_enqueue_assets() {
 			'perPage'  => $per_page,
 			'infinite' => (bool) get_theme_mod( 'reactpress_blog_infinite_scroll', true ),
 			'i18n'     => array(
-				'prev'         => __( 'Previous slide', 'reactpress-blog' ),
-				'next'         => __( 'Next slide', 'reactpress-blog' ),
-				'themeLight'   => __( 'Switch to light theme', 'reactpress-blog' ),
-				'themeDark'    => __( 'Switch to dark theme', 'reactpress-blog' ),
-				'search'       => __( 'Search', 'reactpress-blog' ),
-				'reading'      => __( 'reading', 'reactpress-blog' ),
-				'loading'      => __( 'Loading more…', 'reactpress-blog' ),
-				'loadMore'     => __( 'Load more', 'reactpress-blog' ),
-				'noMore'       => __( 'No more posts', 'reactpress-blog' ),
-				'loadError'    => __( 'Could not load more posts.', 'reactpress-blog' ),
+				'prev'       => __( 'Previous slide', 'reactpress-blog' ),
+				'next'       => __( 'Next slide', 'reactpress-blog' ),
+				'themeLight' => __( 'Switch to light theme', 'reactpress-blog' ),
+				'themeDark'  => __( 'Switch to dark theme', 'reactpress-blog' ),
+				'search'     => __( 'Search', 'reactpress-blog' ),
+				'menuToggle' => __( 'Toggle menu', 'reactpress-blog' ),
+				'backToTop'  => __( 'Back to top', 'reactpress-blog' ),
+				'loading'    => __( 'Loading more…', 'reactpress-blog' ),
+				'loadMore'   => __( 'Load more', 'reactpress-blog' ),
+				'noMore'     => __( 'No more posts', 'reactpress-blog' ),
+				'loadError'  => __( 'Could not load more posts.', 'reactpress-blog' ),
 			),
 		)
 	);
-
-	$custom_css = reactpress_blog_get_customizer_css();
-	if ( $custom_css ) {
-		wp_add_inline_style( 'reactpress-blog-theme', $custom_css );
-	}
 }
-add_action( 'enqueue_block_assets', 'reactpress_blog_enqueue_assets' );
+add_action( 'wp_enqueue_scripts', 'reactpress_blog_enqueue_scripts' );
 
 /**
  * Prevent dark-mode flash before main script runs.
@@ -266,6 +280,9 @@ function reactpress_blog_dynamic_slot_map() {
 /**
  * Replace empty core/group slots with theme presentation markup.
  *
+ * Only fills slots that have no inner blocks, so Site Editor content placed
+ * inside an `rp-dynamic--*` group is preserved.
+ *
  * @since 1.3.7
  * @param string $block_content Rendered block HTML.
  * @param array  $block         Parsed block.
@@ -278,6 +295,10 @@ function reactpress_blog_render_dynamic_slots( $block_content, $block ) {
 
 	$class_name = $block['attrs']['className'];
 	if ( false === strpos( $class_name, 'rp-dynamic--' ) ) {
+		return $block_content;
+	}
+
+	if ( ! empty( $block['innerBlocks'] ) ) {
 		return $block_content;
 	}
 
@@ -296,71 +317,6 @@ function reactpress_blog_render_dynamic_slots( $block_content, $block ) {
 	return $block_content;
 }
 add_filter( 'render_block_core/group', 'reactpress_blog_render_dynamic_slots', 10, 2 );
-
-/**
- * Drop Site Editor customizations that still contain legacy shortcodes / old pagination,
- * and reset reading templates so theme-file layout fixes are not masked by stale DB copies.
- *
- * @since 1.2.0
- * @return void
- */
-function reactpress_blog_migrate_shortcode_templates() {
-	$flag = 'reactpress_blog_migrated_' . REACTPRESS_BLOG_VERSION;
-	if ( get_option( $flag ) ) {
-		return;
-	}
-
-	$theme = get_stylesheet();
-	$query = new WP_Query(
-		array(
-			'post_type'      => array( 'wp_template', 'wp_template_part', 'wp_block' ),
-			'post_status'    => array( 'publish', 'draft', 'auto-draft', 'private' ),
-			'posts_per_page' => 100,
-			'no_found_rows'  => true,
-			'tax_query'      => array(
-				array(
-					'taxonomy' => 'wp_theme',
-					'field'    => 'name',
-					'terms'    => $theme,
-				),
-			),
-		)
-	);
-
-	$reset_slugs = array(
-		'front-page',
-		'home',
-		'index',
-		'single',
-		'page',
-		'page-no-sidebar',
-		'search',
-		'404',
-		'header',
-		'footer',
-		'sidebar',
-	);
-
-	foreach ( $query->posts as $post ) {
-		$content = (string) $post->post_content;
-		$slug    = (string) $post->post_name;
-		$should_reset = in_array( $slug, $reset_slugs, true );
-
-		if (
-			$should_reset
-			|| false !== strpos( $content, '[rp_' )
-			|| false !== strpos( $content, 'wp:shortcode' )
-			|| false !== strpos( $content, 'wp:reactpress-blog/' )
-			|| false !== strpos( $content, 'wp:query-pagination' )
-			|| false !== strpos( $content, 'enhancedPagination' )
-		) {
-			wp_delete_post( (int) $post->ID, true );
-		}
-	}
-
-	update_option( $flag, 1, false );
-}
-add_action( 'init', 'reactpress_blog_migrate_shortcode_templates', 20 );
 
 /**
  * Apply Customizer posts-per-page to the main public query.
@@ -454,7 +410,7 @@ function reactpress_blog_customize_register( $wp_customize ) {
 	$wp_customize->add_setting(
 		'reactpress_blog_github_url',
 		array(
-			'default'           => 'https://github.com/fecommunity/reactpress',
+			'default'           => '',
 			'sanitize_callback' => 'esc_url_raw',
 			'transport'         => 'refresh',
 		)
@@ -733,60 +689,6 @@ function reactpress_blog_tag_style_attr( $index ) {
 }
 
 /**
- * Compact view count label (1.2k / 1.2w).
- *
- * @since 1.1.0
- * @param int $views View count.
- * @return string
- */
-function reactpress_blog_format_views( $views ) {
-	$views = absint( $views );
-	if ( $views >= 10000 ) {
-		$value = $views / 10000;
-		$label = ( floor( $value ) === $value ) ? (string) (int) $value : number_format( $value, 1 );
-		return $label . 'w';
-	}
-	if ( $views >= 1000 ) {
-		$value = $views / 1000;
-		$label = ( floor( $value ) === $value ) ? (string) (int) $value : number_format( $value, 1 );
-		return $label . 'k';
-	}
-	return (string) $views;
-}
-
-/**
- * Get stored view count for a post.
- *
- * @since 1.1.0
- * @param int $post_id Post ID.
- * @return int
- */
-function reactpress_blog_get_views( $post_id ) {
-	return absint( get_post_meta( $post_id, REACTPRESS_BLOG_VIEWS_KEY, true ) );
-}
-
-/**
- * Increment views on singular posts.
- *
- * @since 1.1.0
- * @return void
- */
-function reactpress_blog_track_views() {
-	if ( is_admin() || ! is_singular( 'post' ) || is_preview() ) {
-		return;
-	}
-
-	$post_id = get_queried_object_id();
-	if ( ! $post_id ) {
-		return;
-	}
-
-	$views = reactpress_blog_get_views( $post_id );
-	update_post_meta( $post_id, REACTPRESS_BLOG_VIEWS_KEY, $views + 1 );
-}
-add_action( 'wp', 'reactpress_blog_track_views' );
-
-/**
  * Human-readable relative time for carousel captions.
  *
  * @since 1.1.0
@@ -882,7 +784,6 @@ function reactpress_blog_icon( $name ) {
 		'github'        => '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>',
 		'rss'           => '<svg viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M512 0C230.4 0 0 230.4 0 512s230.4 512 512 512 512-230.4 512-512S793.6 0 512 0z m-182.4 768C288 768 256 736 256 694.4s32-73.6 73.6-73.6 73.6 32 73.6 73.6-32 73.6-73.6 73.6z m185.6 0c0-144-115.2-259.2-259.2-259.2v-80c185.6 0 339.2 150.4 339.2 339.2h-80z m172.8 0c0-240-195.2-432-432-432V256c281.6 0 512 230.4 512 512h-80z"/></svg>',
 		'heart'         => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
-		'eye'           => '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>',
 		'clock'         => '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
 		'folder'        => '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>',
 		'tag'           => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>',
@@ -916,7 +817,7 @@ function reactpress_blog_block_post_id( $block = null ) {
  * @return string
  */
 function reactpress_blog_render_header_tools() {
-	$github    = trim( (string) get_theme_mod( 'reactpress_blog_github_url', 'https://github.com/fecommunity/reactpress' ) );
+	$github    = trim( (string) get_theme_mod( 'reactpress_blog_github_url', '' ) );
 	$show_auth = (bool) get_theme_mod( 'reactpress_blog_show_auth', true );
 	$login     = wp_login_url( home_url( '/' ) );
 	$reg       = get_option( 'users_can_register' ) ? wp_registration_url() : '';
@@ -1035,7 +936,6 @@ function reactpress_blog_render_carousel() {
 				<?php
 				$is_active = 0 === $index;
 				$thumb     = get_the_post_thumbnail_url( $post, 'large' );
-				$views     = reactpress_blog_get_views( $post->ID );
 				$time_ago  = reactpress_blog_time_ago( get_post_time( 'U', true, $post ) );
 				?>
 				<article class="rp-carousel__slide<?php echo $is_active ? ' is-active' : ''; ?>" data-slide="<?php echo esc_attr( (string) $index ); ?>" aria-hidden="<?php echo $is_active ? 'false' : 'true'; ?>">
@@ -1052,8 +952,6 @@ function reactpress_blog_render_carousel() {
 							<h2 class="rp-carousel__title"><?php echo esc_html( get_the_title( $post ) ); ?></h2>
 							<p class="rp-carousel__meta">
 								<span><?php echo esc_html( $time_ago ); ?></span>
-								<span aria-hidden="true">·</span>
-								<span><?php echo esc_html( reactpress_blog_format_views( max( $views, 1 ) ) . ' ' . __( 'reading', 'reactpress-blog' ) ); ?></span>
 							</p>
 						</div>
 					</a>
@@ -1181,14 +1079,14 @@ function reactpress_blog_render_about( $attributes = array() ) {
 	$site_title = get_bloginfo( 'name' );
 	$tagline    = trim( (string) get_bloginfo( 'description' ) );
 	$footer_html = trim( (string) get_theme_mod( 'reactpress_blog_footer_info', '' ) );
-	$github      = trim( (string) get_theme_mod( 'reactpress_blog_github_url', 'https://github.com/fecommunity/reactpress' ) );
+	$github      = trim( (string) get_theme_mod( 'reactpress_blog_github_url', '' ) );
 	$rss_url     = get_bloginfo( 'rss2_url' );
 	$year        = gmdate( 'Y' );
 
 	$fallback = sprintf(
 		/* translators: %s: site title */
 		__( '%s — Powered by WordPress', 'reactpress-blog' ),
-		$site_title ? $site_title : 'ReactPress'
+		$site_title ? $site_title : __( 'This site', 'reactpress-blog' )
 	);
 
 	ob_start();
@@ -1285,28 +1183,11 @@ function reactpress_blog_render_recommend() {
 			'post_status'         => 'publish',
 			'posts_per_page'      => 6,
 			'ignore_sticky_posts' => true,
-			'meta_key'            => REACTPRESS_BLOG_VIEWS_KEY,
-			'orderby'             => array(
-				'meta_value_num' => 'DESC',
-				'date'           => 'DESC',
-			),
+			'orderby'             => 'comment_count',
+			'order'               => 'DESC',
 			'no_found_rows'       => true,
 		)
 	);
-
-	if ( ! $query->have_posts() ) {
-		$query = new WP_Query(
-			array(
-				'post_type'           => 'post',
-				'post_status'         => 'publish',
-				'posts_per_page'      => 6,
-				'ignore_sticky_posts' => true,
-				'orderby'             => 'date',
-				'order'               => 'DESC',
-				'no_found_rows'       => true,
-			)
-		);
-	}
 
 	ob_start();
 	?>
@@ -1323,19 +1204,11 @@ function reactpress_blog_render_recommend() {
 					while ( $query->have_posts() ) :
 						$query->the_post();
 						$rank++;
-						$views = reactpress_blog_get_views( get_the_ID() );
-						if ( $views < 1 ) {
-							$views = max( 1, (int) get_comments_number() * 12 + ( 7 - min( 6, $rank ) ) * 37 );
-						}
 						?>
 						<li class="rp-recommend-item">
 							<a class="rp-recommend-link" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
 								<span class="rp-recommend-rank" data-rank="<?php echo esc_attr( (string) $rank ); ?>" aria-hidden="true"><?php echo esc_html( (string) $rank ); ?></span>
 								<span class="rp-recommend-title"><?php the_title(); ?></span>
-								<span class="rp-recommend-views">
-									<?php echo reactpress_blog_icon( 'eye' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-									<span><?php echo esc_html( reactpress_blog_format_views( $views ) ); ?></span>
-								</span>
 							</a>
 						</li>
 					<?php endwhile; ?>
@@ -1417,7 +1290,7 @@ function reactpress_blog_render_tags() {
 }
 
 /**
- * Card meta stats (likes · views) for post templates.
+ * Card meta stats (comment count) for post templates.
  *
  * @since 1.2.0
  * @return string
@@ -1428,20 +1301,12 @@ function reactpress_blog_render_card_stats() {
 		return '';
 	}
 
-	$views    = reactpress_blog_get_views( $post_id );
 	$comments = (int) get_comments_number( $post_id );
-	$likes    = max( 0, $comments );
-
-	if ( $views < 1 ) {
-		$views = max( 1, $comments * 8 + 12 );
-	}
 
 	return sprintf(
-		'<span class="rp-card-stats"><span class="rp-card-stats__item">%1$s<span>%2$s</span></span><span class="rp-card-stats__sep" aria-hidden="true">·</span><span class="rp-card-stats__item">%3$s<span>%4$s</span></span></span>',
+		'<span class="rp-card-stats"><span class="rp-card-stats__item">%1$s<span>%2$s</span></span></span>',
 		reactpress_blog_icon( 'heart' ),
-		esc_html( (string) $likes ),
-		reactpress_blog_icon( 'eye' ),
-		esc_html( reactpress_blog_format_views( $views ) )
+		esc_html( (string) $comments )
 	);
 }
 
@@ -1578,20 +1443,14 @@ function reactpress_blog_render_post_card( $post ) {
 		return '';
 	}
 
-	$post_id  = (int) $post->ID;
+	$post_id   = (int) $post->ID;
 	$permalink = get_permalink( $post );
 	$title     = get_the_title( $post );
 	$excerpt   = get_the_excerpt( $post );
 	$date      = get_the_date( 'Y-m-d', $post );
 	$thumb     = get_the_post_thumbnail_url( $post, 'medium' );
 	$logo      = get_template_directory_uri() . '/assets/images/logo.svg';
-	$views     = reactpress_blog_get_views( $post_id );
 	$comments  = (int) get_comments_number( $post_id );
-	$likes     = max( 0, $comments );
-
-	if ( $views < 1 ) {
-		$views = max( 1, $comments * 8 + 12 );
-	}
 
 	$categories = get_the_category( $post_id );
 	$cat_html   = '';
@@ -1633,11 +1492,9 @@ function reactpress_blog_render_post_card( $post ) {
 		);
 
 	$stats = sprintf(
-		'<span class="rp-card-stats"><span class="rp-card-stats__item">%1$s<span>%2$s</span></span><span class="rp-card-stats__sep" aria-hidden="true">·</span><span class="rp-card-stats__item">%3$s<span>%4$s</span></span></span>',
+		'<span class="rp-card-stats"><span class="rp-card-stats__item">%1$s<span>%2$s</span></span></span>',
 		reactpress_blog_icon( 'heart' ),
-		esc_html( (string) $likes ),
-		reactpress_blog_icon( 'eye' ),
-		esc_html( reactpress_blog_format_views( $views ) )
+		esc_html( (string) $comments )
 	);
 
 	return sprintf(

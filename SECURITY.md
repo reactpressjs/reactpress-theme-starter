@@ -16,8 +16,8 @@ Security fixes are applied to the latest release on the default branch (`master`
 
 If you discover a security issue in this theme starter, report it privately:
 
-1. Open a **[GitHub Security Advisory](https://github.com/fecommunity/reactpress-theme-starter/security/advisories/new)** on this repository, **or**
-2. Report via the [ReactPress main repository](https://github.com/fecommunity/reactpress/security/advisories/new) if the issue affects the broader platform or toolkit.
+1. Open a **[GitHub Security Advisory](https://github.com/reactpressjs/reactpress-theme-starter/security/advisories/new)** on this repository, **or**
+2. Report via the [ReactPress main repository](https://github.com/reactpressjs/reactpress/security/advisories/new) if the issue affects the broader platform or toolkit.
 
 Include as much detail as possible:
 
@@ -32,7 +32,7 @@ We aim to acknowledge reports within **5 business days** and will coordinate dis
 
 ## Scope
 
-This policy covers **this repository** (the Next.js theme frontend). Issues in the ReactPress API, admin console, or `@fecommunity/reactpress-toolkit` should be reported to the [ReactPress project](https://github.com/fecommunity/reactpress).
+This policy covers **this repository** (the Next.js theme frontend). Issues in the ReactPress API, admin console, or `@fecommunity/reactpress-toolkit` should be reported to the [ReactPress project](https://github.com/reactpressjs/reactpress).
 
 ### In scope examples
 

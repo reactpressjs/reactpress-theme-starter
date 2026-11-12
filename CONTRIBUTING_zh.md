@@ -1,6 +1,6 @@
 # 参与贡献
 
-感谢你对 ReactPress Theme Starter 的关注。本仓库是 [ReactPress](https://github.com/fecommunity/reactpress) 官方 Headless 访客站主题。
+感谢你对 ReactPress Theme Starter 的关注。本仓库是 [ReactPress](https://github.com/reactpressjs/reactpress) 官方 Headless 访客站主题。
 
 **English:** [CONTRIBUTING.md](./CONTRIBUTING.md)
 
@@ -8,7 +8,7 @@
 
 ## 贡献方式
 
-- 通过 [GitHub Issues](https://github.com/fecommunity/reactpress-theme-starter/issues) 报告 Bug 或提出功能建议
+- 通过 [GitHub Issues](https://github.com/reactpressjs/reactpress-theme-starter/issues) 报告 Bug 或提出功能建议
 - 改进文档（README、注释、Mock 数据）
 - 修复 Bug 或优化主题组件 UI/UX
 - 扩展 Mock API，便于本地开发
@@ -27,7 +27,7 @@
 ### 快速开始（Mock 模式 — 无需后台）
 
 ```bash
-git clone https://github.com/fecommunity/reactpress-theme-starter.git
+git clone https://github.com/reactpressjs/reactpress-theme-starter.git
 cd reactpress-theme-starter
 pnpm install
 pnpm dev:mock
@@ -95,5 +95,5 @@ node scripts/smoke-pages.mjs http://127.0.0.1:3001
 ## 获取帮助
 
 - [ReactPress 文档](https://reactpress.surge.sh/)
-- [ReactPress 源码](https://github.com/fecommunity/reactpress)
-- [GitHub Issues](https://github.com/fecommunity/reactpress-theme-starter/issues)
+- [ReactPress 源码](https://github.com/reactpressjs/reactpress)
+- [GitHub Issues](https://github.com/reactpressjs/reactpress-theme-starter/issues)

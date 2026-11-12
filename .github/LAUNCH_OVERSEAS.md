@@ -18,7 +18,7 @@ Do these in the repo UI before launch day:
   - Categories: **Announcements**, **Q&A**, **Showcase**, **Ideas**
 - [ ] **Pin** the Announcement discussion after posting
 - [ ] **Release**: create tag `v1.0.0` from current `master`
-- [ ] **Main repo link**: add theme link in [fecommunity/reactpress](https://github.com/fecommunity/reactpress) README (Official Theme section)
+- [ ] **Main repo link**: add theme link in [reactpressjs/reactpress](https://github.com/reactpressjs/reactpress) README (Official Theme section)
 - [ ] **Vercel demo**: confirm https://reactpress-theme-starter.vercel.app loads < 3s
 
 ---
@@ -48,7 +48,7 @@ Best Show HN window: **Tuesday–Thursday, 8–10 AM US Eastern**.
 ````markdown
 ## ReactPress Theme Starter v1.0.0
 
-The official public-facing theme for [ReactPress](https://github.com/fecommunity/reactpress) — a headless blog/CMS stack with a Next.js frontend.
+The official public-facing theme for [ReactPress](https://github.com/reactpressjs/reactpress) — a headless blog/CMS stack with a Next.js frontend.
 
 ### Highlights
 
@@ -56,12 +56,12 @@ The official public-facing theme for [ReactPress](https://github.com/fecommunity
 - **Try without a backend:** `pnpm dev:mock` — full UI with sample data in under a minute
 - **Full stack via CLI:** `reactpress init && reactpress dev` — site, admin, and API
 - Articles, archives, search, knowledge base, comments, RSS/sitemap, light/dark mode
-- One-click [Vercel deploy](https://vercel.com/new/clone?repository-url=https://github.com/fecommunity/reactpress-theme-starter) (mock demo)
+- One-click [Vercel deploy](https://vercel.com/new/clone?repository-url=https://github.com/reactpressjs/reactpress-theme-starter) (mock demo)
 
 ### Quick start
 
 ```bash
-git clone https://github.com/fecommunity/reactpress-theme-starter.git
+git clone https://github.com/reactpressjs/reactpress-theme-starter.git
 cd reactpress-theme-starter
 pnpm install
 pnpm dev:mock
@@ -96,7 +96,7 @@ Most blog starters give you pages and components, but you still need to build or
 ### Try it in 60 seconds (no backend)
 
 ```bash
-git clone https://github.com/fecommunity/reactpress-theme-starter.git
+git clone https://github.com/reactpressjs/reactpress-theme-starter.git
 cd reactpress-theme-starter && pnpm install && pnpm dev:mock
 ````
 
@@ -125,7 +125,7 @@ Then clone this theme and run `pnpm dev` against the local API.
 - ⭐ Star the repo if it helps you
 - [Q&A](../../discussions/categories/q-a) — setup help
 - [Showcase](../../discussions/categories/showcase) — sites built with this theme
-- [Good first issues](https://github.com/fecommunity/reactpress-theme-starter/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) — docs, mock data, UI polish
+- [Good first issues](https://github.com/reactpressjs/reactpress-theme-starter/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) — docs, mock data, UI polish
 
 Questions welcome — we're watching this thread.
 
@@ -137,7 +137,7 @@ Questions welcome — we're watching this thread.
 
 **Title:** `Show HN: ReactPress Theme Starter – Next.js 15 headless blog theme (runs without backend)`
 
-**URL:** `https://github.com/fecommunity/reactpress-theme-starter`
+**URL:** `https://github.com/reactpressjs/reactpress-theme-starter`
 
 **First comment (post immediately after submit):**
 
@@ -150,7 +150,7 @@ Two ways to try it:
 2. **Local mock mode** — full UI with sample data, no CMS required:
 
 ```bash
-git clone https://github.com/fecommunity/reactpress-theme-starter.git
+git clone https://github.com/reactpressjs/reactpress-theme-starter.git
 cd reactpress-theme-starter && pnpm install && pnpm dev:mock
 ````
 
@@ -184,7 +184,7 @@ Try it WITHOUT a backend:
 pnpm dev:mock → http://localhost:3001
 
 ⭐ + demo ↓
-https://github.com/fecommunity/reactpress-theme-starter
+https://github.com/reactpressjs/reactpress-theme-starter
 
 ```
 
@@ -234,7 +234,7 @@ Docs: https://reactpress.surge.sh/
 ```markdown
 Hey r/nextjs — we open-sourced the official theme for ReactPress, a headless blog/CMS stack.
 
-**Repo:** https://github.com/fecommunity/reactpress-theme-starter
+**Repo:** https://github.com/reactpressjs/reactpress-theme-starter
 **Demo:** https://reactpress-theme-starter.vercel.app
 
 Stack: Next.js 15, React 19, Tailwind 4, TypeScript.
@@ -274,7 +274,7 @@ Same body as above; emphasize headless architecture and mock mode.
 **Closing CTA:**
 
 ```markdown
-⭐ Star the repo: https://github.com/fecommunity/reactpress-theme-starter  
+⭐ Star the repo: https://github.com/reactpressjs/reactpress-theme-starter  
 💬 Questions: GitHub Discussions  
 🌐 Demo: https://reactpress-theme-starter.vercel.app
 ```
@@ -316,7 +316,7 @@ We open-sourced ReactPress Theme Starter — the official Next.js 15 frontend fo
 
 Hook for readers: `pnpm dev:mock` runs the full theme with sample data — no CMS install — which lowers the barrier for evaluating or forking the theme.
 
-- Repo: https://github.com/fecommunity/reactpress-theme-starter
+- Repo: https://github.com/reactpressjs/reactpress-theme-starter
 - Demo: https://reactpress-theme-starter.vercel.app
 - Stack: Next.js 15, React 19, Tailwind 4
 
@@ -349,7 +349,7 @@ Hi [Name] — we're launching the official ReactPress Next.js theme on [date].
 
 You [starred ReactPress / work with Next.js / built a blog recently] — would love your take on the mock-mode preview flow:
 
-https://github.com/fecommunity/reactpress-theme-starter
+https://github.com/reactpressjs/reactpress-theme-starter
 
 No pressure to star; honest feedback on README or dev:mock UX is super valuable. We're posting Show HN on [date] if you'd like to follow along.
 ```

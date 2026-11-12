@@ -13,7 +13,7 @@ export async function GET() {
 - [Archives](${siteUrl}/archives): Browse all published articles
 - [Search](${siteUrl}/search): Search ReactPress documentation articles
 - [Tags](${siteUrl}/tags): Browse articles by tag
-- [GitHub](https://github.com/fecommunity/reactpress): Official open-source repository
+- [GitHub](https://github.com/reactpressjs/reactpress): Official open-source repository
 - [Official Site](https://reactpress.surge.sh/): Product overview and documentation
 `
 

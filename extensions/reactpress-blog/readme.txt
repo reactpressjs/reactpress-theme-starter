@@ -1,12 +1,12 @@
 === ReactPress Blog ===
 Contributors: reactpress
 Requires at least: 6.4
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Tags: blog, two-columns, custom-colors, custom-logo, custom-menu, featured-images, full-site-editing, block-patterns, sticky-post, threaded-comments, translation-ready, wide-blocks, style-variations
+Tags: blog, two-columns, custom-colors, custom-logo, custom-menu, featured-images, full-site-editing, block-patterns, block-styles, sticky-post, threaded-comments, translation-ready, wide-blocks, style-variations
 
 A clean two-column blog block theme matching the ReactPress Theme Starter layout — hero carousel, category filter, article cards, and recommended sidebar.
 
@@ -58,6 +58,16 @@ Yes. Use Appearance → Customize → ReactPress Blog → Colors, or Appearance 
 The home and archive feeds load the next page of posts automatically as you scroll. Turn it off under Appearance → Customize → ReactPress Blog → Layout & Feed to restore classic pagination.
 
 == Changelog ==
+
+= 1.3.8 =
+* Remove post view counter, view labels, and views-based recommended sort (plugin territory).
+* Default GitHub Customizer URL to empty so the icon only appears when a site owner sets their own link.
+* Move empty-search rewrite flush to an init check; no longer update options on theme switch.
+* Align Tags in readme.txt with style.css (add block-styles).
+* Remove automatic Site Editor template deletion on upgrade (never wipe user customizations).
+* Store theme flags in one reactpress_blog_state option; load front JS only via wp_enqueue_scripts.
+* Fix 404 “Back to home” for subdirectory installs; translate 404/menu/back-to-top strings.
+* Bump Tested up to: 7.1.
 
 = 1.3.7 =
 * Remove custom block registration (plugin territory); render theme UI via core/group presentation slots.
@@ -115,6 +125,11 @@ The home and archive feeds load the next page of posts automatically as you scro
 
 ReactPress Blog WordPress Theme, Copyright 2024–2026 ReactPress / FECommunity
 ReactPress Blog is distributed under the terms of the GNU GPL v2 or later.
+
+The ReactPress name, logo, and related branding used in this theme are owned by
+the theme author (ReactPress / FECommunity) and are included here with that
+owner's permission. This theme is an official companion to the ReactPress
+project at https://www.reactpress.cc/ and https://github.com/reactpressjs/reactpress-theme-starter.
 
 This theme ships no bundled third-party fonts or icon libraries.
 

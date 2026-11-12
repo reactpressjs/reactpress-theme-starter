@@ -1360,18 +1360,6 @@ body.dark .rp-widget-panel {
 	color: var(--rp-primary);
 }
 
-.rp-recommend-views {
-	display: inline-flex;
-	flex-shrink: 0;
-	align-items: center;
-	justify-content: flex-end;
-	gap: 0.25rem;
-	min-width: 2.625rem;
-	color: color-mix(in srgb, var(--rp-text-second) 68%, transparent);
-	font-size: 0.6875rem;
-	font-variant-numeric: tabular-nums;
-}
-
 .rp-sidebar-widget__tags-list {
 	display: flex;
 	flex-wrap: wrap;
