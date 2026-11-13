@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'REACTPRESS_BLOG_VERSION', '1.3.10' );
+define( 'REACTPRESS_BLOG_VERSION', '1.3.11' );
 define( 'REACTPRESS_BLOG_DIR', get_template_directory() );
 define( 'REACTPRESS_BLOG_URI', get_template_directory_uri() );
 define( 'REACTPRESS_BLOG_STATE_OPTION', 'reactpress_blog_state' );

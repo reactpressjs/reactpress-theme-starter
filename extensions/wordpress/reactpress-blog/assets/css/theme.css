@@ -1843,6 +1843,29 @@ body.dark .rp-widget-panel {
 	min-width: 0;
 }
 
+/* Fallback when the comments group shell is left with no markup. */
+.rp-comments:empty {
+	display: none;
+}
+
+.rp-comments .rp-comment-status {
+	margin: 0 0 1rem;
+	padding: 0.65rem 0.85rem;
+	border-radius: 8px;
+	background: color-mix(in srgb, var(--rp-primary) 12%, var(--rp-bg-box));
+	color: var(--rp-text);
+	font-size: 0.875rem;
+	line-height: 1.4;
+}
+
+.rp-comments .rp-comment-status.is-success {
+	background: color-mix(in srgb, #16a34a 14%, var(--rp-bg-box));
+}
+
+.rp-comments .rp-comment-status.is-error {
+	background: color-mix(in srgb, #dc2626 14%, var(--rp-bg-box));
+}
+
 @media (min-width: 782px) {
 	.rp-comments {
 		padding: 1.75rem 2.5rem 2rem;

@@ -44,6 +44,35 @@ function reactpress_blog_suppress_embedded_comments( $block_content, $block ) {
 add_filter( 'render_block', 'reactpress_blog_suppress_embedded_comments', 5, 2 );
 
 /**
+ * Drop the comments panel shell when core renders nothing inside it.
+ *
+ * Closed posts with zero comments leave an empty `.rp-comments` group that
+ * still has padding/background, which reads as a blank placeholder.
+ *
+ * @since 1.3.11
+ * @param string $block_content Rendered HTML.
+ * @param array  $block         Parsed block.
+ * @return string
+ */
+function reactpress_blog_hide_empty_comments_panel( $block_content, $block ) {
+	if ( empty( $block['attrs']['className'] ) || ! is_string( $block['attrs']['className'] ) ) {
+		return $block_content;
+	}
+
+	if ( false === strpos( $block['attrs']['className'], 'rp-comments' ) ) {
+		return $block_content;
+	}
+
+	$plain = trim( wp_strip_all_tags( $block_content ) );
+	if ( '' === $plain ) {
+		return '';
+	}
+
+	return $block_content;
+}
+add_filter( 'render_block_core/group', 'reactpress_blog_hide_empty_comments_panel', 20, 2 );
+
+/**
  * Colorize category term links inside post cards.
  *
  * @since 1.1.0

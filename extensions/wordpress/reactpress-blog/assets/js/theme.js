@@ -680,7 +680,153 @@
     }
   }
 
-  function initCommentSubmitLoading() {
+  function getCommentSubmitButton(form) {
+    return (
+      form.querySelector('.form-submit input[type="submit"]') ||
+      form.querySelector('.form-submit button[type="submit"]') ||
+      form.querySelector('input[type="submit"]') ||
+      form.querySelector('button[type="submit"]')
+    )
+  }
+
+  function setCommentSubmitLoading(submit, postingLabel) {
+    if (!submit) {
+      return
+    }
+
+    submit.classList.add('is-loading')
+    submit.disabled = true
+    submit.setAttribute('aria-busy', 'true')
+
+    var tag = (submit.tagName || '').toLowerCase()
+    if (tag === 'button') {
+      submit.dataset.rpOriginalHtml = submit.innerHTML
+      submit.innerHTML =
+        '<span class="rp-comment-submit-spinner" aria-hidden="true"></span>' +
+        '<span>' +
+        postingLabel +
+        '</span>'
+      return
+    }
+
+    if (!submit.dataset.rpOriginalValue) {
+      submit.dataset.rpOriginalValue = submit.value || ''
+    }
+    submit.value = postingLabel
+    if (submit.parentNode && !submit.parentNode.querySelector('.rp-comment-submit-spinner')) {
+      var spinner = document.createElement('span')
+      spinner.className = 'rp-comment-submit-spinner'
+      spinner.setAttribute('aria-hidden', 'true')
+      submit.parentNode.insertBefore(spinner, submit)
+      submit.parentNode.classList.add('is-loading')
+    }
+  }
+
+  function resetCommentSubmit(submit) {
+    if (!submit) {
+      return
+    }
+
+    submit.classList.remove('is-loading')
+    submit.disabled = false
+    submit.removeAttribute('aria-busy')
+
+    var tag = (submit.tagName || '').toLowerCase()
+    if (tag === 'button' && submit.dataset.rpOriginalHtml != null) {
+      submit.innerHTML = submit.dataset.rpOriginalHtml
+    } else if (submit.dataset.rpOriginalValue != null) {
+      submit.value = submit.dataset.rpOriginalValue
+    }
+
+    if (submit.parentNode) {
+      submit.parentNode.classList.remove('is-loading')
+      var spinner = submit.parentNode.querySelector(':scope > .rp-comment-submit-spinner')
+      if (spinner && tag !== 'button') {
+        spinner.remove()
+      }
+    }
+  }
+
+  function ensureCommentStatus(root) {
+    if (!root) {
+      return null
+    }
+    var status = root.querySelector('[data-rp-comment-status]')
+    if (status) {
+      return status
+    }
+    status = document.createElement('div')
+    status.className = 'rp-comment-status'
+    status.setAttribute('data-rp-comment-status', '1')
+    status.setAttribute('role', 'status')
+    status.setAttribute('aria-live', 'polite')
+    status.hidden = true
+    root.insertBefore(status, root.firstChild)
+    return status
+  }
+
+  function showCommentStatus(root, message, tone) {
+    var status = ensureCommentStatus(root)
+    if (!status) {
+      return
+    }
+    status.hidden = !message
+    status.textContent = message || ''
+    status.classList.toggle('is-error', tone === 'error')
+    status.classList.toggle('is-success', tone === 'success')
+  }
+
+  function extractWpDieMessage(doc) {
+    if (!doc) {
+      return ''
+    }
+    var node =
+      doc.querySelector('.wp-die-message') ||
+      doc.querySelector('#error-page p') ||
+      doc.querySelector('body p')
+    return node ? String(node.textContent || '').replace(/\s+/g, ' ').trim() : ''
+  }
+
+  function replaceCommentsPanel(html, responseUrl) {
+    var doc = new DOMParser().parseFromString(html, 'text/html')
+    var next = doc.querySelector('.rp-comments')
+    var current = document.querySelector('.rp-comments')
+    if (!next || !current) {
+      var dieMessage = extractWpDieMessage(doc)
+      throw new Error(dieMessage || 'comment-panel')
+    }
+
+    var wrap = document.createElement('div')
+    wrap.innerHTML = next.outerHTML
+    var replacement = wrap.firstElementChild
+    if (!replacement) {
+      throw new Error('comment-panel')
+    }
+
+    current.replaceWith(replacement)
+    initCommentAjax()
+
+    var targetHash = ''
+    try {
+      targetHash = new URL(responseUrl || window.location.href, window.location.href).hash || ''
+    } catch (err) {
+      targetHash = ''
+    }
+
+    if (targetHash.indexOf('#comment-') === 0) {
+      var anchor = document.querySelector(targetHash)
+      if (anchor && typeof anchor.scrollIntoView === 'function') {
+        anchor.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+
+    return {
+      root: replacement,
+      awaitingModeration: /[?&]unapproved=/.test(responseUrl || ''),
+    }
+  }
+
+  function initCommentAjax() {
     var config = getConfig()
     var i18n = config.i18n || {}
     var postingLabel = i18n.postingComment || 'Posting…'
@@ -691,49 +837,72 @@
       }
       form.dataset.rpCommentReady = '1'
 
-      form.addEventListener('submit', function () {
+      form.addEventListener('submit', function (event) {
         if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
           return
         }
 
-        var submit =
-          form.querySelector('.form-submit input[type="submit"]') ||
-          form.querySelector('.form-submit button[type="submit"]') ||
-          form.querySelector('input[type="submit"]') ||
-          form.querySelector('button[type="submit"]')
-
+        var submit = getCommentSubmitButton(form)
         if (!submit || submit.disabled || submit.classList.contains('is-loading')) {
+          event.preventDefault()
           return
         }
 
-        submit.classList.add('is-loading')
-        submit.disabled = true
-        submit.setAttribute('aria-busy', 'true')
-
-        var tag = (submit.tagName || '').toLowerCase()
-        if (tag === 'button') {
-          submit.dataset.rpOriginalHtml = submit.innerHTML
-          submit.innerHTML =
-            '<span class="rp-comment-submit-spinner" aria-hidden="true"></span>' +
-            '<span>' +
-            postingLabel +
-            '</span>'
-        } else {
-          if (!submit.dataset.rpOriginalValue) {
-            submit.dataset.rpOriginalValue = submit.value || ''
-          }
-          submit.value = postingLabel
-          if (
-            submit.parentNode &&
-            !submit.parentNode.querySelector('.rp-comment-submit-spinner')
-          ) {
-            var spinner = document.createElement('span')
-            spinner.className = 'rp-comment-submit-spinner'
-            spinner.setAttribute('aria-hidden', 'true')
-            submit.parentNode.insertBefore(spinner, submit)
-            submit.parentNode.classList.add('is-loading')
-          }
+        // Progressive enhancement: fall back to native submit when fetch is unavailable.
+        if (typeof window.fetch !== 'function' || typeof window.DOMParser !== 'function') {
+          setCommentSubmitLoading(submit, postingLabel)
+          return
         }
+
+        event.preventDefault()
+        setCommentSubmitLoading(submit, postingLabel)
+
+        var panel = form.closest('.rp-comments')
+        showCommentStatus(panel, '', '')
+
+        var action = form.getAttribute('action') || '/wp-comments-post.php'
+        var formData = new FormData(form)
+
+        fetch(action, {
+          method: 'POST',
+          body: formData,
+          credentials: 'same-origin',
+          redirect: 'follow',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        })
+          .then(function (response) {
+            return response.text().then(function (text) {
+              return {
+                ok: response.ok,
+                url: response.url || '',
+                text: text,
+              }
+            })
+          })
+          .then(function (result) {
+            if (!result.ok) {
+              var failDoc = new DOMParser().parseFromString(result.text || '', 'text/html')
+              throw new Error(
+                extractWpDieMessage(failDoc) || i18n.commentError || 'Could not post your comment.'
+              )
+            }
+
+            var swapped = replaceCommentsPanel(result.text, result.url)
+            var message = swapped.awaitingModeration
+              ? i18n.commentModeration || 'Your comment is awaiting moderation.'
+              : i18n.commentPosted || 'Comment posted.'
+            showCommentStatus(swapped.root, message, 'success')
+          })
+          .catch(function (error) {
+            resetCommentSubmit(submit)
+            showCommentStatus(
+              panel,
+              (error && error.message) || i18n.commentError || 'Could not post your comment.',
+              'error'
+            )
+          })
       })
     })
   }
@@ -873,7 +1042,7 @@
     initTagClouds()
     initBackToTop()
     initInfiniteScroll()
-    initCommentSubmitLoading()
+    initCommentAjax()
     refreshFooterPlacement()
   })
 })()
