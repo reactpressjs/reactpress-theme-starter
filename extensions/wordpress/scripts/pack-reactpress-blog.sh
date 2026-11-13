@@ -3,11 +3,12 @@
 # Kept outside the theme folder so Theme Check never finds a .sh in the package.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
-THEME_DIR="$ROOT/reactpress-blog"
-REPO_ROOT="$(cd "$ROOT/.." && pwd)"
-DIST="$REPO_ROOT/dist"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLATFORM_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 THEME_NAME="reactpress-blog"
+THEME_DIR="$PLATFORM_DIR/$THEME_NAME"
+REPO_ROOT="$(cd "$PLATFORM_DIR/../.." && pwd)"
+DIST="$REPO_ROOT/dist"
 ZIP="$DIST/${THEME_NAME}.zip"
 
 if [[ ! -d "$THEME_DIR" ]]; then
@@ -18,9 +19,9 @@ fi
 mkdir -p "$DIST"
 rm -f "$ZIP"
 
-# Zip from parent so the archive root is reactpress-blog/
+# Zip from platform dir so the archive root is reactpress-blog/
 (
-	cd "$ROOT"
+	cd "$PLATFORM_DIR"
 	zip -r "$ZIP" "$THEME_NAME" \
 		-x "${THEME_NAME}/.git/*" \
 		-x "${THEME_NAME}/.DS_Store" \
@@ -32,12 +33,17 @@ rm -f "$ZIP"
 )
 
 echo "Created: $ZIP"
-unzip -l "$ZIP" | head -n 40
+LISTING="$(unzip -l "$ZIP")"
+echo "$LISTING" | head -n 40
 echo
 echo "Sanity checks:"
-if unzip -l "$ZIP" | grep -E '\.sh$|blocks-editor\.js|bin/' >/dev/null; then
+if echo "$LISTING" | grep -E '\.sh$|blocks-editor\.js|/bin/' >/dev/null; then
 	echo "ERROR: package still contains shell scripts or excluded paths" >&2
-	unzip -l "$ZIP" | grep -E '\.sh$|blocks-editor\.js|bin/' || true
+	echo "$LISTING" | grep -E '\.sh$|blocks-editor\.js|/bin/' || true
 	exit 1
 fi
-echo "OK: no .sh / bin / blocks-editor.js in zip"
+if ! echo "$LISTING" | grep -F "${THEME_NAME}/inc/setup.php" >/dev/null; then
+	echo "ERROR: package missing inc/ modules" >&2
+	exit 1
+fi
+echo "OK: no .sh / bin / blocks-editor.js in zip; inc/ modules present"

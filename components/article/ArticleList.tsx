@@ -1,7 +1,7 @@
 'use client'
 
 import Link from '@/components/shared/Link'
-import Logo from '@/components/shared/logo.svg'
+import Logo from '@/components/shared/logo.svg?react'
 import { getColorFromNumber, getTagStyle } from '@/lib/utils/colors'
 import { ClockIcon, EyeIcon, FolderIcon, HeartIcon } from '@/lib/utils/icons'
 import { useLocale } from '@fecommunity/reactpress-toolkit/ui'

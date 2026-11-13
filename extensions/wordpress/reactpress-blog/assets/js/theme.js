@@ -640,7 +640,7 @@
     })
   }
 
-  function shouldPlaceFooterInSidebar(hasMore, itemCount, pageSize) {
+  function shouldPlaceAboutInSidebar(hasMore, itemCount, pageSize) {
     return !!hasMore || itemCount >= pageSize
   }
 
@@ -651,9 +651,10 @@
       document.querySelector('.rp-feed .rp-article-list') ||
       document.querySelector('.rp-feed .wp-block-post-template')
     var footer = document.querySelector('[data-rp-site-footer]')
+    var footerAbout = document.querySelector('[data-rp-about-panel="footer"]')
     var sidebarAbout = document.querySelector('[data-rp-about="sidebar"]')
 
-    if (!footer && !sidebarAbout) {
+    if (!footerAbout && !sidebarAbout) {
       return
     }
 
@@ -665,14 +666,76 @@
     }
 
     var itemCount = list ? list.querySelectorAll('.rp-post-card, .wp-block-post').length : 0
-    var inSidebar = shouldPlaceFooterInSidebar(hasMore, itemCount, pageSize)
+    var inSidebar = shouldPlaceAboutInSidebar(hasMore, itemCount, pageSize)
 
     if (sidebarAbout) {
       sidebarAbout.hidden = !inSidebar
     }
-    if (footer) {
-      footer.hidden = inSidebar
+    if (footerAbout) {
+      footerAbout.hidden = inSidebar
     }
+    // Site footer (copyright) must always remain visible on archive/category pages.
+    if (footer) {
+      footer.hidden = false
+    }
+  }
+
+  function initCommentSubmitLoading() {
+    var config = getConfig()
+    var i18n = config.i18n || {}
+    var postingLabel = i18n.postingComment || 'Posting…'
+
+    document.querySelectorAll('.rp-comments .comment-form').forEach(function (form) {
+      if (form.dataset.rpCommentReady === '1') {
+        return
+      }
+      form.dataset.rpCommentReady = '1'
+
+      form.addEventListener('submit', function () {
+        if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+          return
+        }
+
+        var submit =
+          form.querySelector('.form-submit input[type="submit"]') ||
+          form.querySelector('.form-submit button[type="submit"]') ||
+          form.querySelector('input[type="submit"]') ||
+          form.querySelector('button[type="submit"]')
+
+        if (!submit || submit.disabled || submit.classList.contains('is-loading')) {
+          return
+        }
+
+        submit.classList.add('is-loading')
+        submit.disabled = true
+        submit.setAttribute('aria-busy', 'true')
+
+        var tag = (submit.tagName || '').toLowerCase()
+        if (tag === 'button') {
+          submit.dataset.rpOriginalHtml = submit.innerHTML
+          submit.innerHTML =
+            '<span class="rp-comment-submit-spinner" aria-hidden="true"></span>' +
+            '<span>' +
+            postingLabel +
+            '</span>'
+        } else {
+          if (!submit.dataset.rpOriginalValue) {
+            submit.dataset.rpOriginalValue = submit.value || ''
+          }
+          submit.value = postingLabel
+          if (
+            submit.parentNode &&
+            !submit.parentNode.querySelector('.rp-comment-submit-spinner')
+          ) {
+            var spinner = document.createElement('span')
+            spinner.className = 'rp-comment-submit-spinner'
+            spinner.setAttribute('aria-hidden', 'true')
+            submit.parentNode.insertBefore(spinner, submit)
+            submit.parentNode.classList.add('is-loading')
+          }
+        }
+      })
+    })
   }
 
   function initInfiniteScroll() {
@@ -810,6 +873,7 @@
     initTagClouds()
     initBackToTop()
     initInfiniteScroll()
+    initCommentSubmitLoading()
     refreshFooterPlacement()
   })
 })()

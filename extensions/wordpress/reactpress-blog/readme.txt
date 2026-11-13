@@ -3,7 +3,7 @@ Contributors: reactpress
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.8
+Stable tag: 1.3.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, two-columns, custom-colors, custom-logo, custom-menu, featured-images, full-site-editing, block-patterns, block-styles, sticky-post, threaded-comments, translation-ready, wide-blocks, style-variations
@@ -58,6 +58,18 @@ Yes. Use Appearance → Customize → ReactPress Blog → Colors, or Appearance 
 The home and archive feeds load the next page of posts automatically as you scroll. Turn it off under Appearance → Customize → ReactPress Blog → Layout & Feed to restore classic pagination.
 
 == Changelog ==
+
+= 1.3.10 =
+* Move comments into a separate panel below the reading card.
+* Add loading state on comment submit while the request is in flight.
+* Fix recommended readings list bottom spacing so the last item is not clipped.
+
+= 1.3.9 =
+* Keep site footer visible on archive/category pages; only relocate the About panel.
+* Suppress Comments / Comments Form blocks embedded in post content to avoid duplicate forms.
+* Improve pagination styling, entry/card spacing, and comment section rhythm.
+* Use a comment icon for comment counts (bookmark icon for recommended readings).
+* Reorganize theme PHP into `inc/` modules for maintainability.
 
 = 1.3.8 =
 * Remove post view counter, view labels, and views-based recommended sort (plugin territory).

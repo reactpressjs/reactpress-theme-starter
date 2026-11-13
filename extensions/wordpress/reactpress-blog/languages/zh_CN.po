@@ -28,3 +28,9 @@ msgstr "欢迎来到本博客。可在站点编辑器中修改这段介绍。"
 
 msgid "ReactPress Blog"
 msgstr "ReactPress Blog"
+
+msgid "Posting…"
+msgstr "发布中…"
+
+msgid "Recommended Readings"
+msgstr "推荐阅读"

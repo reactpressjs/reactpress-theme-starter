@@ -31,9 +31,11 @@
     "scripts",
     "theme.json",
     "theme.manifest.schema.json",
-    "next.config.js",
-    "postcss.config.js",
-    "prettier.config.js",
+    "next.config.cjs",
+    "postcss.config.cjs",
+    "prettier.config.cjs",
+    "vite.config.ts",
+    "cloudflare.config.ts",
     "eslint.config.mjs",
     "tsconfig.json",
     "svg.d.ts",
@@ -42,7 +44,7 @@
   ],
   "packageManager": "pnpm@9.15.9",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.23.0"
   },
   "scripts": {
     "dev": "node scripts/dev.mjs",
@@ -61,7 +63,13 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "pnpm run lint:check && pnpm run format:check",
-    "postinstall": "node scripts/verify-toolkit.mjs && node scripts/ensure-env.mjs"
+    "postinstall": "node scripts/verify-toolkit.mjs && node scripts/ensure-env.mjs",
+    "dev:vinext": "vite dev --port 3001",
+    "build:vinext": "vite build",
+    "build:vinext:mock": "cross-env REACTPRESS_MOCK_API=1 REACTPRESS_BUNDLE_ADMIN=1 NEXT_PUBLIC_REACTPRESS_API_URL=/api NEXT_PUBLIC_REACTPRESS_ADMIN_URL=/admin CLIENT_SITE_URL=https://reactpress-theme-starter.bjwlzxg.workers.dev REACTPRESS_API_URL=https://reactpress-theme-starter.bjwlzxg.workers.dev/api sh -c 'node scripts/copy-admin-dist.mjs && vite build'",
+    "start:vinext": "vite preview",
+    "deploy:vinext": "vinext-cloudflare deploy",
+    "deploy:vinext:mock": "pnpm run build:vinext:mock && vinext-cloudflare deploy"
   },
   "dependencies": {
     "@fecommunity/reactpress-toolkit": "^3.1.0",
@@ -69,17 +77,21 @@
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
+    "@vinext/cloudflare": "^1.3.4",
     "cross-env": "^10.1.0",
     "highlight.js": "^9.18.5",
     "next": "15.5.12",
     "nprogress": "^0.2.0",
     "postcss": "^8.5.6",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-server-dom-webpack": "^19.3.1",
     "tailwindcss": "^4.1.18",
-    "viewerjs": "^1.5.0"
+    "viewerjs": "^1.5.0",
+    "vinext": "^1.4.5"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "2.0.0-beta.v.16",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.18.0",
     "@svgr/webpack": "^8.1.0",
@@ -88,6 +100,9 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "@vitejs/plugin-rsc": "^0.5.39",
+    "cf": "1.0.0-beta.30",
     "eslint": "^9.18.0",
     "eslint-config-next": "15.5.12",
     "eslint-config-prettier": "^10.1.8",
@@ -96,6 +111,9 @@
     "globals": "^17.3.0",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "typescript": "^5.9.3"
-  }
+    "typescript": "^5.9.3",
+    "vite": "8.3.0",
+    "vite-plugin-svgr": "^5.2.0"
+  },
+  "type": "module"
 }

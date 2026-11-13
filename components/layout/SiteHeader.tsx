@@ -7,7 +7,7 @@ import ThemeSwitch from '@/components/layout/ThemeSwitch'
 import UserAuth from '@/components/layout/UserAuth'
 import Link from '@/components/shared/Link'
 import ThemeImage from '@/components/shared/ThemeImage'
-import Logo from '@/components/shared/logo.svg'
+import Logo from '@/components/shared/logo.svg?react'
 import { getDocumentScrollTop } from '@/lib/utils/scroll'
 import { getFirstLevelRoute, getIconByName } from '@/lib/utils/icons'
 import {
