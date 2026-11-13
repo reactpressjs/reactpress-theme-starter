@@ -1,10 +1,4 @@
-import {
-  fetchSiteMeta,
-  getSiteTitle,
-  themeApi,
-  unwrapSetting,
-  withApiRetry,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+import { getSiteTitle } from '@fecommunity/reactpress-toolkit/theme/server'
 import type { Metadata } from 'next'
 
 import {
@@ -15,12 +9,10 @@ import {
   DEFAULT_OG_IMAGE,
 } from './seoMetadata'
 import { tServer } from './serverLocale'
+import { loadSiteMeta, loadSiteSetting } from './ssrFetch'
 
 async function fetchSiteSeoBase() {
-  const [siteMeta, settingRow] = await Promise.all([
-    withApiRetry(() => fetchSiteMeta(themeApi)),
-    withApiRetry(() => themeApi.setting.findAll()).then(unwrapSetting),
-  ])
+  const [siteMeta, settingRow] = await Promise.all([loadSiteMeta(), loadSiteSetting()])
   return { siteMeta, settingRow }
 }
 

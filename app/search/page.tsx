@@ -1,12 +1,11 @@
 import SearchClient from '@/components/views/SearchClient'
+import { mockSetting } from '@/lib/mock-api/data'
+import { mockOrApiEnabled } from '@/lib/mock-api/ssr'
+import { SettingProvider } from '@/lib/providers/server'
 import { buildLocalizedListPageMetadata } from '@/lib/reactpress/siteMetadata'
 import { getServerTranslator } from '@/lib/reactpress/serverLocale'
-import { SettingProvider } from '@/lib/providers/server'
-import {
-  fetchSearchPageProps,
-  fetchSiteNavConfig,
-  themeApi,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+import { loadSearchPageProps } from '@/lib/reactpress/ssrFetch'
+import { fetchSiteNavConfig } from '@fecommunity/reactpress-toolkit/theme/server'
 import themeManifest from '../../theme.json'
 import type { Metadata } from 'next'
 
@@ -29,11 +28,14 @@ export default async function SearchPage({ searchParams }: PageProps) {
   let navConfig
   try {
     const [searchData, navData] = await Promise.all([
-      fetchSearchPageProps(themeApi, trimmed),
+      loadSearchPageProps(trimmed),
       fetchSiteNavConfig({
         locale,
         manifest: themeManifest,
-        getSetting: () => SettingProvider.getSetting(),
+        getSetting: () =>
+          mockOrApiEnabled()
+            ? Promise.resolve(mockSetting as never)
+            : SettingProvider.getSetting(),
       }),
     ])
     articles = searchData.articles

@@ -1,12 +1,10 @@
 import KnowledgeChapterClient from '@/components/views/KnowledgeChapterClient'
 import { buildKnowledgeChapterMetadata, parseSiteSeoContext } from '@/lib/reactpress/contentSeo'
 import {
-  fetchKnowledgeChapterPageProps,
-  fetchSiteMeta,
-  themeApi,
-  unwrapSetting,
-  withApiRetry,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+  loadKnowledgeChapterPageProps,
+  loadSiteMeta,
+  loadSiteSetting,
+} from '@/lib/reactpress/ssrFetch'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -21,9 +19,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   try {
     const [data, siteMeta, settingRow] = await Promise.all([
-      withApiRetry(() => fetchKnowledgeChapterPageProps(themeApi, pId, id)),
-      withApiRetry(() => fetchSiteMeta(themeApi)),
-      withApiRetry(() => themeApi.setting.findAll()).then(unwrapSetting),
+      loadKnowledgeChapterPageProps(pId, id),
+      loadSiteMeta(),
+      loadSiteSetting(),
     ])
 
     if (!data.book?.id || !data.chapter?.id) {
@@ -42,7 +40,7 @@ export default async function KnowledgeChapterPage({ params }: PageProps) {
   const { pId, id } = await params
 
   try {
-    const data = await withApiRetry(() => fetchKnowledgeChapterPageProps(themeApi, pId, id))
+    const data = await loadKnowledgeChapterPageProps(pId, id)
     if (!data.book?.id || !data.chapter?.id) {
       notFound()
     }

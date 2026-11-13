@@ -1,10 +1,6 @@
 import KnowledgeClient from '@/components/views/KnowledgeClient'
 import { buildLocalizedListPageMetadata } from '@/lib/reactpress/siteMetadata'
-import {
-  fetchKnowledgeIndexPageProps,
-  themeApi,
-  withApiRetry,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+import { loadKnowledgeIndexPageProps } from '@/lib/reactpress/ssrFetch'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
@@ -18,7 +14,7 @@ export default async function KnowledgePage() {
   let total = 0
 
   try {
-    const data = await withApiRetry(() => fetchKnowledgeIndexPageProps(themeApi, 12))
+    const data = await loadKnowledgeIndexPageProps(12)
     books = data.books
     total = data.total
   } catch (error) {

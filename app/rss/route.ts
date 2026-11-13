@@ -1,3 +1,5 @@
+import { mockArticles, mockCategories, mockSetting } from '@/lib/mock-api/data'
+import { mockOrApiEnabled } from '@/lib/mock-api/ssr'
 import { ArticleProvider, CategoryProvider, SettingProvider } from '@/lib/providers/server'
 import { getClientSiteUrl } from '@/lib/reactpress/env'
 
@@ -26,18 +28,24 @@ export async function GET() {
   let categories: Awaited<ReturnType<typeof CategoryProvider.getCategory>> = []
 
   try {
-    const [articlesResult, settingResult, categoriesResult] = await Promise.all([
-      ArticleProvider.getArticles({
-        page: 1,
-        pageSize: 99999,
-        status: 'publish',
-      }),
-      SettingProvider.getSetting(),
-      CategoryProvider.getCategory({ articleStatus: 'publish' }),
-    ])
-    ;[articles] = articlesResult
-    setting = settingResult
-    categories = categoriesResult
+    if (mockOrApiEnabled()) {
+      articles = mockArticles as unknown as typeof articles
+      setting = mockSetting as unknown as typeof setting
+      categories = mockCategories as unknown as typeof categories
+    } else {
+      const [articlesResult, settingResult, categoriesResult] = await Promise.all([
+        ArticleProvider.getArticles({
+          page: 1,
+          pageSize: 99999,
+          status: 'publish',
+        }),
+        SettingProvider.getSetting(),
+        CategoryProvider.getCategory({ articleStatus: 'publish' }),
+      ])
+      ;[articles] = articlesResult
+      setting = settingResult
+      categories = categoriesResult
+    }
   } catch (error) {
     console.error('[reactpress-theme-starter] rss fetch failed', error)
   }

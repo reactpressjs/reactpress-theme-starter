@@ -1,6 +1,6 @@
 import { bindings, defineConfig, defineWorker } from "cf/config";
 
-const SITE_URL = "https://reactpress-theme-starter.bjwlzxg.workers.dev";
+const SITE_URL = "https://demo.reactpress.cc";
 
 export default defineConfig({
   accountId: "20e5b7a6bcb2f37d0263f310e387352c",
@@ -8,6 +8,11 @@ export default defineConfig({
     name: "reactpress-theme-starter",
     entrypoint: "vinext/server/fetch-handler",
     compatibilityDate: "2026-11-12",
+    // Same-zone SSR fetch (e.g. demo.reactpress.cc → /api) must loop back to this
+    // Worker. Without the flag, Cloudflare sends those subrequests to the zone origin
+    // and the mock /api routes are never hit — home feed + bootstrap stay empty.
+    compatibilityFlags: ["global_fetch_strictly_public"],
+    domains: ["demo.reactpress.cc"],
     assets: {
       htmlHandling: "none",
       notFoundHandling: "none",

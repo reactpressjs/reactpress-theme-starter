@@ -1,3 +1,5 @@
+import { mockArticles } from '@/lib/mock-api/data'
+import { mockOrApiEnabled } from '@/lib/mock-api/ssr'
 import { getClientSiteUrl } from '@/lib/reactpress/env'
 import { MetadataRoute } from 'next'
 import {
@@ -20,16 +22,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let articleRoutes: MetadataRoute.Sitemap = []
 
   try {
-    const response = await withApiRetry(() =>
-      themeApi.article.findAll({
-        query: { page: 1, pageSize: 500, status: 'publish' },
-      } as never)
-    )
-    const [articles] = unpackPaginatedPair<IArticle>(response)
-    articleRoutes = articles.map((article) => ({
-      url: `${siteUrl}/article/${article.id}`,
-      lastModified: article.updateAt ?? article.publishAt ?? new Date(),
-    }))
+    if (mockOrApiEnabled()) {
+      articleRoutes = mockArticles.map((article) => ({
+        url: `${siteUrl}/article/${article.id}`,
+        lastModified: article.updateAt ?? article.publishAt ?? new Date(),
+      }))
+    } else {
+      const response = await withApiRetry(() =>
+        themeApi.article.findAll({
+          query: { page: 1, pageSize: 500, status: 'publish' },
+        } as never)
+      )
+      const [articles] = unpackPaginatedPair<IArticle>(response)
+      articleRoutes = articles.map((article) => ({
+        url: `${siteUrl}/article/${article.id}`,
+        lastModified: article.updateAt ?? article.publishAt ?? new Date(),
+      }))
+    }
   } catch (error) {
     console.error('[reactpress-theme-starter] sitemap fetch failed', error)
   }

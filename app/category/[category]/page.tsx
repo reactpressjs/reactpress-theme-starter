@@ -1,11 +1,7 @@
 import CategoryClient from '@/components/views/CategoryClient'
 import { buildLocalizedListPageMetadata } from '@/lib/reactpress/siteMetadata'
 import { generateCategoryStaticParams } from '@/lib/reactpress/staticParams'
-import {
-  fetchCategoryArchivePageProps,
-  themeApi,
-  withApiRetry,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+import { loadCategoryArchivePageProps } from '@/lib/reactpress/ssrFetch'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -24,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const categoryValue = decodeURIComponent(category)
 
   try {
-    const data = await withApiRetry(() => fetchCategoryArchivePageProps(themeApi, categoryValue))
+    const data = await loadCategoryArchivePageProps(categoryValue)
     const label = data.category?.label || categoryValue
     return buildLocalizedListPageMetadata(
       'pageTitleCategory',
@@ -49,7 +45,7 @@ export default async function CategoryArchivePage({ params }: PageProps) {
   const categoryValue = decodeURIComponent(category)
 
   try {
-    const data = await withApiRetry(() => fetchCategoryArchivePageProps(themeApi, categoryValue))
+    const data = await loadCategoryArchivePageProps(categoryValue)
     return (
       <CategoryClient initialArticles={data.articles} total={data.total} category={data.category} />
     )

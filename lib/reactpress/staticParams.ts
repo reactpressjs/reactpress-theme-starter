@@ -1,3 +1,9 @@
+import { mockOrApiEnabled } from '@/lib/mock-api/ssr'
+import {
+  loadMockArticleIds,
+  loadMockCategoryValues,
+  loadMockTagValues,
+} from '@/lib/reactpress/ssrFetch'
 import {
   themeApi,
   unpackList,
@@ -9,6 +15,10 @@ import type { IArticle, ICategory, ITag } from '@fecommunity/reactpress-toolkit/
 const STATIC_PARAM_LIMIT = 200
 
 export async function generateArticleStaticParams() {
+  if (mockOrApiEnabled()) {
+    return loadMockArticleIds(STATIC_PARAM_LIMIT)
+  }
+
   try {
     const response = await withApiRetry(() =>
       themeApi.article.findAll({
@@ -24,6 +34,10 @@ export async function generateArticleStaticParams() {
 }
 
 export async function generateTagStaticParams() {
+  if (mockOrApiEnabled()) {
+    return loadMockTagValues(STATIC_PARAM_LIMIT)
+  }
+
   try {
     const response = await withApiRetry(() => themeApi.tag.findAll())
     const tags = unpackList<ITag>(response).slice(0, STATIC_PARAM_LIMIT)
@@ -35,6 +49,10 @@ export async function generateTagStaticParams() {
 }
 
 export async function generateCategoryStaticParams() {
+  if (mockOrApiEnabled()) {
+    return loadMockCategoryValues(STATIC_PARAM_LIMIT)
+  }
+
   try {
     const response = await withApiRetry(() => themeApi.category.findAll())
     const categories = unpackList<ICategory>(response).slice(0, STATIC_PARAM_LIMIT)

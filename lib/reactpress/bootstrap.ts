@@ -1,4 +1,5 @@
 import themeManifest from '../../theme.json'
+import { buildMockAppBootstrap, mockOrApiEnabled } from '@/lib/mock-api/ssr'
 import {
   createDefaultAppBootstrap,
   fetchAppBootstrap,
@@ -30,15 +31,24 @@ async function buildVisitorRequest(): Promise<IncomingMessage> {
   } as IncomingMessage
 }
 
+function slimBootstrap(bootstrap: AppBootstrapResult, pathname: string): AppBootstrapResult {
+  const slimmed = slimAppBootstrapForRoute(bootstrap, pathname)
+  const categories = (bootstrap.categories as BootstrapCategory[]).map(
+    ({ value, label, articleCount }) => ({ value, label, articleCount })
+  )
+  return { ...slimmed, categories }
+}
+
 export async function loadAppBootstrap(pathname = '/'): Promise<AppBootstrapResult> {
+  const req = await buildVisitorRequest()
+
+  if (mockOrApiEnabled()) {
+    return slimBootstrap(buildMockAppBootstrap(req), pathname)
+  }
+
   try {
-    const req = await buildVisitorRequest()
     const bootstrap = await fetchAppBootstrap({ manifest: themeManifest, req })
-    const slimmed = slimAppBootstrapForRoute(bootstrap, pathname)
-    const categories = (bootstrap.categories as BootstrapCategory[]).map(
-      ({ value, label, articleCount }) => ({ value, label, articleCount })
-    )
-    return { ...slimmed, categories }
+    return slimBootstrap(bootstrap, pathname)
   } catch (error) {
     console.error('[reactpress-theme-starter] fetchAppBootstrap failed, using defaults', error)
     return createDefaultAppBootstrap()

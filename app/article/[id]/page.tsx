@@ -6,13 +6,11 @@ import {
 } from '@/lib/reactpress/contentSeo'
 import { generateArticleStaticParams } from '@/lib/reactpress/staticParams'
 import {
-  fetchArticleDetailProps,
-  fetchSiteMeta,
-  resolveImageUrl,
-  themeApi,
-  unwrapSetting,
-  withApiRetry,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+  loadArticleDetailProps,
+  loadSiteMeta,
+  loadSiteSetting,
+} from '@/lib/reactpress/ssrFetch'
+import { resolveImageUrl } from '@fecommunity/reactpress-toolkit/theme/server'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -42,9 +40,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   try {
     const [{ article }, siteMeta, settingRow] = await Promise.all([
-      withApiRetry(() => fetchArticleDetailProps(themeApi, id)),
-      withApiRetry(() => fetchSiteMeta(themeApi)),
-      withApiRetry(() => themeApi.setting.findAll()).then(unwrapSetting),
+      loadArticleDetailProps(id),
+      loadSiteMeta(),
+      loadSiteSetting(),
     ])
 
     if (!article?.id || article.status !== 'publish') {
@@ -65,8 +63,8 @@ export default async function ArticlePage({ params }: PageProps) {
 
   try {
     const [{ article }, siteMeta] = await Promise.all([
-      withApiRetry(() => fetchArticleDetailProps(themeApi, id)),
-      withApiRetry(() => fetchSiteMeta(themeApi)),
+      loadArticleDetailProps(id),
+      loadSiteMeta(),
     ])
 
     if (!article?.id || article.status !== 'publish') {

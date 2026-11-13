@@ -1,9 +1,13 @@
-const now = new Date()
-const daysAgo = (days: number) => {
-  const date = new Date(now)
-  date.setDate(date.getDate() - days)
-  return date.toISOString()
-}
+/**
+ * Fixed demo clock — do not use `new Date()` at module scope on Cloudflare Workers.
+ * Module evaluation can run outside a request context with the clock pinned near
+ * Unix epoch, which previously baked 1969-12-* publish dates into the demo.
+ */
+const DEMO_NOW_MS = Date.parse('2026-11-13T12:00:00.000Z')
+const DAY_MS = 24 * 60 * 60 * 1000
+const daysAgo = (days: number) => new Date(DEMO_NOW_MS - days * DAY_MS).toISOString()
+const demoYear = '2026'
+const demoMonth = '11'
 
 const REACTPRESS_GITHUB = 'https://github.com/reactpressjs/reactpress'
 const REACTPRESS_SITE = 'https://reactpress.surge.sh/'
@@ -843,10 +847,8 @@ export const mockPages = [
 export const mockPage = mockPages[0]
 
 export const mockArchives = {
-  [String(new Date().getFullYear())]: {
-    [String(new Date().getMonth() + 1).padStart(2, '0')]: mockArticles.map(
-      ({ id, title, publishAt }) => ({ id, title, publishAt })
-    ),
+  [demoYear]: {
+    [demoMonth]: mockArticles.map(({ id, title, publishAt }) => ({ id, title, publishAt })),
   },
 }
 

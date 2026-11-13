@@ -3,11 +3,7 @@ import {
   buildListPageMetadata,
   buildLocalizedListPageMetadata,
 } from '@/lib/reactpress/siteMetadata'
-import {
-  fetchKnowledgeBookPageProps,
-  themeApi,
-  withApiRetry,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+import { loadKnowledgeBookPageProps } from '@/lib/reactpress/ssrFetch'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -21,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { pId } = await params
 
   try {
-    const data = await withApiRetry(() => fetchKnowledgeBookPageProps(themeApi, pId))
+    const data = await loadKnowledgeBookPageProps(pId)
     if (data.book?.title) {
       return buildListPageMetadata(data.book.title, data.book.summary, `/knowledge/${pId}`)
     }
@@ -35,7 +31,7 @@ export default async function KnowledgeBookPage({ params }: PageProps) {
   const { pId } = await params
 
   try {
-    const data = await withApiRetry(() => fetchKnowledgeBookPageProps(themeApi, pId))
+    const data = await loadKnowledgeBookPageProps(pId)
     if (!data.book?.id) {
       notFound()
     }

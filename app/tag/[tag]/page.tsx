@@ -1,11 +1,7 @@
 import TagArchiveClient from '@/components/views/TagArchiveClient'
 import { buildLocalizedListPageMetadata } from '@/lib/reactpress/siteMetadata'
 import { generateTagStaticParams } from '@/lib/reactpress/staticParams'
-import {
-  fetchTagArchivePageProps,
-  themeApi,
-  withApiRetry,
-} from '@fecommunity/reactpress-toolkit/theme/server'
+import { loadTagArchivePageProps } from '@/lib/reactpress/ssrFetch'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -24,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tagValue = decodeURIComponent(tag)
 
   try {
-    const data = await withApiRetry(() => fetchTagArchivePageProps(themeApi, tagValue))
+    const data = await loadTagArchivePageProps(tagValue)
     const label = data.tag?.label || tagValue
     return buildLocalizedListPageMetadata(
       'pageTitleTag',
@@ -49,7 +45,7 @@ export default async function TagArchivePage({ params }: PageProps) {
   const tagValue = decodeURIComponent(tag)
 
   try {
-    const data = await withApiRetry(() => fetchTagArchivePageProps(themeApi, tagValue))
+    const data = await loadTagArchivePageProps(tagValue)
     return <TagArchiveClient initialArticles={data.articles} total={data.total} tag={data.tag} />
   } catch (error) {
     console.error('[reactpress-theme-starter] tag archive fetch failed', error)

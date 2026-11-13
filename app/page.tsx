@@ -1,10 +1,8 @@
 import HomeClient from '@/components/views/HomeClient'
 import { buildHomePageMetadata } from '@/lib/reactpress/siteMetadata'
+import { loadHomePageProps } from '@/lib/reactpress/ssrFetch'
 import {
-  fetchHomePageProps,
   resolveImageUrl,
-  themeApi,
-  withApiRetry,
   type CarouselArticle,
   type ListArticle,
 } from '@fecommunity/reactpress-toolkit/theme/server'
@@ -14,7 +12,7 @@ export const revalidate = 60
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const data = await withApiRetry(() => fetchHomePageProps(themeApi))
+    const data = await loadHomePageProps()
     const lcpCover = data.recommendedArticles.find((article) => article.cover)?.cover
     const imageUrl = lcpCover ? resolveImageUrl(lcpCover, 'medium') : undefined
     const base = await buildHomePageMetadata()
@@ -41,7 +39,7 @@ export default async function Page() {
   let total = 0
   let recommendedArticles: CarouselArticle[] = []
   try {
-    const data = await withApiRetry(() => fetchHomePageProps(themeApi))
+    const data = await loadHomePageProps()
     articles = data.articles
     total = data.total
     recommendedArticles = data.recommendedArticles
