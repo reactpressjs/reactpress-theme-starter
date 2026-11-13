@@ -1,0 +1,158 @@
+{
+  "name": "reactpress-vscode",
+  "displayName": "ReactPress",
+  "description": "Write Markdown locally, preview on your ReactPress theme, publish without opening /admin.",
+  "version": "0.1.0",
+  "publisher": "fecommunity",
+  "author": {
+    "name": "FECommunity / ReactPress"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#0a0a0a",
+    "theme": "dark"
+  },
+  "preview": true,
+  "pricing": "Free",
+  "homepage": "https://www.reactpress.cc/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactpressjs/reactpress-theme-starter.git",
+    "directory": "extensions/vscode/packages/extension"
+  },
+  "bugs": {
+    "url": "https://github.com/reactpressjs/reactpress-theme-starter/issues"
+  },
+  "qna": "marketplace",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "reactpress",
+    "markdown",
+    "blog",
+    "publish",
+    "cms",
+    "content"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:markdown"
+  ],
+  "main": "./dist/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "ReactPress connects to your configured API and uploads content/files; only use in trusted workspaces."
+    },
+    "virtualWorkspaces": {
+      "supported": false,
+      "description": "Local Markdown files and file uploads require a non-virtual filesystem."
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "reactpress.connect",
+        "title": "Connect Site",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.disconnect",
+        "title": "Disconnect",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.newArticle",
+        "title": "New Article",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.pushDraft",
+        "title": "Push Draft",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.publish",
+        "title": "Publish",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.pushForce",
+        "title": "Push (Force)",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.pull",
+        "title": "Pull Remote",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.preview",
+        "title": "Open Theme Preview",
+        "category": "ReactPress"
+      },
+      {
+        "command": "reactpress.uploadImage",
+        "title": "Upload Image",
+        "category": "ReactPress"
+      }
+    ],
+    "configuration": {
+      "title": "ReactPress",
+      "properties": {
+        "reactpress.apiUrl": {
+          "type": "string",
+          "default": "http://localhost:3002/api",
+          "description": "ReactPress API base URL (must include /api)."
+        },
+        "reactpress.siteUrl": {
+          "type": "string",
+          "default": "http://localhost:3001",
+          "description": "Visitor site URL used for theme preview."
+        },
+        "reactpress.contentPath": {
+          "type": "string",
+          "default": "content/posts",
+          "description": "Workspace-relative folder for local Markdown posts."
+        },
+        "reactpress.username": {
+          "type": "string",
+          "default": "",
+          "description": "ReactPress admin username (password/token stored in SecretStorage)."
+        }
+      }
+    },
+    "menus": {
+      "editor/title": [
+        {
+          "command": "reactpress.publish",
+          "when": "resourceExtname == .md",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "watch": "node esbuild.mjs --watch",
+    "vscode:prepublish": "pnpm run build",
+    "package": "pnpm run build && vsce package --no-dependencies",
+    "publish:vsce": "pnpm run build && vsce publish --no-dependencies"
+  },
+  "dependencies": {
+    "@fecommunity/reactpress-content": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.2",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.2"
+  }
+}

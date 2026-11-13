@@ -135,7 +135,7 @@ function reactpress_blog_render_carousel() {
 				<?php
 				$is_active = 0 === $index;
 				$thumb     = get_the_post_thumbnail_url( $post, 'large' );
-				$time_ago  = reactpress_blog_time_ago( get_post_time( 'U', true, $post ) );
+				$time_ago  = reactpress_blog_time_ago( (int) get_post_time( 'U', false, $post ) );
 				?>
 				<article class="rp-carousel__slide<?php echo $is_active ? ' is-active' : ''; ?>" data-slide="<?php echo esc_attr( (string) $index ); ?>" aria-hidden="<?php echo $is_active ? 'false' : 'true'; ?>">
 					<?php if ( $thumb ) : ?>
@@ -489,17 +489,21 @@ function reactpress_blog_render_infinite_scroll() {
 	global $wp_query;
 	$max_pages = isset( $wp_query->max_num_pages ) ? absint( $wp_query->max_num_pages ) : 1;
 	$current   = max( 1, absint( get_query_var( 'paged' ) ), absint( get_query_var( 'page' ) ) );
+	$is_static_front_feed = ( is_front_page() && ! is_home() ) || ( is_front_page() && is_page() );
 
 	/*
 	 * Static front pages use a dedicated posts Query Loop (inherit:false), so the
 	 * main query is the page. Mirror the AJAX loader args to compute max pages.
 	 */
-	if ( ( is_front_page() && ! is_home() ) || ( is_front_page() && is_page() ) ) {
+	if ( $is_static_front_feed ) {
 		$per_page = absint( get_theme_mod( 'reactpress_blog_posts_per_page', get_option( 'posts_per_page', 10 ) ) );
 		if ( $per_page < 1 ) {
 			$per_page = 10;
 		}
-		$derived   = new WP_Query(
+		// Classic pagination uses ?rp_page=N; infinite scroll always starts at page 1.
+		$rp_page = absint( isset( $_GET['rp_page'] ) ? wp_unslash( $_GET['rp_page'] ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$current = $enabled ? 1 : max( 1, $rp_page ? $rp_page : 1 );
+		$derived = new WP_Query(
 			array(
 				'post_type'           => 'post',
 				'post_status'         => 'publish',
@@ -510,7 +514,6 @@ function reactpress_blog_render_infinite_scroll() {
 			)
 		);
 		$max_pages = max( 1, absint( $derived->max_num_pages ) );
-		$current   = 1;
 		wp_reset_postdata();
 	}
 
@@ -549,14 +552,41 @@ function reactpress_blog_render_infinite_scroll() {
 		?>
 		<div class="rp-feed-pagination">
 			<?php
-			the_posts_pagination(
-				array(
-					'mid_size'  => 2,
-					'prev_text' => __( 'Previous Page', 'reactpress-blog' ),
-					'next_text' => __( 'Next Page', 'reactpress-blog' ),
-					'class'     => 'rp-pagination',
-				)
-			);
+			if ( $is_static_front_feed ) {
+				/*
+				 * the_posts_pagination() walks the main page query, not the posts
+				 * Query Loop. Drive classic pages with ?rp_page=N instead.
+				 */
+				if ( $max_pages > 1 ) {
+					$pagination = paginate_links(
+						array(
+							'base'      => esc_url_raw( add_query_arg( 'rp_page', '%#%' ) ),
+							'format'    => '',
+							'current'   => $current,
+							'total'     => $max_pages,
+							'mid_size'  => 2,
+							'prev_text' => __( 'Previous Page', 'reactpress-blog' ),
+							'next_text' => __( 'Next Page', 'reactpress-blog' ),
+							'type'      => 'list',
+							'class'     => 'rp-pagination',
+						)
+					);
+					if ( $pagination ) {
+						echo '<nav class="navigation pagination rp-pagination" aria-label="' . esc_attr__( 'Posts', 'reactpress-blog' ) . '">'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $pagination; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- paginate_links() is escaped.
+						echo '</nav>';
+					}
+				}
+			} else {
+				the_posts_pagination(
+					array(
+						'mid_size'  => 2,
+						'prev_text' => __( 'Previous Page', 'reactpress-blog' ),
+						'next_text' => __( 'Next Page', 'reactpress-blog' ),
+						'class'     => 'rp-pagination',
+					)
+				);
+			}
 			?>
 		</div>
 		<?php

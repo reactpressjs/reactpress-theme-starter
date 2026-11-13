@@ -71,7 +71,6 @@ function reactpress_blog_enqueue_scripts() {
 		array(
 			'homeUrl'  => home_url( '/' ),
 			'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
-			'restUrl'  => esc_url_raw( rest_url( 'wp/v2/' ) ),
 			'nonce'    => wp_create_nonce( 'reactpress_blog_load_more' ),
 			'perPage'  => $per_page,
 			'infinite' => (bool) get_theme_mod( 'reactpress_blog_infinite_scroll', true ),
@@ -86,7 +85,7 @@ function reactpress_blog_enqueue_scripts() {
 				'loading'            => __( 'Loading more…', 'reactpress-blog' ),
 				'loadMore'           => __( 'Load more', 'reactpress-blog' ),
 				'noMore'             => __( 'No more posts', 'reactpress-blog' ),
-				'loadError'          => __( 'Could not load more posts.', 'reactpress-blog' ),
+				'loadError'          => __( 'Could not load more posts. Retrying…', 'reactpress-blog' ),
 				'postingComment'     => __( 'Posting…', 'reactpress-blog' ),
 				'commentPosted'      => __( 'Comment posted.', 'reactpress-blog' ),
 				'commentModeration'  => __( 'Your comment is awaiting moderation.', 'reactpress-blog' ),

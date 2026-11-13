@@ -1,0 +1,25 @@
+{
+  "name": "@fecommunity/reactpress-content-cli",
+  "version": "0.1.0",
+  "description": "CLI for ReactPress local Markdown pull/push/publish",
+  "bin": {
+    "reactpress-content": "./dist/cli.js"
+  },
+  "main": "dist/cli.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@fecommunity/reactpress-content": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

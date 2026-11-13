@@ -149,6 +149,49 @@ function reactpress_blog_pre_get_posts( $query ) {
 add_action( 'pre_get_posts', 'reactpress_blog_pre_get_posts' );
 
 /**
+ * Drive the front-page Query Loop from ?rp_page when classic pagination is on.
+ *
+ * Static fronts use inherit:false, so core page pagination does not advance the
+ * posts loop. Infinite scroll stays on page 1 and loads via AJAX instead.
+ *
+ * @since 1.3.12
+ * @param array    $query_vars Query vars for the loop.
+ * @param WP_Block $block      Query block instance.
+ * @return array
+ */
+function reactpress_blog_query_loop_paged( $query_vars, $block ) {
+	if ( (bool) get_theme_mod( 'reactpress_blog_infinite_scroll', true ) ) {
+		return $query_vars;
+	}
+
+	if ( ! is_front_page() || is_home() ) {
+		return $query_vars;
+	}
+
+	// Only adjust dedicated post loops (front-feed), not inherited main queries.
+	$inherit = true;
+	if ( isset( $block->context['query']['inherit'] ) ) {
+		$inherit = (bool) $block->context['query']['inherit'];
+	} elseif ( isset( $block->attrs['query']['inherit'] ) ) {
+		$inherit = (bool) $block->attrs['query']['inherit'];
+	}
+	if ( $inherit ) {
+		return $query_vars;
+	}
+
+	$rp_page = absint( isset( $_GET['rp_page'] ) ? wp_unslash( $_GET['rp_page'] ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( $rp_page > 1 ) {
+		$query_vars['paged'] = $rp_page;
+	}
+
+	// Keep sticky handling aligned with AJAX load-more (ignore stickies).
+	$query_vars['ignore_sticky_posts'] = true;
+
+	return $query_vars;
+}
+add_filter( 'query_loop_block_query_vars', 'reactpress_blog_query_loop_paged', 10, 2 );
+
+/**
  * Body class marker.
  *
  * @since 1.1.0

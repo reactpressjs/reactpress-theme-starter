@@ -930,6 +930,7 @@
       var page = parseInt(root.getAttribute('data-page') || '1', 10) || 1
       var hasMore = root.getAttribute('data-has-more') === '1'
       var loading = false
+      var errorCooldown = false
       var i18n = config.i18n || {}
 
       function setStatus(visible, label) {
@@ -956,7 +957,7 @@
       }
 
       function loadNext() {
-        if (loading || !hasMore) {
+        if (loading || !hasMore || errorCooldown) {
           return
         }
         loading = true
@@ -1007,8 +1008,13 @@
             }
           })
           .catch(function () {
+            // Keep hasMore true so the sentinel can retry after a short cooldown.
             setStatus(true, i18n.loadError || 'Could not load more posts.')
-            hasMore = false
+            errorCooldown = true
+            setTimeout(function () {
+              errorCooldown = false
+              setStatus(false)
+            }, 2500)
           })
           .finally(function () {
             loading = false

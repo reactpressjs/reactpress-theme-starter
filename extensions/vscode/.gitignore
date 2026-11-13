@@ -1,0 +1,14 @@
+node_modules/
+dist/
+out/
+*.vsix
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.vscode-test/
+coverage/
+*.tsbuildinfo
+.reactpress-token
+content/posts/

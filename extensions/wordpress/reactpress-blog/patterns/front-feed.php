@@ -22,7 +22,7 @@ if ( $per_page < 1 ) {
 
 	<!-- wp:group {"className":"rp-feed__list","layout":{"type":"default"}} -->
 	<div class="wp-block-group rp-feed__list">
-		<!-- wp:query {"queryId":21,"query":{"perPage":<?php echo (int) $per_page; ?>,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"enhancedPagination":false,"layout":{"type":"default"}} -->
+		<!-- wp:query {"queryId":21,"query":{"perPage":<?php echo (int) $per_page; ?>,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"exclude","inherit":false},"enhancedPagination":false,"layout":{"type":"default"}} -->
 		<div class="wp-block-query">
 			<!-- wp:post-template {"className":"rp-article-list","style":{"spacing":{"blockGap":"1rem"}}} -->
 				<!-- wp:group {"tagName":"article","className":"rp-post-card","layout":{"type":"default"}} -->

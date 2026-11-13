@@ -138,7 +138,7 @@ function reactpress_blog_colorize_post_terms( $block_content, $block ) {
 				$attrs .= ' style="' . esc_attr( $style ) . '"';
 			}
 
-			return '<a' . $attrs . '>' . $icon . '<span>' . $label . '</span></a>';
+			return '<a' . $attrs . '>' . $icon . '<span>' . esc_html( wp_strip_all_tags( $label ) ) . '</span></a>';
 		},
 		$block_content
 	);
@@ -179,11 +179,12 @@ add_filter( 'render_block', 'reactpress_blog_default_site_logo', 10, 2 );
  * Featured image fallback for post cards without a thumbnail.
  *
  * @since 1.1.0
- * @param string $block_content Rendered HTML.
- * @param array  $block         Parsed block.
+ * @param string         $block_content Rendered HTML.
+ * @param array          $block         Parsed block.
+ * @param WP_Block|null  $instance      Block instance (context).
  * @return string
  */
-function reactpress_blog_featured_image_fallback( $block_content, $block ) {
+function reactpress_blog_featured_image_fallback( $block_content, $block, $instance = null ) {
 	if ( empty( $block['blockName'] ) || 'core/post-featured-image' !== $block['blockName'] ) {
 		return $block_content;
 	}
@@ -193,20 +194,29 @@ function reactpress_blog_featured_image_fallback( $block_content, $block ) {
 		return $block_content;
 	}
 
-	if ( has_post_thumbnail() && false !== strpos( $block_content, '<img' ) ) {
+	$post_id = 0;
+	if ( $instance instanceof WP_Block && ! empty( $instance->context['postId'] ) ) {
+		$post_id = absint( $instance->context['postId'] );
+	} elseif ( ! empty( $block['context']['postId'] ) ) {
+		$post_id = absint( $block['context']['postId'] );
+	} else {
+		$post_id = absint( get_the_ID() );
+	}
+
+	if ( $post_id && has_post_thumbnail( $post_id ) && false !== strpos( $block_content, '<img' ) ) {
 		return $block_content;
 	}
 
 	$logo = get_template_directory_uri() . '/assets/images/logo.svg';
-	$link = get_permalink();
+	$link = $post_id ? get_permalink( $post_id ) : get_permalink();
 
 	return sprintf(
 		'<figure class="wp-block-post-featured-image rp-post-card__cover rp-post-card__cover--fallback"><a href="%1$s"><img src="%2$s" alt="" width="200" height="114" loading="lazy" decoding="async" /></a></figure>',
-		esc_url( $link ),
+		esc_url( $link ? $link : home_url( '/' ) ),
 		esc_url( $logo )
 	);
 }
-add_filter( 'render_block', 'reactpress_blog_featured_image_fallback', 15, 2 );
+add_filter( 'render_block', 'reactpress_blog_featured_image_fallback', 15, 3 );
 
 /**
  * Force search blocks to span full container width.

@@ -1,0 +1,25 @@
+{
+  "name": "reactpress-vscode-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ReactPress for VS Code — Publish Companion monorepo",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "build:content": "pnpm --filter @fecommunity/reactpress-content build",
+    "build:cli": "pnpm --filter @fecommunity/reactpress-content-cli build",
+    "build:vscode": "pnpm --filter reactpress-vscode build",
+    "test": "pnpm --filter @fecommunity/reactpress-content test",
+    "typecheck": "pnpm -r run typecheck",
+    "watch": "pnpm run watch:content & pnpm run watch:vscode",
+    "watch:content": "pnpm --filter @fecommunity/reactpress-content watch",
+    "watch:vscode": "pnpm --filter reactpress-vscode watch",
+    "cli": "node packages/cli/dist/cli.js",
+    "package:vsix": "pnpm --filter reactpress-vscode package",
+    "publish:vsce": "pnpm --filter reactpress-vscode publish:vsce"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "license": "MIT"
+}

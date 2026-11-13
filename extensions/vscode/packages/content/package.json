@@ -1,0 +1,33 @@
+{
+  "name": "@fecommunity/reactpress-content",
+  "version": "0.1.0",
+  "description": "Shared ReactPress content publish kit (auth, markdown, article sync)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm build && c8 --config ./c8rc.json node --test dist/*.test.js",
+    "test:unit": "pnpm build && node --test dist/*.test.js"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.11.1",
+    "marked": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/marked": "^4.3.2",
+    "@types/node": "^20.17.0",
+    "c8": "10",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

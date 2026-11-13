@@ -210,9 +210,19 @@ function reactpress_blog_block_post_id( $block = null ) {
  * @return string
  */
 function reactpress_blog_get_posts_home_url() {
+	/*
+	 * Prefer the dedicated Posts page when a static front is configured so
+	 * category “All” stays on the posts index (home.html / home-feed).
+	 * Otherwise the site front is the posts feed.
+	 */
 	if ( 'page' === get_option( 'show_on_front' ) ) {
-		// Prefer the site front — front-page.html always renders the feed.
-		return home_url( '/' );
+		$posts_page_id = (int) get_option( 'page_for_posts' );
+		if ( $posts_page_id > 0 ) {
+			$permalink = get_permalink( $posts_page_id );
+			if ( is_string( $permalink ) && '' !== $permalink ) {
+				return $permalink;
+			}
+		}
 	}
 
 	return home_url( '/' );

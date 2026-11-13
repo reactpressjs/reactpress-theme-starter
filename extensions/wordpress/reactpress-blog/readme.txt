@@ -3,7 +3,7 @@ Contributors: reactpress
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.11
+Stable tag: 1.3.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, two-columns, custom-colors, custom-logo, custom-menu, featured-images, full-site-editing, block-patterns, block-styles, sticky-post, threaded-comments, translation-ready, wide-blocks, style-variations
@@ -58,6 +58,12 @@ Yes. Use Appearance → Customize → ReactPress Blog → Colors, or Appearance 
 The home and archive feeds load the next page of posts automatically as you scroll. Turn it off under Appearance → Customize → ReactPress Blog → Layout & Feed to restore classic pagination.
 
 == Changelog ==
+
+= 1.3.12 =
+* Fix classic pagination on static front pages (Query Loop + ?rp_page).
+* Align sticky-post handling between Query Loop and infinite-scroll AJAX.
+* Resolve featured-image fallback from block post context.
+* Retry infinite scroll after network errors instead of permanently stopping.
 
 = 1.3.11 =
 * Hide the empty comments panel on posts with comments closed and no comments.
