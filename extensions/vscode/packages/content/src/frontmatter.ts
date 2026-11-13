@@ -27,6 +27,12 @@ function asStringArray(value: unknown): string[] | undefined {
   return [String(value)];
 }
 
+/** YAML null must not become the literal string "null". */
+function asOptionalString(value: unknown): string | undefined {
+  if (value === undefined || value === null) return undefined;
+  return String(value);
+}
+
 function normalizeFrontmatter(data: Record<string, unknown>): ArticleFrontmatter {
   const title = String(data.title ?? '').trim();
   if (!title) {
@@ -37,14 +43,14 @@ function normalizeFrontmatter(data: Record<string, unknown>): ArticleFrontmatter
     id: data.id ? String(data.id) : undefined,
     title,
     status: asStatus(data.status),
-    summary: data.summary !== undefined ? String(data.summary) : undefined,
-    cover: data.cover !== undefined ? String(data.cover) : undefined,
-    category: data.category !== undefined ? String(data.category) : undefined,
+    summary: asOptionalString(data.summary),
+    cover: asOptionalString(data.cover),
+    category: asOptionalString(data.category),
     tags: asStringArray(data.tags),
     isRecommended: Boolean(data.isRecommended),
     isCommentable: data.isCommentable === undefined ? true : Boolean(data.isCommentable),
-    password: data.password !== undefined ? String(data.password) : undefined,
-    updatedAt: data.updatedAt !== undefined ? String(data.updatedAt) : undefined,
+    password: asOptionalString(data.password),
+    updatedAt: asOptionalString(data.updatedAt),
   };
 }
 

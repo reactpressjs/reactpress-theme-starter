@@ -76,7 +76,7 @@ Not included: knowledge base, CMS pages, Admin webview editor, full media librar
 ## Quality gate
 
 ```bash
-pnpm test        # core kit UT + c8 coverage gate (100%)
+pnpm test        # core kit UT (1000+ scenarios) + c8 coverage gate (100%)
 pnpm typecheck
 pnpm build
 pnpm package:vsix

@@ -13,4 +13,4 @@ Shared ReactPress publish kit used by the VS Code extension and CLI.
 pnpm test
 ```
 
-Runs the core kit unit suite (HTTP, client, frontmatter, markdown, sync) against an in-process mock API, with a **c8 coverage gate of 100%** (`lines` / `branches` / `functions` / `statements`).
+Runs the core kit unit suite (HTTP, client, frontmatter, markdown, sync) plus a **1000+ combinatorial scenario matrix**, with a **c8 coverage gate of 100%** (`lines` / `branches` / `functions` / `statements`).
