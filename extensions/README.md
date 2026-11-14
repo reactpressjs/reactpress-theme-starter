@@ -9,11 +9,8 @@ The root Next.js app must not depend on extension runtimes. Each platform keeps 
 ```text
 extensions/
 ├── README.md
-├── wordpress/                 # WordPress.org / self-hosted WP
-│   ├── README.md
-│   ├── reactpress-blog/       # Block theme (zip root = this folder)
-│   └── scripts/
-│       └── pack-reactpress-blog.sh
+├── wordpress/                 # Pointer to standalone WordPress theme repo
+│   └── README.md
 └── vscode/                    # VS Code / Cursor Publish Companion
     ├── README.md
     ├── packages/
@@ -39,13 +36,17 @@ Future platforms (for example Ghost or Hugo) should be added as siblings, each w
 
 | Path | Platform | Description |
 | --- | --- | --- |
-| [`wordpress/reactpress-blog/`](./wordpress/reactpress-blog/) | WordPress | Full Site Editing (block) theme for the WordPress.org Theme Directory |
+| [reactpress-theme-twentytwentysix](https://github.com/reactpressjs/reactpress-theme-twentytwentysix) | WordPress | Full Site Editing (block) theme — package slug `reactpress-blog` |
 | [`vscode/`](./vscode/) | VS Code / Cursor | Publish Companion: local Markdown → push/publish to ReactPress API |
 
 ## Pack (WordPress)
 
+The WordPress theme lives in a standalone repository:
+
 ```bash
-bash extensions/wordpress/scripts/pack-reactpress-blog.sh
+git clone https://github.com/reactpressjs/reactpress-theme-twentytwentysix.git
+cd reactpress-theme-twentytwentysix
+bash scripts/pack.sh
 ```
 
 Output: `dist/reactpress-blog.zip`
