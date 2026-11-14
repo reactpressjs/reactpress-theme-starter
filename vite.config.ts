@@ -1,15 +1,15 @@
-import { defineConfig } from "vite";
-import vinext from "vinext";
-import { cloudflare } from "@cloudflare/vite-plugin";
-import svgr from "vite-plugin-svgr";
-import { kvDataAdapter } from "@vinext/cloudflare/cache/kv-data-adapter";
+import { defineConfig } from 'vite'
+import vinext from 'vinext'
+import { cloudflare } from '@cloudflare/vite-plugin'
+import svgr from 'vite-plugin-svgr'
+import { kvDataAdapter } from '@vinext/cloudflare/cache/kv-data-adapter'
 
 export default defineConfig({
   plugins: [
     svgr({
-      include: "**/*.svg?react",
+      include: '**/*.svg?react',
       svgrOptions: {
-        exportType: "default",
+        exportType: 'default',
       },
     }),
     vinext({
@@ -19,9 +19,9 @@ export default defineConfig({
     }),
     cloudflare({
       viteEnvironment: {
-        name: "rsc",
-        childEnvironments: ["ssr"],
+        name: 'rsc',
+        childEnvironments: ['ssr'],
       },
     }),
   ],
-});
+})

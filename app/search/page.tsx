@@ -33,9 +33,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
         locale,
         manifest: themeManifest,
         getSetting: () =>
-          mockOrApiEnabled()
-            ? Promise.resolve(mockSetting as never)
-            : SettingProvider.getSetting(),
+          mockOrApiEnabled() ? Promise.resolve(mockSetting as never) : SettingProvider.getSetting(),
       }),
     ])
     articles = searchData.articles

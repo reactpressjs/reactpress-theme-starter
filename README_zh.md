@@ -47,13 +47,13 @@
 
 面向 ReactPress 栈的生产级访客前端 — 不是又一个空壳 Next.js 博客模板。
 
-|                    | 你能得到什么                                                                                          |
-| :----------------- | :---------------------------------------------------------------------------------------------------- |
+|                    | 你能得到什么                                                                                                                            |
+| :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
 | **天然 Headless**  | 通过 [`@fecommunity/reactpress-toolkit`](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) REST 取数 — 内容留在 ReactPress |
-| **无需后台可预览** | `pnpm dev:mock` — 内置示例数据，与 [在线演示](https://reactpress-theme-starter.vercel.app) 相同模式     |
-| **开箱能力**       | 文章、归档、搜索、CMS 页面、知识库、评论、深浅色、RSS 与站点地图                                      |
-| **后台驱动外观**   | 配色、Logo、导航在 ReactPress 控制台配置，配合 [`theme.json`](./theme.json)                           |
-| **性能**           | Lighthouse **95 / 100 / 100 / 100** 开箱即用（见下）                                                  |
+| **无需后台可预览** | `pnpm dev:mock` — 内置示例数据，与 [在线演示](https://reactpress-theme-starter.vercel.app) 相同模式                                     |
+| **开箱能力**       | 文章、归档、搜索、CMS 页面、知识库、评论、深浅色、RSS 与站点地图                                                                        |
+| **后台驱动外观**   | 配色、Logo、导航在 ReactPress 控制台配置，配合 [`theme.json`](./theme.json)                                                             |
+| **性能**           | Lighthouse **95 / 100 / 100 / 100** 开箱即用（见下）                                                                                    |
 
 ```text
 ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  访客站
@@ -175,15 +175,15 @@ pnpm dev -- --remote-origin api.yoursite.com
 
 ## 常用命令
 
-| 命令                 | 说明                                      |
-| :------------------- | :---------------------------------------- |
-| `pnpm dev`           | 主题 + 真实 ReactPress API                |
-| `pnpm dev:mock`      | 主题 + 内置 Mock API（无需后台）          |
-| `pnpm build:mock`    | Mock 数据生产构建（Vercel 演示 / 离线）   |
-| `pnpm build`         | 生产构建（构建时需能访问 API）            |
-| `pnpm start`         | 生产服务，端口 **3001**                   |
-| `pnpm run check`     | ESLint + Prettier                         |
-| `pnpm run typecheck` | TypeScript 类型检查                       |
+| 命令                 | 说明                                    |
+| :------------------- | :-------------------------------------- |
+| `pnpm dev`           | 主题 + 真实 ReactPress API              |
+| `pnpm dev:mock`      | 主题 + 内置 Mock API（无需后台）        |
+| `pnpm build:mock`    | Mock 数据生产构建（Vercel 演示 / 离线） |
+| `pnpm build`         | 生产构建（构建时需能访问 API）          |
+| `pnpm start`         | 生产服务，端口 **3001**                 |
+| `pnpm run check`     | ESLint + Prettier                       |
+| `pnpm run typecheck` | TypeScript 类型检查                     |
 
 完整栈（站点 + 后台 + API）请优先使用 CLI 的 `reactpress init` / `reactpress dev`。
 
@@ -270,12 +270,12 @@ theme.json     主题清单（路由、外观 Schema）
 
 ## 生态
 
-|                             |                                          |
-| :-------------------------- | :--------------------------------------- |
-| [ReactPress](https://github.com/reactpressjs/reactpress) | CMS、后台、API、CLI、插件与桌面端 |
-| [文档](https://reactpress.cc/) | 指南、API 与架构 |
+|                                                                          |                                   |
+| :----------------------------------------------------------------------- | :-------------------------------- |
+| [ReactPress](https://github.com/reactpressjs/reactpress)                 | CMS、后台、API、CLI、插件与桌面端 |
+| [文档](https://reactpress.cc/)                                           | 指南、API 与架构                  |
 | [Toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) | `@fecommunity/reactpress-toolkit` |
-| [主题 Schema](./theme.manifest.schema.json) | 路由与外观清单 |
+| [主题 Schema](./theme.manifest.schema.json)                              | 路由与外观清单                    |
 
 ---
 

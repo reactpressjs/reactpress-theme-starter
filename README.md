@@ -47,13 +47,13 @@ routing, layout, SEO, and UI. Content comes from the headless API; no CMS bundle
 
 A production-ready visitor frontend for the ReactPress stack — not another bare Next.js blog scaffold.
 
-|                          | What you get                                                                  |
-| :----------------------- | :---------------------------------------------------------------------------- |
-| **Headless by design**   | REST via [`@fecommunity/reactpress-toolkit`](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) — content stays in ReactPress |
-| **Try without backend**  | `pnpm dev:mock` — full UI with sample data, same as the [live demo](https://reactpress-theme-starter.vercel.app) |
-| **Built-in surfaces**    | Articles, archives, search, CMS pages, knowledge base, comments, light/dark, RSS & sitemap |
-| **Admin-driven look**    | Appearance (colors, logo, nav) from the ReactPress console + [`theme.json`](./theme.json) |
-| **Performance**          | Lighthouse **95 / 100 / 100 / 100** out of the box (see below)                |
+|                         | What you get                                                                                                                              |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| **Headless by design**  | REST via [`@fecommunity/reactpress-toolkit`](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) — content stays in ReactPress |
+| **Try without backend** | `pnpm dev:mock` — full UI with sample data, same as the [live demo](https://reactpress-theme-starter.vercel.app)                          |
+| **Built-in surfaces**   | Articles, archives, search, CMS pages, knowledge base, comments, light/dark, RSS & sitemap                                                |
+| **Admin-driven look**   | Appearance (colors, logo, nav) from the ReactPress console + [`theme.json`](./theme.json)                                                 |
+| **Performance**         | Lighthouse **95 / 100 / 100 / 100** out of the box (see below)                                                                            |
 
 ```text
 ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  Public Site
@@ -175,15 +175,15 @@ Next.js 15 App Router with SSR, static generation, and a light client bundle —
 
 ## Commands
 
-| Command              | Purpose                                                       |
-| :------------------- | :------------------------------------------------------------ |
-| `pnpm dev`           | Theme + live ReactPress API                                   |
-| `pnpm dev:mock`      | Theme + embedded mock API (no backend)                        |
-| `pnpm build:mock`    | Production build with mock data (Vercel demo / offline)       |
-| `pnpm build`         | Production build (API must be reachable at build time)        |
-| `pnpm start`         | Production server on port **3001**                            |
-| `pnpm run check`     | ESLint + Prettier                                             |
-| `pnpm run typecheck` | TypeScript check                                              |
+| Command              | Purpose                                                 |
+| :------------------- | :------------------------------------------------------ |
+| `pnpm dev`           | Theme + live ReactPress API                             |
+| `pnpm dev:mock`      | Theme + embedded mock API (no backend)                  |
+| `pnpm build:mock`    | Production build with mock data (Vercel demo / offline) |
+| `pnpm build`         | Production build (API must be reachable at build time)  |
+| `pnpm start`         | Production server on port **3001**                      |
+| `pnpm run check`     | ESLint + Prettier                                       |
+| `pnpm run typecheck` | TypeScript check                                        |
 
 Full stack (site + admin + API): prefer `reactpress init` / `reactpress dev` from the CLI.
 
@@ -270,12 +270,12 @@ Theme → [this repo](https://github.com/reactpressjs/reactpress-theme-starter/i
 
 ## Ecosystem
 
-|                             |                                          |
-| :-------------------------- | :--------------------------------------- |
-| [ReactPress](https://github.com/reactpressjs/reactpress) | CMS, Admin, API, CLI, plugins & desktop |
-| [Documentation](https://reactpress.cc/) | Guides, API, and architecture |
-| [Toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) | `@fecommunity/reactpress-toolkit` |
-| [Theme schema](./theme.manifest.schema.json) | Manifest for routes & appearance |
+|                                                                          |                                         |
+| :----------------------------------------------------------------------- | :-------------------------------------- |
+| [ReactPress](https://github.com/reactpressjs/reactpress)                 | CMS, Admin, API, CLI, plugins & desktop |
+| [Documentation](https://reactpress.cc/)                                  | Guides, API, and architecture           |
+| [Toolkit](https://www.npmjs.com/package/@fecommunity/reactpress-toolkit) | `@fecommunity/reactpress-toolkit`       |
+| [Theme schema](./theme.manifest.schema.json)                             | Manifest for routes & appearance        |
 
 ---
 
