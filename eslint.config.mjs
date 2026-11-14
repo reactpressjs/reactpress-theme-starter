@@ -17,6 +17,7 @@ const eslintConfig = [
     ignores: [
       'next-env.d.ts',
       'next.config.js',
+      'next.config.mjs',
       'next.config.cjs',
       'postcss.config.cjs',
       'prettier.config.cjs',

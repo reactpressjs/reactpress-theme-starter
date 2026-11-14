@@ -1,17 +1,23 @@
-const path = require('path')
-const { config } = require('@fecommunity/reactpress-toolkit/config')
-const {
+import path from 'node:path'
+import { createRequire } from 'node:module'
+import { fileURLToPath } from 'node:url'
+import {
   resolveThemeApiEnv,
   resolveApiRewriteOrigin,
   resolveClientSiteUrl,
   isLocalhostUrl,
-} = require('./scripts/resolve-api-env.mjs')
+} from './scripts/resolve-api-env.mjs'
+
+const require = createRequire(import.meta.url)
+const { config } = require('@fecommunity/reactpress-toolkit/config')
 const {
   isEmbedAdminEnabled,
   isBundledAdminEnabled,
   createLocalAdminRewrites,
   createBundledAdminFallbackRewrites,
 } = require('./scripts/embed-admin.cjs')
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // App Router (Next 15): do not use createReactPressNextConfig's react webpack alias —
 // it conflicts with Next's compiled React and causes SSR "useContext" null errors.
@@ -40,7 +46,7 @@ const basePath = process.env.BASE_PATH || undefined
 const output = process.env.EXPORT ? 'export' : undefined
 
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   output,
   basePath,
   distDir: process.env.NEXT_DIST_DIR || '.next',
@@ -116,3 +122,5 @@ module.exports = {
     ]
   },
 }
+
+export default nextConfig

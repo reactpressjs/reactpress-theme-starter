@@ -1,4 +1,4 @@
-/** Shared helpers for embedding @fecommunity/reactpress-web (CJS — next.config.js). */
+/** Shared helpers for embedding @fecommunity/reactpress-web (CJS — next.config.mjs via createRequire). */
 
 const DEFAULT_ADMIN_STATIC_PORT = 3000
 
