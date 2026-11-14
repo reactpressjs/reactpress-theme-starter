@@ -4,7 +4,6 @@ pnpm-lock.yaml
 public
 *.tsbuildinfo
 tsconfig.json
-extensions
 dist
 .vinext
 .cloudflare

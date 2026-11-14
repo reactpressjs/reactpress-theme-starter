@@ -26,8 +26,6 @@ const eslintConfig = [
       'node_modules/**',
       'scripts/**',
       'public/**',
-      // Separate packages with their own tooling / style
-      'extensions/**',
       'dist/**',
       '.vinext/**',
       '.cloudflare/**',

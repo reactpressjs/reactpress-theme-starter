@@ -38,5 +38,5 @@
     ".next-dev/types/**/*.ts",
     ".cloudflare/types"
   ],
-  "exclude": ["node_modules", "extensions", "dist", ".vinext", ".cloudflare"]
+  "exclude": ["node_modules", "dist", ".vinext", ".cloudflare"]
 }
