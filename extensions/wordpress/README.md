@@ -6,11 +6,11 @@ WordPress ports of the ReactPress Theme Starter.
 
 | Package | Type | Status |
 | --- | --- | --- |
-| [reactpress-blog](https://github.com/reactpressjs/reactpress-theme-twentytwentysix) | Block theme (FSE) | Moved to standalone repo — WordPress.org review ticket [#298039](https://themes.trac.wordpress.org/ticket/298039) |
+| [ReactPress for WordPress](https://github.com/reactpressjs/reactpress-theme-twentytwentysix) | Block theme (FSE) | Moved to standalone repo — WordPress.org review ticket [#298039](https://themes.trac.wordpress.org/ticket/298039) |
 
 ## Standalone repository
 
-The WordPress theme **ReactPress Blog** (`reactpress-blog`) now lives in:
+The official **ReactPress for WordPress** theme (`reactpress-blog`) now lives in:
 
 **https://github.com/reactpressjs/reactpress-theme-twentytwentysix**
 
