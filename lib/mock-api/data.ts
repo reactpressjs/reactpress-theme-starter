@@ -937,7 +937,7 @@ export const mockKnowledgeItems = [...mockKnowledgeBooks, ...mockKnowledgeChapte
 
 export function getMockKnowledgeById(id: string) {
   const item = mockKnowledgeItems.find((entry) => entry.id === id)
-  if (!item) return mockKnowledgeBooks[0] ?? null
+  if (!item) return null
   if (!item.parentId) {
     return {
       ...item,
@@ -948,19 +948,19 @@ export function getMockKnowledgeById(id: string) {
 }
 
 export function getMockArticleById(id: string) {
-  return mockArticles.find((article) => article.id === id) ?? mockArticles[0]
+  return mockArticles.find((article) => article.id === id)
 }
 
 export function getMockPageById(id: string) {
-  return mockPages.find((page) => page.id === id || page.path === id) ?? mockPage
+  return mockPages.find((page) => page.id === id || page.path === id)
 }
 
 export function getMockCategoryByValue(value: string) {
-  return mockCategories.find((category) => category.value === value) ?? mockCategories[0]
+  return mockCategories.find((category) => category.value === value)
 }
 
 export function getMockTagByValue(value: string) {
-  return mockTags.find((item) => item.value === value) ?? mockTags[0]
+  return mockTags.find((item) => item.value === value)
 }
 
 export function filterMockArticlesByCategory(value: string) {

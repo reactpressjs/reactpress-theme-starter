@@ -19,7 +19,6 @@ import { colorModeInitScript } from '@fecommunity/reactpress-toolkit/theme/serve
 import type { Metadata, Viewport } from 'next'
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildRootMetadata()

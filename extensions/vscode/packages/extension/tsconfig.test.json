@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-test",
+    "rootDir": "src",
+    "noEmit": false
+  },
+  "include": [
+    "src/preview-target.ts",
+    "src/preview-target.test.ts",
+    "src/url-guards.ts",
+    "src/url-guards.test.ts"
+  ]
+}

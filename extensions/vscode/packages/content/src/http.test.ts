@@ -199,4 +199,38 @@ describe('ReactPressHttp', () => {
     assert.equal(called, true);
     assert.equal(data.via, 'custom');
   });
+
+  it('times out hung requests and rethrows other fetch errors', async () => {
+    const hanging = new ReactPressHttp({
+      apiUrl: 'http://example.invalid/api',
+      timeoutMs: 40,
+      fetchImpl: ((_url, init) =>
+        new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener('abort', () => {
+            const err = new Error('aborted');
+            err.name = 'AbortError';
+            reject(err);
+          });
+        })) as typeof fetch,
+    });
+    await assert.rejects(
+      () => hanging.get('/slow'),
+      (err: unknown) =>
+        err instanceof ReactPressApiError &&
+        err.statusCode === 408 &&
+        /timed out after 40ms/.test(err.message)
+    );
+
+    const boom = new ReactPressHttp({
+      apiUrl: 'http://example.invalid/api',
+      timeoutMs: 5_000,
+      fetchImpl: (async () => {
+        throw new TypeError('network down');
+      }) as typeof fetch,
+    });
+    await assert.rejects(
+      () => boom.get('/down'),
+      (err: unknown) => err instanceof TypeError && err.message === 'network down'
+    );
+  });
 });

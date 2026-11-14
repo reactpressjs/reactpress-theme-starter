@@ -4,6 +4,8 @@ export interface ReactPressClientOptions {
   apiUrl: string;
   token?: string;
   fetchImpl?: typeof fetch;
+  /** Per-request timeout in milliseconds (default 30000). */
+  timeoutMs?: number;
 }
 
 export interface LoginCredentials {

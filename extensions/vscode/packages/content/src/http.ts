@@ -7,6 +7,8 @@ export interface ApiEnvelope<T> {
   statusCode?: number;
 }
 
+const DEFAULT_TIMEOUT_MS = 30_000;
+
 function normalizeApiUrl(apiUrl: string): string {
   return apiUrl.replace(/\/+$/, '');
 }
@@ -15,11 +17,13 @@ export class ReactPressHttp {
   readonly apiUrl: string;
   token?: string;
   private readonly fetchImpl: typeof fetch;
+  private readonly timeoutMs: number;
 
   constructor(options: ReactPressClientOptions) {
     this.apiUrl = normalizeApiUrl(options.apiUrl);
     this.token = options.token;
     this.fetchImpl = options.fetchImpl ?? fetch;
+    this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   }
 
   setToken(token?: string): void {
@@ -58,11 +62,31 @@ export class ReactPressHttp {
       body = JSON.stringify(init.body);
     }
 
-    const response = await this.fetchImpl(url.toString(), {
-      method,
-      headers,
-      body,
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.timeoutMs);
+
+    let response: Response;
+    try {
+      response = await this.fetchImpl(url.toString(), {
+        method,
+        headers,
+        body,
+        signal: controller.signal,
+      });
+    } catch (error) {
+      // AbortError (including DOMException) or a raced abort after fetch threw.
+      const aborted =
+        controller.signal.aborted || (error instanceof Error && error.name === 'AbortError');
+      if (aborted) {
+        throw new ReactPressApiError(
+          `Request timed out after ${this.timeoutMs}ms: ${method} ${path}`,
+          408
+        );
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
 
     const text = await response.text();
     let json: ApiEnvelope<T> | null = null;

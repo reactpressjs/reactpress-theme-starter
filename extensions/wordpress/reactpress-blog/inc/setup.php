@@ -31,6 +31,24 @@ function reactpress_blog_setup() {
 			'flex-width'  => true,
 		)
 	);
+	add_theme_support( 'align-wide' );
+	add_theme_support(
+		'html5',
+		array(
+			'search-form',
+			'comment-form',
+			'comment-list',
+			'gallery',
+			'caption',
+			'style',
+			'script',
+		)
+	);
+	register_nav_menus(
+		array(
+			'primary' => __( 'Primary Menu', 'reactpress-blog' ),
+		)
+	);
 	add_editor_style( 'assets/css/theme.css' );
 }
 add_action( 'after_setup_theme', 'reactpress_blog_setup' );

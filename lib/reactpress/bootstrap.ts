@@ -7,7 +7,6 @@ import {
   type AppBootstrapResult,
 } from '@fecommunity/reactpress-toolkit/theme/server'
 import type { IncomingMessage } from 'http'
-import { cookies, headers } from 'next/headers'
 
 type BootstrapCategory = {
   value: string
@@ -15,20 +14,13 @@ type BootstrapCategory = {
   articleCount?: number
 }
 
-async function buildVisitorRequest(): Promise<IncomingMessage> {
-  const cookieStore = await cookies()
-  const headerStore = await headers()
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((item) => `${item.name}=${encodeURIComponent(item.value)}`)
-    .join('; ')
-
-  return {
-    headers: {
-      cookie: cookieHeader,
-      'accept-language': headerStore.get('accept-language') ?? '',
-    },
-  } as IncomingMessage
+/**
+ * Public bootstrap is cacheable. Visitor locale is applied on the client
+ * (`VisitorLocaleBootstrap`) so the root layout can use ISR instead of
+ * reading cookies/headers, which would force every page to be dynamic.
+ */
+function buildVisitorRequest(): IncomingMessage {
+  return { headers: {} } as IncomingMessage
 }
 
 function slimBootstrap(bootstrap: AppBootstrapResult, pathname: string): AppBootstrapResult {
@@ -40,7 +32,7 @@ function slimBootstrap(bootstrap: AppBootstrapResult, pathname: string): AppBoot
 }
 
 export async function loadAppBootstrap(pathname = '/'): Promise<AppBootstrapResult> {
-  const req = await buildVisitorRequest()
+  const req = buildVisitorRequest()
 
   if (mockOrApiEnabled()) {
     return slimBootstrap(buildMockAppBootstrap(req), pathname)

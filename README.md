@@ -59,7 +59,7 @@ A production-ready visitor frontend for the ReactPress stack — not another bar
 ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  Public Site
 ```
 
-**Stack:** Next.js 15 · React 19 · Tailwind CSS 4 · Node.js 20+ · pnpm 9
+**Stack:** Next.js 15 · React 19 · Tailwind CSS 4 · Node.js 22.23+ · pnpm 9
 
 ---
 
@@ -98,7 +98,7 @@ Open **http://localhost:3001**.
 
 ## Quick Start (full stack)
 
-**Requirements:** Node.js 20+, pnpm 9+
+**Requirements:** Node.js 22.23+, pnpm 9+
 
 The fastest way to run site + admin + API is the [ReactPress CLI](https://reactpress.cc/):
 

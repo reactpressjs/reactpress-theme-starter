@@ -1,6 +1,6 @@
 # Production readiness
 
-Status: **Marketplace-ready package (preview)**. Live API E2E and Extension Host smoke still need a running ReactPress stack on your machine.
+Status: **Marketplace-ready package (preview)** after the v0.1 quality hardening pass. Live API E2E and Extension Host smoke still need a running ReactPress stack on your machine.
 
 ## Verified
 
@@ -9,7 +9,11 @@ Status: **Marketplace-ready package (preview)**. Live API E2E and Extension Host
 | Unit + mock API sync tests (`pnpm test`, c8 100%) | Pass |
 | Extension typecheck | Pass |
 | Workspace build (`pnpm build`) | Pass |
-| VSIX contents | `package.json`, README, CHANGELOG, LICENSE, icon, bundled `dist/extension.js` |
+| VSIX packaging (`pnpm package:vsix`) | Pass |
+| Cover path containment (no `../` upload) | Pass |
+| HTTP request timeout (30s default) | Pass |
+| Conflict recovery error handling | Pass |
+| Activation narrowed to Markdown / commands | Pass |
 | Marketplace metadata | `publisher`, `icon`, `galleryBanner`, `categories`, `preview`, privacy notes |
 | Secret token storage | VS Code `SecretStorage` (not settings.json) |
 | Bundle size | highlight.js common languages only |

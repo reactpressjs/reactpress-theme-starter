@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import { ReactPressClient } from '@fecommunity/reactpress-content';
 
 import { clearStoredToken, getApiUrl, getStoredToken, getUsername, setStoredToken } from './config';
+import { assertHttpOrHttpsUrl, isLocalHostname } from './url-guards';
 
 export async function getAuthenticatedClient(context: vscode.ExtensionContext): Promise<ReactPressClient> {
   const apiUrl = getApiUrl();
@@ -40,12 +41,17 @@ export async function connectSite(context: vscode.ExtensionContext): Promise<voi
   if (!password) return;
 
   const normalizedApiUrl = apiUrl.replace(/\/+$/, '');
-  if (!/^https?:\/\//i.test(normalizedApiUrl)) {
-    throw new Error('API URL must start with http:// or https://');
-  }
+  const parsedApi = assertHttpOrHttpsUrl(normalizedApiUrl, 'API URL');
   if (!/\/api$/i.test(normalizedApiUrl)) {
     const cont = await vscode.window.showWarningMessage(
       'API URL usually ends with /api (e.g. http://localhost:3002/api). Continue anyway?',
+      'Continue'
+    );
+    if (cont !== 'Continue') return;
+  }
+  if (parsedApi.protocol === 'http:' && !isLocalHostname(parsedApi.hostname)) {
+    const cont = await vscode.window.showWarningMessage(
+      'API URL uses plain HTTP outside localhost. Your login token may be exposed on the network. Continue anyway?',
       'Continue'
     );
     if (cont !== 'Continue') return;

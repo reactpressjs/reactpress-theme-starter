@@ -40,7 +40,6 @@
     "content"
   ],
   "activationEvents": [
-    "onStartupFinished",
     "onLanguage:markdown"
   ],
   "main": "./dist/extension.js",
@@ -140,6 +139,7 @@
   "scripts": {
     "build": "node esbuild.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsc -p tsconfig.test.json && node --test dist-test/*.test.js",
     "watch": "node esbuild.mjs --watch",
     "vscode:prepublish": "pnpm run build",
     "package": "pnpm run build && vsce package --no-dependencies",

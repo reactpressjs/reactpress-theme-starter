@@ -6,11 +6,13 @@ src/**
 **/*.vsix
 esbuild.mjs
 tsconfig.json
+tsconfig.test.json
 .gitignore
 node_modules/**
 ../**
 ../../**
 dist/**
+dist-test/**
 !dist/extension.js
 **/*.test.js
 **/*.test.ts

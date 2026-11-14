@@ -38,6 +38,9 @@ describe('error types + public exports', () => {
     assert.equal(typeof api.slugifyTitle, 'function');
     assert.equal(typeof api.deriveSummary, 'function');
     assert.equal(typeof api.buildArticlePayload, 'function');
+    assert.equal(typeof api.isPathInsideBase, 'function');
+    assert.equal(api.isPathInsideBase('/a/b', '/a'), true);
+    assert.equal(api.isPathInsideBase('/outside', '/a'), false);
     assert.equal(api.ReactPressApiError, ReactPressApiError);
     assert.equal(api.SyncConflictError, SyncConflictError);
   });

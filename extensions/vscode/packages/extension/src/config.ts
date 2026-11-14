@@ -1,6 +1,7 @@
 import { createHash } from 'crypto';
-import * as path from 'path';
 import * as vscode from 'vscode';
+
+import { resolveContentDir } from './url-guards';
 
 interface StoredAuth {
   apiUrl: string;
@@ -56,7 +57,7 @@ export function getContentAbsoluteDir(uri?: vscode.Uri): string | undefined {
   }
   folder = folder ?? vscode.workspace.workspaceFolders?.[0];
   if (!folder) return undefined;
-  return path.join(folder.uri.fsPath, getContentPath());
+  return resolveContentDir(folder.uri.fsPath, getContentPath());
 }
 
 export async function getStoredToken(context: vscode.ExtensionContext): Promise<string | undefined> {

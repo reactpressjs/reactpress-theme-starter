@@ -76,10 +76,10 @@ Not included: knowledge base, CMS pages, Admin webview editor, full media librar
 ## Quality gate
 
 ```bash
-pnpm test        # core kit UT (1000+ scenarios) + c8 coverage gate (100%)
+pnpm test        # content kit (100% coverage), CLI, and extension helpers
 pnpm typecheck
 pnpm build
 pnpm package:vsix
 ```
 
-See [PRODUCTION.md](./PRODUCTION.md) for Marketplace publish steps. The extension ships as **preview** until live API E2E and Extension Host smoke pass on your machine.
+See [PRODUCTION.md](./PRODUCTION.md) for Marketplace publish steps. Automated gates are green for **preview** publish; run Connect → Push → Publish → Preview against a live API before `publish:vsce`.

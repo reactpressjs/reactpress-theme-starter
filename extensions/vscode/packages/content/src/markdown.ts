@@ -1,10 +1,20 @@
 import hljs from 'highlight.js/lib/common';
 import { marked, Renderer } from 'marked';
 
+function escapeHtml(code: string): string {
+  return code
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /**
  * Aligns with reactpress-v2 server/src/utils/markdown.util.ts
  * so published html/toc match Admin / comment rendering.
  * Uses highlight.js common languages only to keep the VS Code bundle small.
+ * Unknown / unlabeled fences are HTML-escaped (no highlightAuto) for CPU safety.
  */
 export function renderMarkdown(content: string): { html: string; toc: string } {
   const toc: Array<[number, string, string]> = [];
@@ -16,18 +26,16 @@ export function renderMarkdown(content: string): { html: string; toc: string } {
     return `<h${level} id="${anchor}">${text}</h${level}>`;
   };
 
-  marked.setOptions({
+  // Pass options per call — avoid marked.setOptions mutating shared global state.
+  let html = marked.parse(content, {
+    renderer,
     highlight(code: string, lang: string) {
       if (lang && hljs.getLanguage(lang)) {
         return hljs.highlight(code, { language: lang }).value;
       }
-      return hljs.highlightAuto(code).value;
+      return escapeHtml(code);
     },
-    renderer,
-  } as Parameters<typeof marked.setOptions>[0]);
-
-  const tokens = marked.lexer(content);
-  let html = marked.parser(tokens);
+  } as Parameters<typeof marked.parse>[1]) as string;
   html = html.replace(/<pre>/gi, '<pre class="hljs">');
 
   return {

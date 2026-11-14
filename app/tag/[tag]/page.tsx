@@ -21,7 +21,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   try {
     const data = await loadTagArchivePageProps(tagValue)
-    const label = data.tag?.label || tagValue
+    if (!data.tag) return {}
+    const label = data.tag.label || tagValue
     return buildLocalizedListPageMetadata(
       'pageTitleTag',
       { label },
@@ -46,6 +47,9 @@ export default async function TagArchivePage({ params }: PageProps) {
 
   try {
     const data = await loadTagArchivePageProps(tagValue)
+    if (!data.tag) {
+      notFound()
+    }
     return <TagArchiveClient initialArticles={data.articles} total={data.total} tag={data.tag} />
   } catch (error) {
     console.error('[reactpress-theme-starter] tag archive fetch failed', error)

@@ -13,18 +13,19 @@ describe('markdown.renderMarkdown', () => {
     assert.deepEqual(parsed[1], [2, 'heading-1', 'Two']);
   });
 
-  it('highlights known languages and autos for unknown', () => {
+  it('highlights known languages and escapes unknown / unlabeled fences', () => {
     const known = renderMarkdown('```js\nconst x = 1\n```\n');
     assert.match(known.html, /<pre class="hljs">/);
     assert.match(known.html, /hljs-/);
 
-    const unknown = renderMarkdown('```notalang\nfoo = 1\n```\n');
+    const unknown = renderMarkdown('```notalang\nfoo <bar>\n```\n');
     assert.match(unknown.html, /<pre class="hljs">/);
-  });
+    assert.match(unknown.html, /foo &lt;bar&gt;/);
+    assert.ok(!unknown.html.includes('foo <bar>'));
 
-  it('highlights fenced blocks without language', () => {
-    const { html } = renderMarkdown('```\nplain\n```\n');
-    assert.match(html, /<pre class="hljs">/);
+    const unlabeled = renderMarkdown('```\nplain & stuff\n```\n');
+    assert.match(unlabeled.html, /<pre class="hljs">/);
+    assert.match(unlabeled.html, /plain &amp; stuff/);
   });
 });
 

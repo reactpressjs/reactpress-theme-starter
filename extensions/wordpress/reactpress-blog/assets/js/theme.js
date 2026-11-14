@@ -98,6 +98,20 @@
     update()
   }
 
+  function placeHeaderTools() {
+    var tools = document.querySelector('.rp-header-tools')
+    var actions = document.querySelector('.rp-header-actions')
+    var drawer = document.querySelector('.rp-mobile-drawer')
+    if (!tools || !actions || !drawer) {
+      return
+    }
+    var wide = window.matchMedia('(min-width: 992px)').matches
+    var target = wide ? actions : drawer
+    if (tools.parentElement !== target) {
+      target.appendChild(tools)
+    }
+  }
+
   function initMobileMenu() {
     var header = document.querySelector('.rp-header')
     var toggle = document.querySelector('[data-rp-menu-toggle]')
@@ -1039,6 +1053,11 @@
   }
 
   onReady(function () {
+    placeHeaderTools()
+    var headerToolsQuery = window.matchMedia('(min-width: 992px)')
+    if (headerToolsQuery.addEventListener) {
+      headerToolsQuery.addEventListener('change', placeHeaderTools)
+    }
     initThemeToggle()
     initStickyHeader()
     initMobileMenu()

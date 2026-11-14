@@ -32,7 +32,12 @@ async function handleRequest(request: Request, context: RouteContext): Promise<R
   if (isMockApiEnabled()) {
     const body = await readJsonBody(request)
     const mockResponse = matchMockRoute(request.method, path, { keyword, body })
-    response = mockResponse ?? Response.json({ success: true, data: null })
+    response =
+      mockResponse ??
+      Response.json(
+        { success: false, msg: 'Not found', statusCode: 404 },
+        { status: 404, headers: { 'Content-Type': 'application/json; charset=utf-8' } }
+      )
   } else {
     response = await proxyToUpstreamApi(request, path)
   }

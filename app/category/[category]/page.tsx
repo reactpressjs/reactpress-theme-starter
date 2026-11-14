@@ -21,7 +21,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   try {
     const data = await loadCategoryArchivePageProps(categoryValue)
-    const label = data.category?.label || categoryValue
+    if (!data.category) return {}
+    const label = data.category.label || categoryValue
     return buildLocalizedListPageMetadata(
       'pageTitleCategory',
       { label },
@@ -46,6 +47,9 @@ export default async function CategoryArchivePage({ params }: PageProps) {
 
   try {
     const data = await loadCategoryArchivePageProps(categoryValue)
+    if (!data.category) {
+      notFound()
+    }
     return (
       <CategoryClient initialArticles={data.articles} total={data.total} category={data.category} />
     )

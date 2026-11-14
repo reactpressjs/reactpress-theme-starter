@@ -21,7 +21,7 @@ Please open an issue before large changes (new routes, breaking API assumptions,
 
 ### Prerequisites
 
-- Node.js **20+**
+- Node.js **22.23+**
 - pnpm **9+** (this repo uses pnpm exclusively)
 
 ### Quick start (mock mode — no backend required)

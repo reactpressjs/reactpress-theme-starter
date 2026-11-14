@@ -125,11 +125,11 @@ export function buildMockCategoryArchivePageProps(
   categoryValue: string,
   pageSize = DEFAULT_PAGE_SIZE
 ) {
-  const articles = asArticles(filterMockArticlesByCategory(categoryValue))
-  const category = getMockCategoryByValue(categoryValue) ?? {
-    value: categoryValue,
-    label: categoryValue,
+  const category = getMockCategoryByValue(categoryValue)
+  if (!category) {
+    return { articles: [] as IArticle[], total: 0, category: null }
   }
+  const articles = asArticles(filterMockArticlesByCategory(categoryValue))
   return {
     articles: slimArticlesForList(articles.slice(0, pageSize)),
     total: articles.length,
@@ -138,8 +138,11 @@ export function buildMockCategoryArchivePageProps(
 }
 
 export function buildMockTagArchivePageProps(tagValue: string, pageSize = DEFAULT_PAGE_SIZE) {
+  const tag = getMockTagByValue(tagValue)
+  if (!tag) {
+    return { articles: [] as IArticle[], total: 0, tag: null }
+  }
   const articles = asArticles(filterMockArticlesByTag(tagValue))
-  const tag = getMockTagByValue(tagValue) ?? { value: tagValue, label: tagValue }
   return {
     articles: slimArticlesForList(articles.slice(0, pageSize)),
     total: articles.length,
@@ -163,11 +166,12 @@ export function buildMockSearchPageProps(keyword: string) {
 }
 
 export function buildMockCmsPageProps(id: string) {
-  return { page: getMockPageById(id) as never }
+  return { page: (getMockPageById(id) ?? null) as never }
 }
 
 export function buildMockArticleDetailProps(id: string) {
-  return { article: getMockArticleById(id) as unknown as IArticle }
+  const article = getMockArticleById(id)
+  return { article: (article ?? null) as unknown as IArticle | null }
 }
 
 export function buildMockKnowledgeIndexPageProps(pageSize = DEFAULT_PAGE_SIZE) {

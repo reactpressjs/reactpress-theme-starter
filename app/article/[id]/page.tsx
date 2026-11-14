@@ -5,11 +5,7 @@ import {
   parseSiteSeoContext,
 } from '@/lib/reactpress/contentSeo'
 import { generateArticleStaticParams } from '@/lib/reactpress/staticParams'
-import {
-  loadArticleDetailProps,
-  loadSiteMeta,
-  loadSiteSetting,
-} from '@/lib/reactpress/ssrFetch'
+import { loadArticleDetailProps, loadSiteMeta, loadSiteSetting } from '@/lib/reactpress/ssrFetch'
 import { resolveImageUrl } from '@fecommunity/reactpress-toolkit/theme/server'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -22,6 +18,12 @@ export async function generateStaticParams() {
 
 interface PageProps {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ preview?: string | string[] }>
+}
+
+function isArticlePreview(value: string | string[] | undefined) {
+  const flag = Array.isArray(value) ? value[0] : value
+  return flag === '1'
 }
 
 function resolveAbsoluteImageUrl(cover: string | undefined, siteUrl?: string) {
@@ -35,8 +37,9 @@ function resolveAbsoluteImageUrl(cover: string | undefined, siteUrl?: string) {
   }
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { id } = await params
+  const preview = isArticlePreview((await searchParams).preview)
 
   try {
     const [{ article }, siteMeta, settingRow] = await Promise.all([
@@ -45,29 +48,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       loadSiteSetting(),
     ])
 
-    if (!article?.id || article.status !== 'publish') {
+    if (!article?.id || (article.status !== 'publish' && !preview)) {
       return {}
     }
 
     const site = parseSiteSeoContext(settingRow, siteMeta)
     const imageUrl = resolveAbsoluteImageUrl(article.cover, site.siteUrl)
-    return buildArticleMetadata(article, site, imageUrl)
+    const metadata = buildArticleMetadata(article, site, imageUrl)
+    if (article.status !== 'publish') {
+      return { ...metadata, robots: { index: false, follow: false } }
+    }
+    return metadata
   } catch (error) {
     console.error('[reactpress-theme-starter] article metadata fetch failed', error)
     return {}
   }
 }
 
-export default async function ArticlePage({ params }: PageProps) {
+export default async function ArticlePage({ params, searchParams }: PageProps) {
   const { id } = await params
+  const preview = isArticlePreview((await searchParams).preview)
 
   try {
-    const [{ article }, siteMeta] = await Promise.all([
-      loadArticleDetailProps(id),
-      loadSiteMeta(),
-    ])
+    const [{ article }, siteMeta] = await Promise.all([loadArticleDetailProps(id), loadSiteMeta()])
 
-    if (!article?.id || article.status !== 'publish') {
+    if (!article?.id || (article.status !== 'publish' && !preview)) {
       notFound()
     }
 

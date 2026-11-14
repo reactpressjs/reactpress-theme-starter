@@ -49,6 +49,10 @@ add_action( 'enqueue_block_assets', 'reactpress_blog_enqueue_styles' );
  * @return void
  */
 function reactpress_blog_enqueue_scripts() {
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+
 	wp_enqueue_script(
 		'reactpress-blog-theme',
 		get_template_directory_uri() . '/assets/js/theme.js',

@@ -1,4 +1,9 @@
-import { mockArticles } from '@/lib/mock-api/data'
+import {
+  mockArticles,
+  mockKnowledgeBooks,
+  mockKnowledgeChapters,
+  mockPages,
+} from '@/lib/mock-api/data'
 import { mockOrApiEnabled } from '@/lib/mock-api/ssr'
 import { getClientSiteUrl } from '@/lib/reactpress/env'
 import { MetadataRoute } from 'next'
@@ -14,12 +19,15 @@ export const revalidate = 3600
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getClientSiteUrl()
 
-  const staticRoutes = ['', 'blog', 'tags', 'archives', 'search'].map((route) => ({
-    url: route ? `${siteUrl}/${route}` : siteUrl,
-    lastModified: new Date(),
-  }))
+  const staticRoutes = ['', 'tags', 'archives', 'search', 'knowledge', 'suggestions'].map(
+    (route) => ({
+      url: route ? `${siteUrl}/${route}` : siteUrl,
+      lastModified: new Date(),
+    })
+  )
 
   let articleRoutes: MetadataRoute.Sitemap = []
+  let contentRoutes: MetadataRoute.Sitemap = []
 
   try {
     if (mockOrApiEnabled()) {
@@ -27,6 +35,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${siteUrl}/article/${article.id}`,
         lastModified: article.updateAt ?? article.publishAt ?? new Date(),
       }))
+      contentRoutes = [
+        ...mockKnowledgeBooks.map((book) => ({
+          url: `${siteUrl}/knowledge/${book.id}`,
+          lastModified: book.updateAt ?? new Date(),
+        })),
+        ...mockKnowledgeChapters
+          .filter((chapter) => chapter.parentId)
+          .map((chapter) => ({
+            url: `${siteUrl}/knowledge/${chapter.parentId}/${chapter.id}`,
+            lastModified: chapter.updateAt ?? new Date(),
+          })),
+        ...mockPages.map((page) => ({
+          url: `${siteUrl}/page/${page.id}`,
+          lastModified: page.updateAt ?? new Date(),
+        })),
+      ]
     } else {
       const response = await withApiRetry(() =>
         themeApi.article.findAll({
@@ -43,5 +67,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[reactpress-theme-starter] sitemap fetch failed', error)
   }
 
-  return [...staticRoutes, ...articleRoutes]
+  return [...staticRoutes, ...articleRoutes, ...contentRoutes]
 }

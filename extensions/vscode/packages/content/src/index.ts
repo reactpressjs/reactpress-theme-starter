@@ -18,6 +18,7 @@ export {
   pushFile,
 } from './sync';
 export type { PushOptions } from './sync';
+export { isPathInsideBase } from './sync';
 export type {
   ArticleFrontmatter,
   ArticlePayload,

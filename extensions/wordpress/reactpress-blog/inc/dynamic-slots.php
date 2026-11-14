@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function reactpress_blog_dynamic_slot_map() {
 	return array(
 		'rp-dynamic--header-tools'    => 'reactpress_blog_render_header_tools',
+		'rp-dynamic--menu-toggle'     => 'reactpress_blog_render_menu_toggle',
 		'rp-dynamic--carousel'        => 'reactpress_blog_render_carousel',
 		'rp-dynamic--category-menu'   => 'reactpress_blog_render_category_menu',
 		'rp-dynamic--recommend'       => 'reactpress_blog_render_recommend',

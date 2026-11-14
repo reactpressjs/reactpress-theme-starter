@@ -13,30 +13,31 @@ export function activate(context: vscode.ExtensionContext): void {
   registerPasteUpload(context);
 
   context.subscriptions.push(
+    codeLens,
     vscode.languages.registerCodeLensProvider({ language: 'markdown' }, codeLens),
     vscode.window.onDidChangeActiveTextEditor(() => {
-      void statusBar.refresh();
+      statusBar.scheduleRefresh({ debounceMs: 100 });
       codeLens.refresh();
     }),
     vscode.workspace.onDidSaveTextDocument((doc) => {
       if (doc.languageId === 'markdown') {
         codeLens.refresh();
-        void statusBar.refresh();
+        statusBar.scheduleRefresh({ debounceMs: 150 });
       }
     }),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration('reactpress')) {
-        void statusBar.refresh();
+        statusBar.scheduleRefresh({ invalidateTokenCache: true });
         codeLens.refresh();
       }
     }),
     vscode.workspace.onDidChangeWorkspaceFolders(() => {
-      void statusBar.refresh();
+      statusBar.scheduleRefresh({ invalidateTokenCache: true });
       codeLens.refresh();
     })
   );
 
-  void statusBar.refresh();
+  statusBar.scheduleRefresh();
 }
 
 export function deactivate(): void {

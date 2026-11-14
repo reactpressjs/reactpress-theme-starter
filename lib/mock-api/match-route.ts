@@ -41,6 +41,16 @@ function jsonEnvelope(data: unknown, status = 200): Response {
   )
 }
 
+function jsonNotFound(message = 'Not found'): Response {
+  return Response.json(
+    { success: false, msg: message, statusCode: 404 },
+    {
+      status: 404,
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    }
+  )
+}
+
 function normalizePath(segments: string[]): string {
   const path = `/${segments.map((segment) => decodeURIComponent(segment)).join('/')}`
   return (path.replace(/\/$/, '') || '/').toLowerCase()
@@ -98,6 +108,7 @@ export function matchMockRoute(
     const id = rest.slice(0, slash)
     const action = rest.slice(slash + 1)
     const article = getMockArticleById(id)
+    if (!article) return jsonNotFound('Article not found')
 
     if (action === 'views') {
       return jsonEnvelope(incrementViews(article))
@@ -120,7 +131,7 @@ export function matchMockRoute(
     const action = rest.slice(slash + 1)
     const book = findMockKnowledgeById(id)
     if (!book) {
-      return jsonEnvelope(null)
+      return jsonNotFound('Knowledge not found')
     }
     if (action === 'views') {
       return jsonEnvelope(incrementViews(book))
@@ -150,7 +161,8 @@ export function matchMockRoute(
   if (method === 'GET' && path.startsWith('/article/')) {
     const id = decodeURIComponent(path.slice('/article/'.length))
     if (!id.includes('/')) {
-      return jsonEnvelope(getMockArticleById(id))
+      const article = getMockArticleById(id)
+      return article ? jsonEnvelope(article) : jsonNotFound('Article not found')
     }
   }
 
@@ -159,7 +171,8 @@ export function matchMockRoute(
   }
   if (method === 'GET' && path.startsWith('/category/')) {
     const value = decodeURIComponent(path.slice('/category/'.length))
-    return jsonEnvelope(getMockCategoryByValue(value))
+    const category = getMockCategoryByValue(value)
+    return category ? jsonEnvelope(category) : jsonNotFound('Category not found')
   }
 
   if (method === 'GET' && path === '/tag') {
@@ -167,7 +180,8 @@ export function matchMockRoute(
   }
   if (method === 'GET' && path.startsWith('/tag/')) {
     const value = decodeURIComponent(path.slice('/tag/'.length))
-    return jsonEnvelope(getMockTagByValue(value))
+    const tag = getMockTagByValue(value)
+    return tag ? jsonEnvelope(tag) : jsonNotFound('Tag not found')
   }
 
   if (method === 'GET' && path === '/page') {
@@ -178,12 +192,13 @@ export function matchMockRoute(
     if (id.endsWith('/views')) {
       return jsonEnvelope(null)
     }
-    return jsonEnvelope(getMockPageById(id))
+    const page = getMockPageById(id)
+    return page ? jsonEnvelope(page) : jsonNotFound('Page not found')
   }
   if (method === 'POST' && path.startsWith('/page/') && path.endsWith('/views')) {
     const id = decodeURIComponent(path.slice('/page/'.length, -'/views'.length))
     const page = getMockPageById(id)
-    return jsonEnvelope(incrementViews(page))
+    return page ? jsonEnvelope(incrementViews(page)) : jsonNotFound('Page not found')
   }
 
   if (method === 'GET' && path === '/knowledge') {
@@ -191,7 +206,8 @@ export function matchMockRoute(
   }
   if (method === 'GET' && path.startsWith('/knowledge/')) {
     const id = decodeURIComponent(path.slice('/knowledge/'.length))
-    return jsonEnvelope(getMockKnowledgeById(id))
+    const item = getMockKnowledgeById(id)
+    return item ? jsonEnvelope(item) : jsonNotFound('Knowledge not found')
   }
 
   if (method === 'GET' && path === '/search/article') {

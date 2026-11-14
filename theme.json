@@ -2,7 +2,7 @@
   "$schema": "./theme.manifest.schema.json",
   "id": "reactpress-theme-starter",
   "name": "ReactPress Theme Starter",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "Tailwind 风格博客主题，Next.js App Router + ReactPress 动态内容，支持深浅色、评论、知识库与网址导航。",
   "author": "ReactPress",
   "authorUri": "https://reactpress.surge.sh/",
@@ -22,7 +22,12 @@
     "archive-category": "app/category/[category]/page.tsx",
     "archive-tag": "app/tag/[tag]/page.tsx",
     "archives": "app/archives/page.tsx",
-    "search": "app/search/page.tsx"
+    "search": "app/search/page.tsx",
+    "tags": "app/tags/page.tsx",
+    "knowledge": "app/knowledge/page.tsx",
+    "knowledge-book": "app/knowledge/[pId]/page.tsx",
+    "knowledge-chapter": "app/knowledge/[pId]/[id]/page.tsx",
+    "suggestions": "app/suggestions/page.tsx"
   },
   "appearance": {
     "panels": [

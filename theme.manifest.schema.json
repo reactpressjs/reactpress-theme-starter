@@ -75,6 +75,11 @@
           "archive-tag",
           "archives",
           "search",
+          "tags",
+          "knowledge",
+          "knowledge-book",
+          "knowledge-chapter",
+          "suggestions",
           "404"
         ]
       },

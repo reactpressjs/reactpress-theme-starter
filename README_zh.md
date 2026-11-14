@@ -59,7 +59,7 @@
 ReactPress API  ──REST──▶  Theme Starter (Next.js)  ──▶  访客站
 ```
 
-**技术栈：** Next.js 15 · React 19 · Tailwind CSS 4 · Node.js 20+ · pnpm 9
+**技术栈：** Next.js 15 · React 19 · Tailwind CSS 4 · Node.js 22.23+ · pnpm 9
 
 ---
 
@@ -98,7 +98,7 @@ pnpm dev:mock
 
 ## 快速开始（完整栈）
 
-**环境要求：** Node.js 20+、pnpm 9+
+**环境要求：** Node.js 22.23+、pnpm 9+
 
 最快启动访客站 + 管理后台 + API 的方式是 [ReactPress CLI](https://reactpress.cc/)：
 

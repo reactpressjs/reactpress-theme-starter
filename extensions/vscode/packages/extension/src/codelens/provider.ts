@@ -1,12 +1,16 @@
 import * as vscode from 'vscode';
 import { parseLocalDocument } from '@fecommunity/reactpress-content';
 
-export class ReactPressCodeLensProvider implements vscode.CodeLensProvider {
+export class ReactPressCodeLensProvider implements vscode.CodeLensProvider, vscode.Disposable {
   private readonly emitter = new vscode.EventEmitter<void>();
   readonly onDidChangeCodeLenses = this.emitter.event;
 
   refresh(): void {
     this.emitter.fire();
+  }
+
+  dispose(): void {
+    this.emitter.dispose();
   }
 
   provideCodeLenses(document: vscode.TextDocument): vscode.CodeLens[] {

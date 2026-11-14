@@ -62,6 +62,24 @@ function reactpress_blog_render_header_tools() {
 }
 
 /**
+ * Mobile navigation toggle. Rendered in place of the header slot so the label is translatable.
+ *
+ * @since 1.3.13
+ * @return string
+ */
+function reactpress_blog_render_menu_toggle() {
+	ob_start();
+	?>
+	<button type="button" class="rp-header-menu-toggle" data-rp-menu-toggle aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle menu', 'reactpress-blog' ); ?>">
+		<span></span>
+		<span></span>
+		<span></span>
+	</button>
+	<?php
+	return (string) ob_get_clean();
+}
+
+/**
  * Search overlay: open from header icon, submit to search results.
  *
  * @since 1.3.5

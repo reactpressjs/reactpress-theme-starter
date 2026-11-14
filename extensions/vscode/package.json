@@ -8,7 +8,7 @@
     "build:content": "pnpm --filter @fecommunity/reactpress-content build",
     "build:cli": "pnpm --filter @fecommunity/reactpress-content-cli build",
     "build:vscode": "pnpm --filter reactpress-vscode build",
-    "test": "pnpm --filter @fecommunity/reactpress-content test",
+    "test": "pnpm --filter @fecommunity/reactpress-content test && pnpm --filter @fecommunity/reactpress-content-cli test && pnpm --filter reactpress-vscode test",
     "typecheck": "pnpm -r run typecheck",
     "watch": "pnpm run watch:content & pnpm run watch:vscode",
     "watch:content": "pnpm --filter @fecommunity/reactpress-content watch",
