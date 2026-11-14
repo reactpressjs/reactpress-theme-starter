@@ -171,11 +171,11 @@ ReactPress product (CMS, admin, CLI) → [reactpressjs/reactpress](https://githu
 
 ## Explore more
 
-|                                                      |                                      |
-| :--------------------------------------------------- | :----------------------------------- |
-| [ReactPress](https://github.com/reactpressjs/reactpress) | CMS, admin, CLI, plugins & desktop |
-| [Documentation](https://reactpress.cc/)              | Guides and product overview          |
-| [`reactpressjs` on npm](https://www.npmjs.com/package/reactpressjs) | `npm install -g reactpressjs` |
+|                                                                     |                                    |
+| :------------------------------------------------------------------ | :--------------------------------- |
+| [ReactPress](https://github.com/reactpressjs/reactpress)            | CMS, admin, CLI, plugins & desktop |
+| [Documentation](https://reactpress.cc/)                             | Guides and product overview        |
+| [`reactpressjs` on npm](https://www.npmjs.com/package/reactpressjs) | `npm install -g reactpressjs`      |
 
 ---
 

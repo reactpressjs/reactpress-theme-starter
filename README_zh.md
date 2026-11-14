@@ -92,10 +92,10 @@ mkdir my-site && cd my-site
 reactpress init
 ```
 
-| 你将打开     | 地址                         |
-| :----------- | :--------------------------- |
-| 你的站点     | http://localhost:3001        |
-| 管理后台     | http://localhost:3001/admin/ |
+| 你将打开 | 地址                         |
+| :------- | :--------------------------- |
+| 你的站点 | http://localhost:3001        |
+| 管理后台 | http://localhost:3001/admin/ |
 
 默认账号：`admin` / `admin` — 上线前请修改。需要自检？运行 `reactpress doctor`。
 
@@ -171,10 +171,10 @@ ReactPress 产品（CMS、后台、CLI）→ [reactpressjs/reactpress](https://g
 
 ## 了解更多
 
-|                                                      |                                      |
-| :--------------------------------------------------- | :----------------------------------- |
-| [ReactPress](https://github.com/reactpressjs/reactpress) | CMS、后台、CLI、插件与桌面端       |
-| [文档](https://reactpress.cc/)                       | 指南与产品说明                       |
+|                                                                     |                               |
+| :------------------------------------------------------------------ | :---------------------------- |
+| [ReactPress](https://github.com/reactpressjs/reactpress)            | CMS、后台、CLI、插件与桌面端  |
+| [文档](https://reactpress.cc/)                                      | 指南与产品说明                |
 | [`reactpressjs`（npm）](https://www.npmjs.com/package/reactpressjs) | `npm install -g reactpressjs` |
 
 ---
