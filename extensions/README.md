@@ -11,16 +11,11 @@ extensions/
 ├── README.md
 ├── wordpress/                 # Pointer to standalone WordPress theme repo
 │   └── README.md
-└── vscode/                    # VS Code / Cursor Publish Companion
-    ├── README.md
-    ├── packages/
-    │   ├── content/           # shared publish kit
-    │   ├── cli/               # reactpress-content CLI
-    │   └── extension/         # VS Code extension (vsix root)
-    └── package.json           # pnpm workspace for this platform
+└── vscode/                    # Pointer to standalone VS Code extension repo
+    └── README.md
 ```
 
-Future platforms (for example Ghost or Hugo) should be added as siblings, each with its own package folders and pack scripts.
+Future platforms (for example Ghost or Hugo) should be added as siblings, each with its own package folders and pack scripts — or a pointer README once the platform ships from a standalone repository.
 
 ## Conventions
 
@@ -37,7 +32,7 @@ Future platforms (for example Ghost or Hugo) should be added as siblings, each w
 | Path | Platform | Description |
 | --- | --- | --- |
 | [reactpress-theme-twentytwentysix](https://github.com/reactpressjs/reactpress-theme-twentytwentysix) | WordPress | Full Site Editing (block) theme — package slug `reactpress-blog` |
-| [`vscode/`](./vscode/) | VS Code / Cursor | Publish Companion: local Markdown → push/publish to ReactPress API |
+| [reactpress-for-vscode](https://github.com/reactpressjs/reactpress-for-vscode) | VS Code / Cursor | Official Publish Companion — Marketplace id `fecommunity.reactpress-vscode` |
 
 ## Pack (WordPress)
 
@@ -53,10 +48,13 @@ Output: `dist/reactpress-blog.zip`
 
 ## Develop (VS Code)
 
+The VS Code extension lives in a standalone repository:
+
 ```bash
-cd extensions/vscode
+git clone https://github.com/reactpressjs/reactpress-for-vscode.git
+cd reactpress-for-vscode
 pnpm install
 pnpm build
 ```
 
-See [`vscode/README.md`](./vscode/README.md).
+See [reactpress-for-vscode](https://github.com/reactpressjs/reactpress-for-vscode).
