@@ -1,14 +1,22 @@
 # ReactPress for VS Code
 
-Publish Companion for [ReactPress](https://www.reactpress.cc/) — write Markdown in your repo, preview on your theme, push/publish without opening `/admin`.
+Publish Companion — write Markdown locally, preview on your theme, push/publish without `/admin`.
 
-Monorepo path: `extensions/vscode/`
+[Docs](https://reactpress.cc/docs/intro) · [Demo](https://demo.reactpress.cc/) · [Getting started](https://reactpress.cc/docs/getting-started) · [Headless API](https://reactpress.cc/docs/developer-guide/headless-api) · [User guide](https://reactpress.cc/docs/user-guide) · [Main repo](https://github.com/reactpressjs/reactpress)
+
+| Surface | URL |
+| --- | --- |
+| Site | `http://localhost:3001` |
+| Admin | `http://localhost:3001/admin/` |
+| API | `http://127.0.0.1:3002/api` |
+
+Default login: `admin` / `admin`.
 
 ## Packages
 
 | Path | Package | Role |
 | --- | --- | --- |
-| [`packages/content`](./packages/content) | `@fecommunity/reactpress-content` | Shared auth, markdown→html/toc, pull/push/publish |
+| [`packages/content`](./packages/content) | `@fecommunity/reactpress-content` | Auth, markdown, sync |
 | [`packages/cli`](./packages/cli) | `@fecommunity/reactpress-content-cli` | `reactpress-content` CLI |
 | [`packages/extension`](./packages/extension) | `reactpress-vscode` | VS Code / Cursor extension |
 
@@ -16,14 +24,13 @@ Monorepo path: `extensions/vscode/`
 
 ```bash
 cd extensions/vscode
-pnpm install
-pnpm build
+pnpm install && pnpm build
 ```
 
 ### CLI
 
 ```bash
-pnpm cli -- login --api http://localhost:3002/api --user admin --password admin --save-token
+pnpm cli -- login --api http://127.0.0.1:3002/api --user admin --password admin --save-token
 pnpm cli -- new "Hello ReactPress"
 pnpm cli -- push ./content/posts/hello-reactpress.md
 pnpm cli -- publish ./content/posts/hello-reactpress.md
@@ -31,12 +38,11 @@ pnpm cli -- publish ./content/posts/hello-reactpress.md
 
 ### Extension
 
-1. Open the `extensions/vscode` folder as the workspace root (so `.vscode/launch.json` applies)
-2. `pnpm install && pnpm build` — or keep `pnpm watch` running while iterating (`content` + extension)
-3. Press **F5** / **Run Extension**, or install a VSIX via `pnpm package:vsix`
-4. Command Palette → **ReactPress: Connect Site** (default API `http://localhost:3002/api`; NestJS admin credentials, typically `admin` / `admin`)
+1. Open `extensions/vscode` as workspace root
+2. `pnpm watch` (optional) → **F5** / `pnpm package:vsix`
+3. **ReactPress: Connect Site** → API `http://127.0.0.1:3002/api`
 
-## Local Markdown shape
+## Frontmatter
 
 ```md
 ---
@@ -48,38 +54,23 @@ category: architecture
 tags: [reactpress]
 isCommentable: true
 ---
-
-# My Post
-
-Body in Markdown.
 ```
 
-After the first successful push, `id` and `updatedAt` are written back into frontmatter.
+First successful push writes back `id` and `updatedAt`.
 
 ## Settings
 
-| Setting | Default | Meaning |
-| --- | --- | --- |
-| `reactpress.apiUrl` | `http://localhost:3002/api` | API base (include `/api`) |
-| `reactpress.siteUrl` | `http://localhost:3001` | Visitor site for preview |
-| `reactpress.contentPath` | `content/posts` | Local posts folder |
-| `reactpress.username` | `""` | Username only; token in SecretStorage |
-
-Marketplace listing README lives in [`packages/extension/README.md`](./packages/extension/README.md).
-
-## Scope (v0.1)
-
-Included: connect, new article, push draft, publish, pull, theme preview URL, image upload command, CodeLens, status bar.
-
-Not included: knowledge base, CMS pages, Admin webview editor, full media library UI, paste-image auto-upload.
+| Setting | Default |
+| --- | --- |
+| `reactpress.apiUrl` | `http://localhost:3002/api` |
+| `reactpress.siteUrl` | `http://localhost:3001` |
+| `reactpress.contentPath` | `content/posts` |
+| `reactpress.username` | `""` (token in SecretStorage) |
 
 ## Quality gate
 
 ```bash
-pnpm test        # content kit (100% coverage), CLI, and extension helpers
-pnpm typecheck
-pnpm build
-pnpm package:vsix
+pnpm test && pnpm typecheck && pnpm build && pnpm package:vsix
 ```
 
-See [PRODUCTION.md](./PRODUCTION.md) for Marketplace publish steps. Automated gates are green for **preview** publish; run Connect → Push → Publish → Preview against a live API before `publish:vsce`.
+Marketplace publish: [PRODUCTION.md](./PRODUCTION.md).
