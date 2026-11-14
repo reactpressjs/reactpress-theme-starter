@@ -31,7 +31,7 @@ Future platforms (for example Ghost or Hugo) should be added as siblings, each w
 
 | Path | Platform | Description |
 | --- | --- | --- |
-| [ReactPress for WordPress](https://github.com/reactpressjs/reactpress-theme-twentytwentysix) | WordPress | Official FSE block theme — package slug `reactpress-blog` |
+| [ReactPress for WordPress](https://github.com/reactpressjs/reactpress-for-wordpress) | WordPress | Official FSE block theme — package slug `reactpress-blog` |
 | [reactpress-for-vscode](https://github.com/reactpressjs/reactpress-for-vscode) | VS Code / Cursor | Official Publish Companion — Marketplace id `fecommunity.reactpress-vscode` |
 
 ## Pack (WordPress)
@@ -39,8 +39,8 @@ Future platforms (for example Ghost or Hugo) should be added as siblings, each w
 The WordPress theme lives in a standalone repository:
 
 ```bash
-git clone https://github.com/reactpressjs/reactpress-theme-twentytwentysix.git
-cd reactpress-theme-twentytwentysix
+git clone https://github.com/reactpressjs/reactpress-for-wordpress.git
+cd reactpress-for-wordpress
 bash pack.sh
 ```
 
