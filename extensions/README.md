@@ -46,7 +46,7 @@ The WordPress theme lives in a standalone repository:
 ```bash
 git clone https://github.com/reactpressjs/reactpress-theme-twentytwentysix.git
 cd reactpress-theme-twentytwentysix
-bash scripts/pack.sh
+bash pack.sh
 ```
 
 Output: `dist/reactpress-blog.zip`

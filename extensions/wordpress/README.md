@@ -17,7 +17,7 @@ The WordPress theme **ReactPress Blog** (`reactpress-blog`) now lives in:
 Clone it, then package with:
 
 ```bash
-bash scripts/pack.sh
+bash pack.sh
 ```
 
 Upload `dist/reactpress-blog.zip` at https://wordpress.org/themes/upload/
